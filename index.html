@@ -1083,10 +1083,13 @@
   /* PRINT */
   @media print {
     body { background: #fff; }
-    .topbar, .nav, .ed-left, .btn-row, .toast, .step-nav, #v-dash, #v-peg, #v-help { display: none !important; }
-    .editor-shell { grid-template-columns: 1fr; gap: 0; }
-    .ed-right { position: static; max-height: none; overflow: visible; }
-    main { padding: 0; max-width: none; }
+    .topbar, .nav, .ed-left, .btn-row, .toast, .step-nav, #v-dash, #v-peg, #v-help,
+    #final-view-banner, .mobile-print-bar { display: none !important; }
+    .view { display: none !important; }
+    .view#v-editor { display: block !important; }
+    .editor-shell { grid-template-columns: 1fr !important; gap: 0; }
+    .ed-right { display: block !important; position: static !important; max-height: none !important; overflow: visible !important; }
+    main { padding: 0 !important; max-width: none !important; }
     .pv-card { border: none; box-shadow: none; padding: 0; border-radius: 0; }
     .card-h { display: none !important; }
     .card { border: none; box-shadow: none; }
@@ -1289,6 +1292,10 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                 Simpan Draft
               </button>
+              <button class="btn btn-secondary" onclick="exportWord()" title="Ekspor ke Microsoft Word">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                Ekspor Word
+              </button>
               <button class="btn btn-print" onclick="finalizeAndPrint()">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
                 Cetak / Simpan PDF
@@ -1451,6 +1458,10 @@
               <button class="btn btn-draft" onclick="saveDraft()">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                 Simpan Draft
+              </button>
+              <button class="btn btn-secondary" onclick="exportWord()" title="Ekspor ke Microsoft Word">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                Ekspor Word
               </button>
               <button class="btn btn-print" onclick="finalizeAndPrint()">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
@@ -1987,7 +1998,8 @@ function renderDash() {
         ${selectMode ? `<input type="checkbox" class="rcard-check" ${isSel?'checked':''} onclick="event.stopPropagation();toggleSelect('${r.id}')">` : ''}
         <span class="rcard-tag ${r.jenis}">${jd.title.toUpperCase()}</span>
         <div class="rcard-spacer"></div>
-        ${!selectMode ? `<button class="rcard-menu" onclick="event.stopPropagation();duplicateReport('${r.id}')" title="Duplikat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>` : ''}
+        ${!selectMode ? `<button class="rcard-menu" onclick="event.stopPropagation();openReportEditable('${r.id}')" title="Edit" style="color:var(--navy-600)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>` : ''}
+        ${!selectMode ? `<button class="rcard-menu" onclick="event.stopPropagation();deleteReport('${r.id}')" title="Hapus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button>` : ''}
       </div>
       <h3 style="font-size:13.5px;margin-bottom:2px">${locDate}</h3>
       <p class="rcard-sub" style="margin-bottom:8px">${escHtml(peg.nama || 'Pegawai belum dipilih')}</p>
@@ -2032,6 +2044,12 @@ function newReport() {
 function openReport(id) {
   const _r = state.reports.find(rep => rep.id === id);
   viewMode = !!(_r && _r.status === 'final');
+  state.currentId = id;
+  persist();
+  setView('editor');
+}
+function openReportEditable(id) {
+  viewMode = false;
   state.currentId = id;
   persist();
   setView('editor');
@@ -2585,6 +2603,244 @@ function finalizeAndPrint() {
   _doPrint();
 }
 
+
+async function exportWord() {
+  const r = currentReport();
+  if (!r) { toast('Tidak ada laporan aktif', 'error'); return; }
+  const peg = getPeg(r.pegawai_idx);
+  const jd = JENIS_MAP[r.jenis] || JENIS_MAP.a;
+  const today = new Date().toISOString().slice(0, 10);
+  toast('Menyiapkan dokumen Word...');
+
+  // mm → twips (1 mm = 56.692 twips)
+  const tw = n => Math.round(n * 56.692);
+
+  // Escape RTF special chars + non-ASCII via \u
+  const esc = s => String(s ?? '').replace(/\\/g, '\\\\').replace(/\{/g, '\\{').replace(/\}/g, '\\}')
+    .replace(/[^\x00-\x7E]/g, c => `\\u${c.charCodeAt(0)}?`);
+
+  // base64 dataUrl → hex lines
+  const toHex = url => {
+    const bin = atob(url.split(',')[1]);
+    let h = '';
+    for (let i = 0; i < bin.length; i++) {
+      if (i % 64 === 0 && i > 0) h += '\n';
+      h += bin.charCodeAt(i).toString(16).padStart(2, '0');
+    }
+    return h;
+  };
+
+  // Get image natural size
+  const imgDim = url => new Promise(res => {
+    const i = new Image(); i.onload = () => res([i.width, i.height]); i.onerror = () => res([200, 200]); i.src = url;
+  });
+
+  // RTF picture block — embed PNG langsung, konversi JPEG ke PNG via ImageBitmap+canvas
+  // ImageBitmap dari Blob tidak memicu canvas taint (aman untuk semua format)
+  const rtfPic = async (url, maxWmm, maxHmm) => {
+    if (!url) return '';
+    try {
+      // 1. Ukur dimensi asli
+      const [nw, nh] = await new Promise(r => {
+        const i = new Image();
+        i.onload  = () => r([i.naturalWidth || 200, i.naturalHeight || 200]);
+        i.onerror = () => r([200, 200]);
+        i.src = url;
+      });
+      // 2. Hitung ukuran tampilan (mm)
+      let wm = maxWmm, hm = Math.round(maxWmm * nh / nw);
+      if (maxHmm && hm > maxHmm) { hm = maxHmm; wm = Math.round(maxHmm * nw / nh); }
+      // 3. PNG data URL → embed langsung tanpa canvas (tidak ada risiko taint)
+      if (url.startsWith('data:image/png')) {
+        return `{\\pict\\pngblip\\picwgoal${tw(wm)}\\pichgoal${tw(hm)}\n${toHex(url)}}`;
+      }
+      // 4. JPEG/lainnya → konversi ke Blob lalu pakai createImageBitmap
+      //    (menghindari canvas taint yang kadang terjadi pada img element)
+      const mime  = url.split(',')[0].split(':')[1].split(';')[0] || 'image/jpeg';
+      const bin   = atob(url.split(',')[1]);
+      const u8    = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i);
+      const blob  = new Blob([u8], { type: mime });
+      const bmp   = await createImageBitmap(blob);
+      const pixW  = Math.max(10, Math.min(nw, Math.round(wm * 4.7)));
+      const pixH  = Math.max(10, Math.round(pixW * nh / nw));
+      const cv    = document.createElement('canvas');
+      cv.width = pixW; cv.height = pixH;
+      const ctx   = cv.getContext('2d');
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, pixW, pixH);
+      ctx.drawImage(bmp, 0, 0, pixW, pixH);
+      bmp.close();
+      const png = cv.toDataURL('image/png');
+      return `{\\pict\\pngblip\\picwgoal${tw(wm)}\\pichgoal${tw(hm)}\n${toHex(png)}}`;
+    } catch(e) {
+      // Fallback: coba embed JPEG langsung dengan \jpegblip
+      try {
+        if (url && url.includes('base64,')) {
+          const mime = url.split(',')[0].split(':')[1].split(';')[0] || '';
+          const isJpeg = mime.includes('jpeg') || mime.includes('jpg');
+          const i2 = new Image();
+          const [nw2, nh2] = await new Promise(r => {
+            i2.onload = () => r([i2.naturalWidth||200, i2.naturalHeight||200]);
+            i2.onerror = () => r([200,200]);
+            i2.src = url;
+          });
+          let wm2 = maxWmm, hm2 = Math.round(maxWmm * nh2 / nw2);
+          if (maxHmm && hm2 > maxHmm) { hm2 = maxHmm; wm2 = Math.round(maxHmm * nw2 / nh2); }
+          const tag = isJpeg ? 'jpegblip' : 'pngblip';
+          return `{\\pict\\${tag}\\picwgoal${tw(wm2)}\\pichgoal${tw(hm2)}\n${toHex(url)}}`;
+        }
+      } catch(e2) {}
+      return '';
+    }
+  };
+
+  // Page: A4, 20mm top/bottom, 25mm left/right
+  const PW = tw(210), PH = tw(297), ML = tw(25), MR = tw(25), MT = tw(20), MB = tw(20);
+  const UW = PW - ML - MR; // ~9072 twips = 160mm
+
+  // Border helpers
+  const bSingle = (col) => `\\brdrs\\brdrw4${col ? `\\brdrcf${col}` : ''}`;
+  const bDouble  = (col) => `\\brdrdb\\brdrw15${col ? `\\brdrcf${col}` : ''}`;
+  const bNone    = () => '\\brdrnone';
+  const cell4 = (t, r, b, l) =>
+    `\\clbrdrt${t}\\clbrdrr${r}\\clbrdrb${b}\\clbrdrl${l}`;
+  const cAll  = (s) => cell4(s, s, s, s);
+  const cNone = () => cAll(bNone());
+
+  // ── RTF header ─────────────────────────────────────────────────────────
+  let rtf = `{\\rtf1\\ansi\\ansicpg1252\\deff0\\deflang1057
+{\\fonttbl{\\f0\\froman\\fcharset0 Times New Roman;}}
+{\\colortbl;\\red0\\green0\\blue0;\\red30\\green58\\blue95;\\red153\\green153\\blue153;}
+{\\info{\\title Laporan Perjalanan Dinas BPS Lembata}}
+\\paperw${PW}\\paperh${PH}\\margl${ML}\\margr${MR}\\margt${MT}\\margb${MB}
+\\widowctrl\\hyphauto\n`;
+
+  // ── KOP SURAT ──────────────────────────────────────────────────────────
+  const logoEl = document.querySelector('.topbar-logo img');
+  const logoPic = (logoEl && logoEl.src && logoEl.src.includes('base64'))
+    ? await rtfPic(logoEl.src, 18, 18) : '';
+
+  const kW = tw(22);
+  rtf += `{\\trowd\\trgaph57\\trleft0
+${cNone()}\\cellx${kW}
+${cAll(bNone())}\\clbrdrb${bDouble(2)}\\cellx${UW}
+{\\pard\\intbl\\qc\\f0 ${logoPic}\\cell}
+{\\pard\\intbl\\f0\\fs28\\b\\cf2 BADAN PUSAT STATISTIK\\line KABUPATEN LEMBATA\\b0\\cf0\\fs18\\line Jl. Trans Lembata, Kel. Lewoleba Timur, Kec. Nubatukan, Kab. Lembata, NTT\\line Telepon - \\bullet  E-mail: bps5308@bps.go.id \\bullet  https://lembatakab.bps.go.id\\cell}
+\\row}\n`;
+
+  // ── JUDUL ──────────────────────────────────────────────────────────────
+  const jenisTitle = jd.title === 'Dalam kota' ? 'Perjalanan Dinas Dalam Kota'
+    : jd.title === '> 8 jam / Supervisi' ? 'Perjalanan Dinas > 8 Jam / Supervisi'
+    : 'Perjalanan Dinas Biasa';
+
+  rtf += `\\pard\\sa120\\par
+\\pard\\qc\\f0\\fs26\\b LAPORAN PERJALANAN DINAS\\b0\\par
+\\pard\\qc\\fs22 MAK {\\b ${esc(jd.kode)}} \\emdash  ${esc(jenisTitle)}\\par\n`;
+  if (r.judul_kegiatan) rtf += `\\pard\\qc\\b\\fs22 ${esc(r.judul_kegiatan)}\\b0\\par\n`;
+  rtf += `\\pard\\sa120\\par\n`;
+
+  // ── IDENTITAS ──────────────────────────────────────────────────────────
+  const cA = tw(58), cB = tw(7), cC = UW - cA - cB;
+  const idRows = [
+    ['1. Nama',             peg.nama      || '—'],
+    ['2. NIP',              peg.nip       || '—'],
+    ['3. Jabatan',          peg.jabatan   || '—'],
+    ['4. Golongan / Ruang', peg.gol       || '—'],
+    ['5. Tempat asal',      r.dari        || '—'],
+    ['6. Tempat tujuan',    r.tujuan      || '—'],
+    ['7. Moda transportasi',r.moda        || '—'],
+    ['8. Tanggal berangkat',fmtTgl(r.tgl_berangkat)],
+    ['9. Tanggal kembali',  fmtTgl(r.tgl_kembali)],
+  ];
+  for (const [lbl, val] of idRows) {
+    rtf += `{\\trowd\\trgaph0\\trleft0${cNone()}\\cellx${cA}${cNone()}\\cellx${cA+cB}${cNone()}\\cellx${UW}
+{\\pard\\intbl\\f0\\fs22\\sa40 ${esc(lbl)}\\cell}{\\pard\\intbl\\fs22\\sa40 :\\cell}{\\pard\\intbl\\fs22\\sa40 ${esc(val)}\\cell}\\row}\n`;
+  }
+  rtf += `\\pard\\sa100\\par\n`;
+
+  // ── KEGIATAN ───────────────────────────────────────────────────────────
+  rtf += `\\pard\\f0\\fs22\\b A.  Rincian Kegiatan\\b0\\par\\pard\\sa80\\par\n`;
+  const kList = (r.kegiatan && r.kegiatan.length) ? r.kegiatan : [{}];
+
+  if (r.jenis === 'c') {
+    const c1 = tw(10), c2 = UW - c1;
+    rtf += `{\\trowd\\trgaph57\\trleft0${cAll(bSingle())}\\cellx${c1}${cAll(bSingle())}\\cellx${UW}
+{\\pard\\intbl\\qc\\b\\fs20 No\\b0\\cell}{\\pard\\intbl\\b\\fs20 Rincian Kegiatan\\b0\\cell}\\row}\n`;
+    kList.forEach((k, i) => {
+      rtf += `{\\trowd\\trgaph57\\trleft0${cAll(bSingle(3))}\\cellx${c1}${cAll(bSingle(3))}\\cellx${UW}
+{\\pard\\intbl\\qc\\fs20 ${i+1}\\cell}
+{\\pard\\intbl\\fs20 {\\b Tanggal:} ${esc(k.tgl ? fmtTgl(k.tgl) : '—')}\\line{\\b Uraian kegiatan / masalah yang ditemukan:}\\line ${esc(k.mas||'—')}\\line{\\b Solusi / tindak lanjut:}\\line ${esc(k.sol||'—')}\\cell}\\row}\n`;
+    });
+  } else {
+    const c1 = tw(10), c2 = tw(22), c3 = Math.round((UW-c1-c2)/2), c4 = UW-c1-c2-c3;
+    rtf += `{\\trowd\\trgaph57\\trleft0${cAll(bSingle())}\\cellx${c1}${cAll(bSingle())}\\cellx${c1+c2}${cAll(bSingle())}\\cellx${c1+c2+c3}${cAll(bSingle())}\\cellx${UW}
+{\\pard\\intbl\\qc\\b\\fs20 No\\b0\\cell}{\\pard\\intbl\\b\\fs20 Waktu\\b0\\cell}{\\pard\\intbl\\b\\fs20 Uraian kegiatan / masalah yang ditemukan\\b0\\cell}{\\pard\\intbl\\b\\fs20 Solusi / tindak lanjut\\b0\\cell}\\row}\n`;
+    kList.forEach((k, i) => {
+      rtf += `{\\trowd\\trgaph57\\trleft0${cAll(bSingle(3))}\\cellx${c1}${cAll(bSingle(3))}\\cellx${c1+c2}${cAll(bSingle(3))}\\cellx${c1+c2+c3}${cAll(bSingle(3))}\\cellx${UW}
+{\\pard\\intbl\\qc\\fs20 ${i+1}\\cell}{\\pard\\intbl\\fs20 ${esc((k.w1||'')+'–'+(k.w2||''))}\\cell}{\\pard\\intbl\\fs20 ${esc(k.mas||'—')}\\cell}{\\pard\\intbl\\fs20 ${esc(k.sol||'—')}\\cell}\\row}\n`;
+    });
+  }
+
+  // ── HASIL, SARAN, PENUTUP ──────────────────────────────────────────────
+  rtf += `\\pard\\sa100\\par
+\\pard\\f0\\fs22\\b B.  Hasil / Capaian\\b0\\par\\pard\\qj\\fs22\\sa120 ${esc(r.hasil||'—')}\\par
+\\pard\\f0\\fs22\\b C.  Saran / Rekomendasi\\b0\\par\\pard\\qj\\fs22\\sa120 ${esc(r.saran||'—')}\\par
+\\pard\\sa80\\par
+\\pard\\qj\\fs22 Demikian laporan ini dibuat dengan sebenar-benarnya, untuk dipergunakan sebagaimana mestinya.\\par
+\\pard\\sa240\\par\n`;
+
+  // ── TTD ────────────────────────────────────────────────────────────────
+  const ttdDate = fmtTgl(r.tgl_kembali || today);
+  const ttdPic  = (r.ttd_enabled && peg.ttd) ? await rtfPic(peg.ttd, 36, 26) : '';
+  const hw = Math.round(UW / 2);
+  rtf += `{\\trowd\\trgaph0\\trleft0${cNone()}\\cellx${hw}${cNone()}\\cellx${UW}
+{\\pard\\intbl\\cell}
+{\\pard\\intbl\\qc\\f0\\fs22 Lewoleba, ${esc(ttdDate)}\\line Yang membuat laporan,\\par
+${ttdPic
+  ? `\\pard\\intbl\\qc\\sa40 ${ttdPic}\\par`
+  : `\\pard\\intbl\\sa640\\par`}
+\\pard\\intbl\\qc\\b\\fs22 ${esc(peg.nama||'—')}\\b0\\par\\pard\\intbl\\qc\\fs22 NIP. ${esc(peg.nip||'—')}\\cell}
+\\row}\n`;
+
+  // ── LAMPIRAN FOTO ──────────────────────────────────────────────────────
+  if (r.dokumentasi && r.dokumentasi.length) {
+    rtf += `\\page\\pard\\qc\\f0\\fs24\\b LAMPIRAN \\emdash  DOKUMENTASI KEGIATAN\\b0\\par
+\\pard\\qc\\fs22 ${esc(r.judul_kegiatan || jenisTitle)}\\par
+\\pard\\qc\\fs18\\cf3 ${esc((r.tujuan||'—') + ' · ' + fmtTgl(r.tgl_berangkat))}\\cf0\\par\\pard\\sa120\\par\n`;
+
+    const docs = r.dokumentasi;
+    const cPic = Math.floor((UW - tw(5)) / 2);
+
+    for (let i = 0; i < docs.length; i += 2) {
+      const batch = [docs[i], docs[i+1]].filter(Boolean);
+      const pics  = await Promise.all(batch.map(d => rtfPic(d.dataUrl, 66, 68)));
+
+      let rowDef = '', cells = '';
+      for (let ci = 0; ci < batch.length; ci++) {
+        const d = batch[ci];
+        rowDef += `${cAll(bSingle(3))}\\cellx${ci === 0 ? cPic : UW}`;
+        cells  += `{\\pard\\intbl\\qc\\sa40\\b\\fs20 Foto ${i+ci+1}\\b0\\par\\pard\\intbl\\qc ${pics[ci]}\\par`;
+        if (d.gps)     cells += `\\pard\\intbl\\qc\\fs16\\cf3 ${esc(decToDms(d.gps.lat,true))} / ${esc(decToDms(d.gps.lon,false))}\\cf0\\par`;
+        if (d.caption) cells += `\\pard\\intbl\\qc\\i\\fs18 ${esc(d.caption)}\\i0\\par`;
+        cells += `\\cell}`;
+      }
+      if (batch.length === 1) { rowDef += `${cNone()}\\cellx${UW}`; cells += `{\\pard\\intbl\\cell}`; }
+
+      rtf += `{\\trowd\\trgaph57\\trleft0${rowDef}\n${cells}\n\\row}\n\\pard\\sa100\\par\n`;
+    }
+  }
+
+  rtf += '}';
+
+  // Download
+  const base = ('Laporan_Perjadin_' + (peg.nama||'Pegawai').replace(/\s+/g,'_') + '_' + (r.tgl_berangkat||'tanpa_tgl')).replace(/[^a-zA-Z0-9_\-]/g,'');
+  const blob = new Blob([rtf], { type: 'application/rtf' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = base + '.rtf';
+  a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 3000);
+  toast('File Word berhasil diunduh: ' + base + '.rtf');
+}
+
 function _doPrint() {
   // Jika di dalam iframe, buka di tab baru karena print di iframe terbatas
   if (isInIframe()) {
@@ -2660,7 +2916,7 @@ function buildPv() {
         <div class="h-bps">BADAN PUSAT STATISTIK</div>
         <div class="h-kab">KABUPATEN LEMBATA</div>
         <div class="h-addr">Jl. Trans Lembata, Kel. Lewoleba Timur, Kec. Nubatukan, Kab. Lembata, NTT<br>
-        Telepon (0383) 41023 · E-mail: bps5308@bps.go.id · Homepage: https://lembatakab.bps.go.id</div>
+        Telepon - · E-mail: bps5308@bps.go.id · Homepage: https://lembatakab.bps.go.id</div>
       </div>
     </div>
 
@@ -2917,13 +3173,13 @@ async function improveText(id) {
     const resp = await apiPost({ action: 'improveText', text: t });
     if (resp && resp.result) t = resp.result;
   } catch(e) { /* fallback ke perbaikan lokal */ }
-  t = t.replace(/saya/gi, 'kami');
-  t = t.replace(/di lakukan/gi, 'dilakukan');
-  t = t.replace(/di laksanakan/gi, 'dilaksanakan');
-  t = t.replace(/di capai/gi, 'dicapai');
-  t = t.replace(/ri/g, 'RI');
+  t = t.replace(/\bsaya\b/gi, 'kami');
+  t = t.replace(/\bdi lakukan\b/gi, 'dilakukan');
+  t = t.replace(/\bdi laksanakan\b/gi, 'dilaksanakan');
+  t = t.replace(/\bdi capai\b/gi, 'dicapai');
+  t = t.replace(/\bri\b/g, 'RI');
   el.value = t;
-  toast('Kalimat diperbaiki ✓');
+  toast('Kalimat diperbaiki \u2713');
 }
 
 function closeAlertModal() { closeModal(); }
