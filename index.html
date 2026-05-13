@@ -720,8 +720,8 @@
   .search-box input:focus { outline: none; border-color: var(--navy-500); box-shadow: 0 0 0 3px var(--navy-50); }
   .search-box svg { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--ink-400); }
 
-  .reports-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px; }
-  .rcard { background: var(--paper); border: 1px solid var(--ink-200); border-radius: var(--radius-lg); padding: 16px 18px; transition: all .15s; cursor: pointer; position: relative; }
+  .reports-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+  .rcard { background: var(--paper); border: 1px solid var(--ink-200); border-radius: var(--radius-lg); padding: 14px 16px; transition: all .15s; cursor: pointer; position: relative; }
   .rcard:hover { border-color: var(--navy-500); box-shadow: var(--shadow); transform: translateY(-1px); }
   .rcard-head { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 8px; }
   .rcard-tag { font-size: 10.5px; font-weight: 600; padding: 3px 8px; border-radius: 999px; background: var(--navy-50); color: var(--navy-700); letter-spacing: .3px; }
@@ -793,22 +793,25 @@
   @media (max-width: 700px) { .jenis-grid { grid-template-columns: 1fr; } }
 
   /* KEGIATAN TABLE */
-  .kegtbl { width: 100%; border-collapse: collapse; font-size: 12.5px; table-layout: fixed; }
-  .kegtbl th { padding: 8px 10px; background: var(--ink-50); color: var(--ink-700); font-weight: 600; text-align: left; font-size: 11px; letter-spacing: .4px; text-transform: uppercase; border-bottom: 1px solid var(--ink-200); }
-  .kegtbl td { padding: 6px 6px; border-bottom: 1px solid var(--ink-100); vertical-align: top; }
-  .kegtbl .num-cell { text-align: center; color: var(--ink-400); font-weight: 600; padding-top: 14px; }
+  .kegtbl { width: 100%; border-collapse: collapse; font-size: 11.75px; table-layout: fixed; }
+  .kegtbl th { padding: 6px 8px; background: var(--ink-50); color: var(--ink-700); font-weight: 600; text-align: left; font-size: 10.5px; letter-spacing: .25px; text-transform: uppercase; border-bottom: 1px solid var(--ink-200); }
+  .kegtbl td { padding: 5px 5px; border-bottom: 1px solid var(--ink-100); vertical-align: top; }
+  .kegtbl .num-cell { text-align: center; color: var(--ink-400); font-weight: 600; padding-top: 12px; }
   .kegtbl input, .kegtbl select, .kegtbl textarea {
-    font-size: 12.5px; padding: 6px 8px; border: 1px solid var(--ink-200); border-radius: var(--radius-sm);
+    font-size: 11.75px; padding: 5px 7px; border: 1px solid var(--ink-200); border-radius: var(--radius-sm);
     background: var(--paper); width: 100%;
   }
-  .kegtbl textarea { resize: vertical; min-height: 56px; line-height: 1.45; }
+  .kegtbl textarea { resize: vertical; min-height: 48px; line-height: 1.35; }
   .kegtbl input:focus, .kegtbl select:focus, .kegtbl textarea:focus { outline: none; border-color: var(--navy-500); }
-  .kegtbl .time-cell { display: flex; align-items: center; gap: 4px; }
-  .kegtbl .time-cell select { padding: 6px 4px; }
+  .kegtbl .time-cell { display: flex; align-items: center; gap: 3px; }
+  .kegtbl .time-cell select { padding: 5px 3px; }
+  .keg-stk { display: grid; gap: 6px; }
+  .stk-row { display: grid; gap: 3px; }
+  .stk-lbl { font-size: 10.5px; font-weight: 600; color: var(--ink-500); }
 
   /* BUTTONS */
-  .btn { padding: 9px 16px; border: 1px solid transparent; border-radius: var(--radius); font-size: 13px; font-weight: 500; display: inline-flex; gap: 6px; align-items: center; justify-content: center; transition: all .15s; }
-  .btn svg { width: 14px; height: 14px; }
+  .btn { padding: 10px 18px; min-height: 40px; border: 1px solid transparent; border-radius: var(--radius); font-size: 13.5px; font-weight: 500; display: inline-flex; gap: 7px; align-items: center; justify-content: center; transition: all .15s; line-height: 1.2; }
+  .btn svg { width: 15px; height: 15px; }
   .btn-primary { background: var(--navy-700); color: #fff; border-color: var(--navy-700); }
   .btn-primary:hover { background: var(--navy-800); }
   .btn-secondary { background: var(--paper); color: var(--ink-700); border-color: var(--ink-200); }
@@ -819,13 +822,13 @@
   .btn-ghost:hover { background: var(--ink-100); }
 
   /* === Tombol Cetak/Simpan PDF — versi menonjol === */
+  /* Dimensi kotak dibuat IDENTIK dengan .btn agar tinggi semua tombol sejajar. */
+  /* Hierarki visual dipertahankan via warna gradien + font-weight + shadow. */
   .btn-print {
     background: linear-gradient(135deg, var(--gold) 0%, #cca64f 100%);
     color: var(--navy-900);
     border-color: var(--gold);
     font-weight: 700;
-    padding: 11px 22px;
-    font-size: 14px;
     box-shadow: 0 2px 8px rgba(180,138,58,.28);
     letter-spacing: .2px;
   }
@@ -834,14 +837,11 @@
     box-shadow: 0 4px 14px rgba(180,138,58,.38);
     transform: translateY(-1px);
   }
-  .btn-print svg { width: 16px; height: 16px; }
   .btn-draft {
     background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
     color: #fff;
     border-color: #0284c7;
     font-weight: 700;
-    padding: 11px 22px;
-    font-size: 14px;
     box-shadow: 0 2px 8px rgba(2,132,199,.28);
     letter-spacing: .2px;
   }
@@ -850,7 +850,17 @@
     box-shadow: 0 4px 14px rgba(2,132,199,.38);
     transform: translateY(-1px);
   }
-  .btn-draft svg { width: 16px; height: 16px; }
+  .action-bar { align-items: center; gap: 8px; }
+  .action-bar > .btn-row { gap: 7px; align-items: center; }
+  .action-bar .btn {
+    min-height: 36px;
+    padding: 8px 12px;
+    font-size: 12.75px;
+    border-radius: 7px;
+    white-space: nowrap;
+  }
+  .action-bar .btn svg { width: 14px; height: 14px; }
+  .action-bar .btn-danger { padding-inline: 11px; }
 
   /* === Bottom action bar: selalu terlihat di HP === */
   .mobile-print-bar { display: none; }
@@ -943,8 +953,8 @@
   .tbl-id td:first-child { width: 32%; }
   .tbl-id td:nth-child(2) { width: 3%; }
   .tbl-keg { width: 100%; border-collapse: collapse; font-size: 11.5px; margin-bottom: 14px; table-layout: fixed; }
-  .tbl-keg th { padding: 6px 8px; background: #fff; color: #000; font-weight: 700; text-align: left; border: 1px solid #000; font-size: 11px; }
-  .tbl-keg td { padding: 6px 8px; border: 1px solid #999; vertical-align: top; line-height: 1.4; }
+  .tbl-keg th { padding: 5px 7px; background: #fff; color: #000; font-weight: 700; text-align: left; border: 1px solid #000; font-size: 11px; }
+  .tbl-keg td { padding: 4px 7px; border: 1px solid #999; vertical-align: top; line-height: 1.28; }
   .pv-section-title { font-size: 12.5px; font-weight: 700; margin: 12px 0 6px; }
   .pv-para { font-size: 12.5px; line-height: 1.6; text-align: justify; margin-bottom: 8px; }
   .ttd-wrap { display: flex; justify-content: flex-end; margin-top: 28px; }
@@ -1007,9 +1017,10 @@
     .step-btn { font-size: 11.5px; padding: 8px 8px; flex: 0 0 auto; }
     .step-btn .step-n { width: 16px; height: 16px; font-size: 10px; }
 
-    /* Top action bar */
-    .top-action-bar { flex-wrap: wrap; gap: 8px; }
-    .top-action-bar .btn { flex: 1 1 auto; min-width: 100px; padding: 10px 12px; font-size: 13px; min-height: 44px; }
+    /* Editor action bars */
+    #top-action-bar, #bottom-action-bar { flex-wrap: wrap; gap: 8px; }
+    #top-action-bar .btn, #bottom-action-bar .btn { flex: 1 1 auto; min-width: 104px; padding: 10px 12px; font-size: 13px; min-height: 44px; }
+    #top-action-bar > .btn-row, #bottom-action-bar > .btn-row { flex: 1 1 100%; }
 
     /* Form fields — larger touch targets */
     input[type="text"], input[type="date"], input[type="number"],
@@ -1029,13 +1040,14 @@
     /* Kegiatan table — horizontal scroll */
     .kegtbl-wrap, .tbl-resp { overflow-x: auto; -webkit-overflow-scrolling: touch; }
     .kegtbl { min-width: 560px; }
+    .kegtbl input, .kegtbl select, .kegtbl textarea { font-size: 13px !important; }
 
     /* Dokumentasi gallery — 1 column on very small */
     .dok-gallery { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }
 
     /* Buttons in forms */
     .btn-row { flex-wrap: wrap; gap: 8px; }
-    .btn-row .btn { min-height: 44px; padding: 10px 14px; font-size: 13.5px; }
+    .btn-row .btn { min-height: 46px; padding: 11px 16px; font-size: 14px; }
 
     /* Pegawai table — horizontal scroll */
     .peg-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
@@ -1142,9 +1154,6 @@
   .ttd-toggle input:checked + .ttd-slider { background:var(--navy-600); }
   .ttd-toggle input:checked + .ttd-slider::after { transform:translateX(16px); }
   .ttd-toggle-txt { font-size:13px; color:var(--ink-700); font-weight:500; }
-  .ttd-toggle-hint { font-size:11.5px; color:var(--ink-500); margin-top:6px; line-height:1.4; }
-  .ttd-toggle-hint.warn { color:#b8841a; }
-  .ttd-toggle-hint.ok { color:#1f7a4a; }
   /* Lampiran (new page) */
   .pv-lampiran { margin-top:18px; page-break-before:always; }
   .pv-lampiran .lampiran-head { text-align:center; border-bottom:3px double var(--navy-700); padding-bottom:10px; margin-bottom:16px; }
@@ -1282,7 +1291,7 @@
     <section id="v-editor" class="view">
       <div class="editor-shell">
         <div class="ed-left">
-          <div class="btn-row between" style="margin-bottom:10px" id="top-action-bar">
+          <div class="btn-row between action-bar" style="margin-bottom:10px" id="top-action-bar">
             <button class="btn btn-ghost" onclick="setView('dash')">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
               Kembali ke dasbor
@@ -1368,9 +1377,7 @@
                   <span class="ttd-slider"></span>
                   <span class="ttd-toggle-txt">Sertakan TTD pada laporan</span>
                 </label>
-                <p class="ttd-toggle-hint" id="ttd-hint">—</p>
               </div>
-              <p class="field-hint" style="margin-top:8px">💡 Belum ada di daftar? <a href="javascript:setView('peg')" style="color:var(--navy-700);font-weight:500">Tambahkan pegawai →</a></p>
             </div>
           </div>
 
@@ -1387,11 +1394,6 @@
                 <div class="field"><label>Tanggal berangkat <span class="req">*</span></label><input type="date" id="f-tgl-brg" oninput="hitungLama();onForm()"></div>
                 <div class="field" id="field-tgl-kmb"><label>Tanggal kembali <span class="req">*</span></label><input type="date" id="f-tgl-kmb" oninput="hitungLama();onForm()"></div>
                 <div class="field"><label>Moda transportasi</label><select id="f-moda" onchange="onForm()"><option>Darat</option><option>Laut</option><option>Udara</option><option>Kombinasi</option></select></div>
-              </div>
-              <div class="btn-row" style="margin-top:10px">
-                <button class="btn btn-ghost" style="font-size:12px;padding:5px 10px" onclick="setDateQuick(0)">Hari ini</button>
-                <button class="btn btn-ghost" style="font-size:12px;padding:5px 10px" onclick="setDateQuick(-1)">Kemarin</button>
-                <button class="btn btn-ghost" style="font-size:12px;padding:5px 10px" onclick="setDateRange(7)">Minggu ini</button>
               </div>
             </div>
           </div>
@@ -1420,10 +1422,9 @@
               <div class="templ-chips">
                 <span style="font-size:11.5px;color:var(--ink-500);align-self:center;margin-right:4px">Tambah cepat:</span>
                 <button class="templ-chip" onclick="addKegTpl('koord')">+ Koordinasi awal</button>
-                <button class="templ-chip" onclick="addKegTpl('lapangan')">+ Pengumpulan data lapangan</button>
-                <button class="templ-chip" onclick="addKegTpl('verifikasi')">+ Verifikasi &amp; pengolahan</button>
-                <button class="templ-chip" onclick="addKegTpl('rapat')">+ Rapat &amp; diskusi hasil</button>
-                <button class="templ-chip" onclick="addKegTpl('penutup')">+ Penutup / pelaporan</button>
+                <button class="templ-chip" onclick="addKegTpl('pengumpulan')">+ Pengumpulan/pemeriksaan data</button>
+                <button class="templ-chip" onclick="addKegTpl('verifikasi')">+ Verifikasi data</button>
+                <button class="templ-chip" onclick="addKegTpl('diskusi')">+ Diskusi hasil</button>
               </div>
             </div>
           </div>
@@ -1436,18 +1437,18 @@
             <div class="card-b">
               <div class="g2">
                 <div class="field">
-                  <div class="lbl-row"><label>Hasil / capaian</label><button type="button" class="wi-btn" onclick="improveText('f-hasil')" title="Perbaiki tata bahasa & ejaan otomatis"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.39 4.84L20 7.5l-4 3.9.94 5.5L12 14.77 7.06 16.9 8 11.4 4 7.5l5.61-.66L12 2z"/></svg> Perbaiki kalimat</button></div>
-                  <textarea id="f-hasil" rows="4" oninput="onForm()" placeholder="Uraian hasil yang dicapai selama perjalanan dinas…"></textarea>
+                  <div class="lbl-row"><label>Hasil / capaian</label><button type="button" class="wi-btn" onclick="summarizeHasil()" title="Susun 1-4 kalimat rangkuman hasil dari judul, tujuan, dan tanggal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg> Rangkuman hasil</button></div>
+                  <textarea id="f-hasil" rows="5" oninput="onForm()" placeholder="Rangkuman hasil/capaian 1-4 kalimat"></textarea>
                 </div>
                 <div class="field">
-                  <div class="lbl-row"><label>Saran / rekomendasi</label><button type="button" class="wi-btn" onclick="improveText('f-saran')" title="Perbaiki tata bahasa & ejaan otomatis"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.39 4.84L20 7.5l-4 3.9.94 5.5L12 14.77 7.06 16.9 8 11.4 4 7.5l5.61-.66L12 2z"/></svg> Perbaiki kalimat</button></div>
-                  <textarea id="f-saran" rows="4" oninput="onForm()" placeholder="Saran atau rekomendasi tindak lanjut…"></textarea>
+                  <div class="lbl-row"><label>Saran / rekomendasi</label><button type="button" class="wi-btn" onclick="summarizeSaran()" title="Susun 1-4 kalimat saran/rekomendasi tindak lanjut"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg> Rangkuman saran</button></div>
+                  <textarea id="f-saran" rows="5" oninput="onForm()" placeholder="Rangkuman saran/rekomendasi 1-4 kalimat"></textarea>
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="btn-row between" id="bottom-action-bar" style="margin-top:6px">
+          <div class="btn-row between action-bar" id="bottom-action-bar" style="margin-top:6px">
             <button class="btn btn-ghost" onclick="setView('dash')">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
               Kembali ke dasbor
@@ -1584,11 +1585,10 @@ const JAM_OPTS = (() => {
   return o;
 })();
 const TEMPLATES = {
-  koord:     { mas: 'Belum ada koordinasi awal dengan pihak terkait.', sol: 'Melakukan pertemuan pendahuluan untuk menyamakan persepsi & menyiapkan dokumen pendukung.', dur: 1 },
-  lapangan:  { mas: 'Diperlukan pengumpulan data primer di lokasi.', sol: 'Melakukan pencacahan/observasi langsung ke responden sesuai instrumen.', dur: 3 },
-  verifikasi:{ mas: 'Data hasil pencacahan perlu diverifikasi konsistensinya.', sol: 'Verifikasi entry dan perbaikan kuesioner bersama mitra pendamping.', dur: 2 },
-  rapat:     { mas: 'Hasil sementara perlu disepakati bersama.', sol: 'Rapat pembahasan hasil dan finalisasi tindak lanjut.', dur: 2 },
-  penutup:   { mas: 'Pelaporan akhir kegiatan kepada pimpinan.', sol: 'Menyusun ringkasan capaian dan mendapatkan persetujuan pimpinan setempat.', dur: 1 }
+  koord:       { mas: 'Dilakukan koordinasi awal dengan pihak terkait untuk menyamakan pemahaman mengenai jadwal, cakupan, dan mekanisme pelaksanaan kegiatan.', sol: 'Disepakati alur kerja, pembagian tugas, dan kelengkapan dokumen pendukung sebagai dasar pelaksanaan kegiatan.', dur: 1 },
+  pengumpulan: { mas: 'Dilakukan pengumpulan dan pemeriksaan awal data di lokasi kegiatan sesuai instrumen serta pedoman teknis BPS.', sol: 'Data yang terkumpul diperiksa kelengkapannya, diklarifikasi kepada sumber data, dan disiapkan untuk proses pengolahan.', dur: 3 },
+  verifikasi:  { mas: 'Dilakukan verifikasi kewajaran dan konsistensi data hasil pengumpulan sesuai konsep, definisi, dan standar kualitas BPS.', sol: 'Temuan ketidaksesuaian dikonfirmasi serta diperbaiki berdasarkan dokumen pendukung dan hasil klarifikasi lapangan.', dur: 2 },
+  diskusi:     { mas: 'Dilakukan diskusi hasil sementara bersama pihak terkait untuk membahas capaian, kendala, dan kebutuhan tindak lanjut kegiatan.', sol: 'Hasil diskusi dirangkum sebagai bahan penyempurnaan data, penyusunan laporan, dan pelaksanaan tindak lanjut berikutnya.', dur: 2 }
 };
 
 let state = { pegawai: [], reports: [], currentId: null };
@@ -1999,6 +1999,7 @@ function renderDash() {
         <span class="rcard-tag ${r.jenis}">${jd.title.toUpperCase()}</span>
         <div class="rcard-spacer"></div>
         ${!selectMode ? `<button class="rcard-menu" onclick="event.stopPropagation();openReportEditable('${r.id}')" title="Edit" style="color:var(--navy-600)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>` : ''}
+        ${!selectMode ? `<button class="rcard-menu" onclick="event.stopPropagation();duplicateReport('${r.id}')" title="Duplikat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>` : ''}
         ${!selectMode ? `<button class="rcard-menu" onclick="event.stopPropagation();deleteReport('${r.id}')" title="Hapus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button>` : ''}
       </div>
       <h3 style="font-size:13.5px;margin-bottom:2px">${locDate}</h3>
@@ -2042,8 +2043,8 @@ function newReport() {
   setView('editor');
 }
 function openReport(id) {
-  const _r = state.reports.find(rep => rep.id === id);
-  viewMode = !!(_r && _r.status === 'final');
+  // Laporan final maupun draft selalu bisa diedit ketika dibuka dari dasbor.
+  viewMode = false;
   state.currentId = id;
   persist();
   setView('editor');
@@ -2147,13 +2148,8 @@ function updateTglKmbLock() {
   kmbInput.style.background = is1Day ? 'var(--ink-50)' : '';
   kmbInput.style.color = is1Day ? 'var(--ink-400)' : '';
   if (kmbField) {
-    let hint = kmbField.querySelector('.kmb-hint');
-    if (is1Day) {
-      if (!hint) { hint = document.createElement('p'); hint.className = 'field-hint kmb-hint'; hint.style.marginTop='2px'; kmbField.appendChild(hint); }
-      hint.textContent = 'Otomatis sama dengan tanggal berangkat (perjadin 1 hari)';
-    } else {
-      if (hint) hint.remove();
-    }
+    const hint = kmbField.querySelector('.kmb-hint');
+    if (hint) hint.remove();
   }
 }
 function pilihJenis(j) {
@@ -2292,7 +2288,7 @@ function renderKegBody() {
         </tr>`).join('');
     }
   } else {
-    thead.innerHTML = '<tr><th style="width:36px">No</th><th style="width:160px">Waktu</th><th>Uraian kegiatan / masalah yang ditemukan</th><th>Solusi / tindak lanjut</th><th style="width:36px"></th></tr>';
+    thead.innerHTML = '<tr><th style="width:34px">No</th><th style="width:132px">Waktu</th><th>Uraian kegiatan / masalah yang ditemukan</th><th>Solusi / tindak lanjut</th><th style="width:34px"></th></tr>';
     if (!r.kegiatan || r.kegiatan.length === 0) {
       tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:14px;color:var(--ink-400);font-size:12.5px">Belum ada kegiatan. Klik "Tambah baris" atau pilih template di bawah.</td></tr>';
     } else {
@@ -2582,28 +2578,543 @@ function finalizeAndPrint() {
   }
 
   if (r.status !== 'final') {
-    // Tampilkan peringatan: laporan akan terkunci setelah dicetak
-    openModal(
-      'Konfirmasi Cetak / Simpan PDF',
-      'Setelah dicetak atau disimpan sebagai PDF, laporan ini tidak dapat diedit atau dihapus dari dasbor. Gunakan "Duplikat & Edit" jika perlu membuat revisi. Lanjutkan?',
-      function() {
-        r.status = 'final';
-        r.updated = Date.now();
-        persist();
-        renderDash();
-        const badge = document.getElementById('draft-badge');
-        if (badge) badge.style.display = 'none';
-        _doPrint();
-      },
-      'Ya, Cetak / Simpan PDF'
-    );
-    return;
+    // Tandai sebagai final agar muncul di seksi laporan final dasbor,
+    // namun TIDAK mengunci laporan (tetap bisa diedit kapan saja).
+    r.status = 'final';
+    r.updated = Date.now();
+    persist();
+    renderDash();
+    const badge = document.getElementById('draft-badge');
+    if (badge) badge.style.display = 'none';
   }
-  // Laporan sudah final — langsung cetak ulang
+  // Langsung cetak — tanpa modal konfirmasi agar tidak ikut tertangkap di PDF.
   _doPrint();
 }
 
 
+async function _exportWordHtmlAttempt_DISABLED() {
+  return; // pendekatan HTML/.doc ditinggalkan — kembali ke RTF di bawah
+  /* === HTML-based .doc attempt, disimpan sebagai referensi saja ===
+  const r = currentReport();
+  if (!r) { toast('Tidak ada laporan aktif', 'error'); return; }
+  const peg = getPeg(r.pegawai_idx);
+  const jd = JENIS_MAP[r.jenis] || JENIS_MAP.a;
+  const today = new Date().toISOString().slice(0, 10);
+  toast('Menyiapkan dokumen Word...');
+
+  // ─────────────────────────────────────────────────────────────────────
+  // Ekspor ke format Word HTML (.doc). Pendekatan ini dipilih karena:
+  // 1. Word membuka file HTML-based .doc secara native.
+  // 2. Gambar via <img src="data:image/...;base64,..."> ditampilkan stabil,
+  //    sementara format RTF \pict sering "menghilang" di Word modern.
+  // 3. Layout otomatis menyerupai hasil PDF karena keduanya pakai HTML/CSS.
+  // ─────────────────────────────────────────────────────────────────────
+
+  const jenisTitle = jd.title === 'Dalam kota' ? 'Perjalanan Dinas Dalam Kota'
+    : jd.title === '> 8 jam / Supervisi' ? 'Perjalanan Dinas > 8 Jam / Supervisi'
+    : 'Perjalanan Dinas Biasa';
+
+  const logoEl  = document.querySelector('.topbar-logo img');
+  const logoSrc = (logoEl && logoEl.src) ? logoEl.src : '';
+
+  // ── Tabel rincian kegiatan ─────────────────────────────────────────
+  const kList = (r.kegiatan && r.kegiatan.length) ? r.kegiatan : [];
+  let kegTableHtml;
+  if (r.jenis === 'c') {
+    const rows = kList.length
+      ? kList.map((k, i) => `<tr>
+          <td style="text-align:center;vertical-align:top">${i+1}</td>
+          <td>
+            <div><strong>Tanggal:</strong> ${escHtml(k.tgl ? fmtTgl(k.tgl) : '—')}</div>
+            <div style="margin-top:4pt"><strong>Uraian kegiatan / masalah yang ditemukan:</strong><br>${escHtml(k.mas) || '—'}</div>
+            <div style="margin-top:4pt"><strong>Solusi / tindak lanjut:</strong><br>${escHtml(k.sol) || '—'}</div>
+          </td>
+        </tr>`).join('')
+      : '<tr><td colspan="2" style="text-align:center;color:#999">Belum ada kegiatan</td></tr>';
+    kegTableHtml = `<table class="tbl-keg"><thead><tr><th style="width:10%">No</th><th>Rincian kegiatan</th></tr></thead><tbody>${rows}</tbody></table>`;
+  } else {
+    const rows = kList.length
+      ? kList.map((k, i) => `<tr>
+          <td style="text-align:center">${i+1}</td>
+          <td style="white-space:nowrap">${escHtml((k.w1||'')+'–'+(k.w2||''))}</td>
+          <td>${escHtml(k.mas) || '—'}</td>
+          <td>${escHtml(k.sol) || '—'}</td>
+        </tr>`).join('')
+      : '<tr><td colspan="4" style="text-align:center;color:#999">Belum ada kegiatan</td></tr>';
+    kegTableHtml = `<table class="tbl-keg"><thead><tr><th style="width:8%">No</th><th style="width:16%">Waktu</th><th>Uraian kegiatan / masalah yang ditemukan</th><th>Solusi / tindak lanjut</th></tr></thead><tbody>${rows}</tbody></table>`;
+  }
+
+  // ── Lampiran dokumentasi: tabel 2-kolom (mirip grid 2 kolom di PDF) ─
+  // Setiap foto dinormalisasi ke kanvas berdimensi tetap dengan letterbox
+  // (mirip object-fit: contain di PDF), sehingga semua foto di Word tampil
+  // dengan ukuran seragam — tidak peduli aspek ratio aslinya.
+  const PHOTO_CW = 600, PHOTO_CH = 525;        // dimensi kanvas (rasio ~8:7 ≈ PDF)
+  const PHOTO_DW = 285, PHOTO_DH = 249;        // dimensi tampil di Word (≈75mm × 66mm @96dpi)
+  const normalizePhoto = (dataUrl) => new Promise((resolve) => {
+    try {
+      const img = new Image();
+      img.onload = () => {
+        try {
+          const cv = document.createElement('canvas');
+          cv.width = PHOTO_CW; cv.height = PHOTO_CH;
+          const ctx = cv.getContext('2d');
+          ctx.fillStyle = '#f4f4f4';            // latar letterbox sama dengan PDF
+          ctx.fillRect(0, 0, PHOTO_CW, PHOTO_CH);
+          const ar  = (img.naturalWidth || 1) / (img.naturalHeight || 1);
+          const tAR = PHOTO_CW / PHOTO_CH;
+          let dw, dh, dx, dy;
+          if (ar > tAR) {                       // foto lebih lebar → isi penuh lebar
+            dw = PHOTO_CW;
+            dh = Math.round(PHOTO_CW / ar);
+            dx = 0;
+            dy = Math.round((PHOTO_CH - dh) / 2);
+          } else {                              // foto lebih tinggi → isi penuh tinggi
+            dh = PHOTO_CH;
+            dw = Math.round(PHOTO_CH * ar);
+            dx = Math.round((PHOTO_CW - dw) / 2);
+            dy = 0;
+          }
+          ctx.drawImage(img, dx, dy, dw, dh);
+          resolve(cv.toDataURL('image/jpeg', 0.85));
+        } catch (e) { resolve(dataUrl); }       // fallback ke data asli
+      };
+      img.onerror = () => resolve(dataUrl);
+      img.src = dataUrl;
+    } catch (e) { resolve(dataUrl); }
+  });
+
+  let dokHtml = '';
+  if (r.dokumentasi && r.dokumentasi.length) {
+    const docs = r.dokumentasi;
+    // Normalisasi semua foto paralel
+    const normalized = await Promise.all(docs.map(d => d && d.dataUrl ? normalizePhoto(d.dataUrl) : Promise.resolve('')));
+
+    const cell = (d, idx) => {
+      if (!d) return '<td style="border:1pt solid #ddd;padding:6pt;width:50%">&nbsp;</td>';
+      const gpsHtml = d.gps
+        ? ` &nbsp;·&nbsp; <span style="font-family:Consolas,monospace;font-size:8.5pt;color:#666">${escHtml(decToDms(d.gps.lat,true))} / ${escHtml(decToDms(d.gps.lon,false))}</span>`
+        : '';
+      const capHtml = d.caption ? `<div style="font-size:10pt;font-style:italic;margin-top:4pt;text-align:center">${escHtml(d.caption)}</div>` : '';
+      const src = normalized[idx] || d.dataUrl;
+      return `<td style="border:1pt solid #ddd;padding:6pt;width:50%;vertical-align:top;text-align:center">
+        <div style="font-size:9pt;color:#555;margin-bottom:4pt;text-align:left"><strong>Foto ${idx+1}</strong>${gpsHtml}</div>
+        <img src="${src}" alt="" width="${PHOTO_DW}" height="${PHOTO_DH}" style="display:block;margin:0 auto;width:${PHOTO_DW}px;height:${PHOTO_DH}px">
+        ${capHtml}
+      </td>`;
+    };
+    let rows = '';
+    for (let i = 0; i < docs.length; i += 2) {
+      rows += `<tr>${cell(docs[i], i)}${cell(docs[i+1], i+1)}</tr>`;
+    }
+    const tujuanLine = `${escHtml(r.tujuan || '—')} · ${escHtml(fmtTgl(r.tgl_berangkat))}${r.tgl_kembali && r.tgl_kembali !== r.tgl_berangkat ? ' – ' + escHtml(fmtTgl(r.tgl_kembali)) : ''}`;
+    dokHtml = `
+<div style="page-break-before:always"></div>
+<div style="text-align:center;border-bottom:3px double #1e3a5f;padding-bottom:6pt;margin-bottom:12pt">
+  <div style="font-size:12pt;font-weight:bold;color:#1e3a5f;letter-spacing:.5pt">LAMPIRAN — DOKUMENTASI KEGIATAN</div>
+  <div style="font-size:10.5pt;margin-top:3pt">${escHtml(r.judul_kegiatan || jenisTitle)}</div>
+  <div style="margin-top:2pt;font-size:9.5pt;color:#555">${tujuanLine}</div>
+</div>
+<table style="width:100%;border-collapse:collapse">${rows}</table>`;
+  }
+
+  // ── TTD ────────────────────────────────────────────────────────────
+  const ttdDate = fmtTgl(r.tgl_kembali || today);
+  const ttdImgHtml = (r.ttd_enabled && peg.ttd)
+    ? `<div style="margin:4pt 0"><img src="${peg.ttd}" alt="ttd" style="max-width:50mm;max-height:22mm"></div>`
+    : '<div style="height:60pt"></div>';
+
+  // ── Bangun dokumen HTML ────────────────────────────────────────────
+  const html = `<!DOCTYPE html>
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta charset="UTF-8">
+<title>Laporan Perjalanan Dinas BPS Lembata</title>
+<!--[if gte mso 9]>
+<xml>
+<w:WordDocument>
+<w:View>Print</w:View>
+<w:Zoom>100</w:Zoom>
+<w:DoNotPromptForConvert/>
+</w:WordDocument>
+</xml>
+<![endif]-->
+<style>
+  @page { size: A4; margin: 20mm 25mm 20mm 25mm; }
+  body { font-family: 'Times New Roman', serif; font-size: 11pt; line-height: 1.4; color: #000; }
+  table { border-collapse: collapse; }
+  .tbl-id { width: 100%; margin: 8pt 0 12pt; }
+  .tbl-id td { padding: 2pt 4pt; font-size: 11pt; vertical-align: top; }
+  .tbl-id td.lbl { width: 58mm; }
+  .tbl-id td.sep { width: 5mm; }
+  .sect { font-size: 11pt; font-weight: bold; margin: 10pt 0 5pt; }
+  .tbl-keg { width: 100%; font-size: 10pt; }
+  .tbl-keg th { border: 1pt solid #000; padding: 5pt; background: #f0f0f0; font-weight: bold; text-align: center; }
+  .tbl-keg td { border: 1pt solid #999; padding: 5pt; vertical-align: top; }
+  .para { text-align: justify; margin: 4pt 0; }
+</style>
+</head>
+<body>
+
+<table style="width:100%;border-bottom:3px double #1e3a5f;padding-bottom:6pt;margin-bottom:12pt"><tr>
+  <td style="width:22mm;vertical-align:middle;text-align:center">${logoSrc ? `<img src="${logoSrc}" alt="logo" style="width:18mm;height:18mm">` : ''}</td>
+  <td style="vertical-align:middle;text-align:center">
+    <div style="font-size:14pt;font-weight:bold;color:#1e3a5f">BADAN PUSAT STATISTIK</div>
+    <div style="font-size:14pt;font-weight:bold;color:#1e3a5f">KABUPATEN LEMBATA</div>
+    <div style="font-size:9pt;color:#333;margin-top:3pt">Jl. Trans Lembata, Kel. Lewoleba Timur, Kec. Nubatukan, Kab. Lembata, NTT<br>
+    Telepon - · E-mail: bps5308@bps.go.id · Homepage: https://lembatakab.bps.go.id</div>
+  </td>
+</tr></table>
+
+<div style="text-align:center;margin:12pt 0">
+  <div style="font-size:13pt;font-weight:bold">LAPORAN PERJALANAN DINAS</div>
+  <div style="font-size:11pt;margin-top:3pt">MAK <strong>${escHtml(jd.kode)}</strong> — ${escHtml(jenisTitle)}</div>
+  ${r.judul_kegiatan ? `<div style="font-size:11pt;font-weight:600;margin-top:3pt">${escHtml(r.judul_kegiatan)}</div>` : ''}
+</div>
+
+<table class="tbl-id">
+  <tr><td class="lbl">1. Nama</td><td class="sep">:</td><td>${escHtml(peg.nama || '—')}</td></tr>
+  <tr><td class="lbl">2. NIP</td><td class="sep">:</td><td>${escHtml(peg.nip || '—')}</td></tr>
+  <tr><td class="lbl">3. Jabatan</td><td class="sep">:</td><td>${escHtml(peg.jabatan || '—')}</td></tr>
+  <tr><td class="lbl">4. Golongan / Ruang</td><td class="sep">:</td><td>${escHtml(peg.gol || '—')}</td></tr>
+  <tr><td class="lbl">5. Tempat asal</td><td class="sep">:</td><td>${escHtml(r.dari || '—')}</td></tr>
+  <tr><td class="lbl">6. Tempat tujuan</td><td class="sep">:</td><td>${escHtml(r.tujuan || '—')}</td></tr>
+  <tr><td class="lbl">7. Moda transportasi</td><td class="sep">:</td><td>${escHtml(r.moda || '—')}</td></tr>
+  <tr><td class="lbl">8. Tanggal berangkat</td><td class="sep">:</td><td>${escHtml(fmtTgl(r.tgl_berangkat))}</td></tr>
+  <tr><td class="lbl">9. Tanggal kembali</td><td class="sep">:</td><td>${escHtml(fmtTgl(r.tgl_kembali))}</td></tr>
+</table>
+
+<div class="sect">A. Rincian Kegiatan</div>
+${kegTableHtml}
+
+<div class="sect">B. Hasil / Capaian</div>
+<p class="para">${escHtml(r.hasil) || '—'}</p>
+
+<div class="sect">C. Saran / Rekomendasi</div>
+<p class="para">${escHtml(r.saran) || '—'}</p>
+
+<p class="para" style="margin-top:10pt">Demikian laporan ini dibuat dengan sebenar-benarnya, untuk dipergunakan sebagaimana mestinya.</p>
+
+<table style="width:100%;margin-top:14pt"><tr>
+  <td style="width:50%">&nbsp;</td>
+  <td style="width:50%;text-align:center;vertical-align:top;font-size:11pt">
+    Lewoleba, ${escHtml(ttdDate)}<br>
+    Yang membuat laporan,
+    ${ttdImgHtml}
+    <div style="font-weight:bold;margin-top:2pt;text-decoration:underline">${escHtml(peg.nama || '—')}</div>
+    <div>NIP. ${escHtml(peg.nip || '—')}</div>
+  </td>
+</tr></table>
+
+${dokHtml}
+
+</body>
+</html>`;
+
+  // Simpan sebagai .doc (Word membuka HTML-based DOC native, gambar tampil)
+  const base = ('Laporan_Perjadin_' + (peg.nama||'Pegawai').replace(/\s+/g,'_') + '_' + (r.tgl_berangkat||'tanpa_tgl')).replace(/[^a-zA-Z0-9_\-]/g,'');
+  const blob = new Blob(['﻿', html], { type: 'application/msword' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = base + '.doc';
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 3000);
+  toast('File Word berhasil diunduh: ' + base + '.doc');
+  === end html attempt === */
+}
+
+async function exportWordMhtml() {
+  const r = currentReport();
+  if (!r) { toast('Tidak ada laporan aktif', 'error'); return; }
+  const peg = getPeg(r.pegawai_idx);
+  const jd = JENIS_MAP[r.jenis] || JENIS_MAP.a;
+  const today = new Date().toISOString().slice(0, 10);
+  toast('Menyiapkan dokumen Word...');
+
+  const jenisTitle = jd.title === 'Dalam kota' ? 'Perjalanan Dinas Dalam Kota'
+    : jd.title === '> 8 jam / Supervisi' ? 'Perjalanan Dinas > 8 Jam / Supervisi'
+    : 'Perjalanan Dinas Biasa';
+
+  const splitBase64 = s => String(s || '').replace(/\s+/g, '').replace(/(.{76})/g, '$1\r\n');
+  const utf8Base64 = s => {
+    const bytes = new TextEncoder().encode(String(s || ''));
+    let bin = '';
+    for (let i = 0; i < bytes.length; i += 0x8000) {
+      const chunk = bytes.subarray(i, i + 0x8000);
+      bin += String.fromCharCode.apply(null, chunk);
+    }
+    return btoa(bin);
+  };
+  const dataUrlInfo = dataUrl => {
+    const m = String(dataUrl || '').match(/^data:([^;,]+)(?:;[^,]*)?,([\s\S]*)$/);
+    if (!m) return null;
+    const mime = m[1] || 'image/jpeg';
+    const ext = mime.includes('png') ? 'png' : (mime.includes('gif') ? 'gif' : 'jpg');
+    return { mime, ext, base64: m[2] || '' };
+  };
+  const imageToDataUrl = src => new Promise(resolve => {
+    if (!src) { resolve(''); return; }
+    if (String(src).startsWith('data:')) { resolve(src); return; }
+    const img = new Image();
+    img.onload = () => {
+      try {
+        const cv = document.createElement('canvas');
+        cv.width = img.naturalWidth || img.width || 1;
+        cv.height = img.naturalHeight || img.height || 1;
+        cv.getContext('2d').drawImage(img, 0, 0);
+        resolve(cv.toDataURL('image/png'));
+      } catch (e) { resolve(''); }
+    };
+    img.onerror = () => resolve('');
+    img.src = src;
+  });
+  const normalizeDocPhoto = dataUrl => new Promise(resolve => {
+    if (!dataUrl) { resolve(''); return; }
+    const img = new Image();
+    img.onload = () => {
+      try {
+        const cw = 600, ch = 525;
+        const cv = document.createElement('canvas');
+        cv.width = cw; cv.height = ch;
+        const ctx = cv.getContext('2d');
+        ctx.fillStyle = '#f4f4f4';
+        ctx.fillRect(0, 0, cw, ch);
+        const ar = (img.naturalWidth || 1) / (img.naturalHeight || 1);
+        const targetAr = cw / ch;
+        let dw, dh, dx, dy;
+        if (ar > targetAr) {
+          dw = cw; dh = Math.round(cw / ar); dx = 0; dy = Math.round((ch - dh) / 2);
+        } else {
+          dh = ch; dw = Math.round(ch * ar); dx = Math.round((cw - dw) / 2); dy = 0;
+        }
+        ctx.drawImage(img, dx, dy, dw, dh);
+        resolve(cv.toDataURL('image/jpeg', 0.88));
+      } catch (e) { resolve(dataUrl); }
+    };
+    img.onerror = () => resolve(dataUrl);
+    img.src = dataUrl;
+  });
+
+  const imageParts = [];
+  let imageSeq = 1;
+  const addImagePart = async (dataUrl, prefix) => {
+    const cleanDataUrl = await imageToDataUrl(dataUrl);
+    const info = dataUrlInfo(cleanDataUrl);
+    if (!info || !info.base64) return '';
+    const loc = `${prefix || 'image'}${String(imageSeq++).padStart(3, '0')}.${info.ext}`;
+    imageParts.push({ loc, mime: info.mime, base64: splitBase64(info.base64) });
+    return loc;
+  };
+
+  const logoEl = document.querySelector('.topbar-logo img');
+  const logoLoc = await addImagePart(logoEl && logoEl.src ? logoEl.src : '', 'logo');
+  const ttdLoc = (r.ttd_enabled && peg.ttd) ? await addImagePart(peg.ttd, 'ttd') : '';
+
+  const kList = (r.kegiatan && r.kegiatan.length) ? r.kegiatan : [];
+  let kegTableHtml;
+  if (r.jenis === 'c') {
+    const rows = kList.length
+      ? kList.map((k, i) => `<tr>
+          <td class="num">${i+1}</td>
+          <td>
+            <div><strong>Tanggal:</strong> ${k.tgl ? fmtTgl(k.tgl) : '—'}</div>
+            <div class="keg-line"><strong>Uraian kegiatan / masalah yang ditemukan:</strong><br>${escHtml(k.mas) || '—'}</div>
+            <div class="keg-line"><strong>Solusi / tindak lanjut:</strong><br>${escHtml(k.sol) || '—'}</div>
+          </td>
+        </tr>`).join('')
+      : '<tr><td colspan="2" class="empty-cell">Belum ada kegiatan</td></tr>';
+    kegTableHtml = `<table class="tbl-keg"><thead><tr><th style="width:10%">No</th><th>Rincian kegiatan</th></tr></thead><tbody>${rows}</tbody></table>`;
+  } else {
+    const rows = kList.length
+      ? kList.map((k, i) => `<tr>
+          <td class="num">${i+1}</td>
+          <td class="nowrap">${escHtml((k.w1||'')+'–'+(k.w2||''))}</td>
+          <td>${escHtml(k.mas) || '—'}</td>
+          <td>${escHtml(k.sol) || '—'}</td>
+        </tr>`).join('')
+      : '<tr><td colspan="4" class="empty-cell">Belum ada kegiatan</td></tr>';
+    kegTableHtml = `<table class="tbl-keg"><thead><tr><th style="width:8%">No</th><th style="width:16%">Waktu</th><th>Uraian kegiatan / masalah yang ditemukan</th><th>Solusi / tindak lanjut</th></tr></thead><tbody>${rows}</tbody></table>`;
+  }
+
+  let dokHtml = '';
+  if (r.dokumentasi && r.dokumentasi.length) {
+    const docs = r.dokumentasi;
+    const normalized = await Promise.all(docs.map(d => d && d.dataUrl ? normalizeDocPhoto(d.dataUrl) : Promise.resolve('')));
+    const locs = [];
+    for (let i = 0; i < docs.length; i++) {
+      locs[i] = await addImagePart(normalized[i] || docs[i].dataUrl, 'foto');
+    }
+    const cell = (d, idx) => {
+      if (!d) return '<td class="doc-photo-cell">&nbsp;</td>';
+      const gpsHtml = d.gps
+        ? ` &nbsp;·&nbsp; <span class="gps">${escHtml(decToDms(d.gps.lat,true))} / ${escHtml(decToDms(d.gps.lon,false))}</span>`
+        : '';
+      const capHtml = d.caption ? `<div class="caption">${escHtml(d.caption)}</div>` : '';
+      const src = locs[idx] || '';
+      return `<td class="doc-photo-cell">
+        <div class="photo-head"><strong>Foto ${idx+1}</strong>${gpsHtml}</div>
+        ${src ? `<img src="${src}" class="doc-photo" alt="">` : '<div class="photo-missing">Foto tidak tersedia</div>'}
+        ${capHtml}
+      </td>`;
+    };
+    let rows = '';
+    for (let i = 0; i < docs.length; i += 2) {
+      rows += `<tr>${cell(docs[i], i)}${cell(docs[i+1], i+1)}</tr>`;
+    }
+    const tujuanLine = `${escHtml(r.tujuan || '—')} · ${escHtml(fmtTgl(r.tgl_berangkat))}${r.tgl_kembali && r.tgl_kembali !== r.tgl_berangkat ? ' – ' + escHtml(fmtTgl(r.tgl_kembali)) : ''}`;
+    dokHtml = `
+<br style="page-break-before:always">
+<div class="lampiran-head">
+  <div class="lampiran-title">LAMPIRAN — DOKUMENTASI KEGIATAN</div>
+  <div class="lampiran-sub">${escHtml(r.judul_kegiatan || jenisTitle)}</div>
+  <div class="lampiran-meta">${tujuanLine}</div>
+</div>
+<table class="doc-photo-table">${rows}</table>`;
+  }
+
+  const ttdDate = fmtTgl(r.tgl_kembali || today);
+  const ttdHtml = ttdLoc
+    ? `<div class="ttd-img"><img src="${ttdLoc}" alt=""></div>`
+    : '<div class="ttd-space"></div>';
+
+  const html = `<!DOCTYPE html>
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta charset="UTF-8">
+<title>Laporan Perjalanan Dinas BPS Lembata</title>
+<!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom><w:DoNotPromptForConvert/></w:WordDocument></xml><![endif]-->
+<style>
+  @page { size: A4; margin: 20mm 25mm 20mm 25mm; }
+  body { font-family: "Times New Roman", serif; font-size: 11pt; line-height: 1.38; color:#000; }
+  table { border-collapse: collapse; }
+  .kop { width:100%; border-bottom:3px double #1e3a5f; margin-bottom:12pt; }
+  .kop-logo { width:22mm; text-align:center; vertical-align:middle; }
+  .kop-logo img { width:18mm; height:18mm; }
+  .kop-text { text-align:center; vertical-align:middle; padding-bottom:5pt; }
+  .kop-main { font-size:14pt; font-weight:bold; color:#1e3a5f; }
+  .kop-addr { font-size:9pt; color:#333; margin-top:3pt; }
+  .doc-title { text-align:center; margin:12pt 0; }
+  .doc-title-main { font-size:13pt; font-weight:bold; }
+  .doc-title-sub, .doc-title-activity { font-size:11pt; margin-top:3pt; }
+  .doc-title-activity { font-weight:600; }
+  .tbl-id { width:100%; margin:8pt 0 12pt; }
+  .tbl-id td { padding:2pt 4pt; vertical-align:top; }
+  .tbl-id .lbl { width:58mm; }
+  .tbl-id .sep { width:5mm; }
+  .sect { font-weight:bold; margin:10pt 0 5pt; }
+  .tbl-keg { width:100%; font-size:10pt; table-layout:fixed; }
+  .tbl-keg th { border:1pt solid #000; padding:4pt 5pt; background:#f0f0f0; font-weight:bold; text-align:center; }
+  .tbl-keg td { border:1pt solid #999; padding:4pt 5pt; vertical-align:top; line-height:1.24; }
+  .tbl-keg .num { text-align:center; }
+  .tbl-keg .nowrap { white-space:nowrap; }
+  .tbl-keg .keg-line { margin-top:3pt; }
+  .empty-cell { text-align:center; color:#777; }
+  .para { text-align:justify; margin:4pt 0; }
+  .ttd-table { width:100%; margin-top:14pt; }
+  .ttd-cell { width:50%; text-align:center; vertical-align:top; }
+  .ttd-img { height:24mm; margin:2pt 0; }
+  .ttd-img img { max-width:50mm; max-height:22mm; }
+  .ttd-space { height:24mm; }
+  .ttd-name { font-weight:bold; text-decoration:underline; margin-top:2pt; }
+  .lampiran-head { text-align:center; border-bottom:3px double #1e3a5f; padding-bottom:6pt; margin-bottom:12pt; }
+  .lampiran-title { font-size:12pt; font-weight:bold; color:#1e3a5f; letter-spacing:.5pt; }
+  .lampiran-sub { font-size:10.5pt; margin-top:3pt; }
+  .lampiran-meta { margin-top:2pt; font-size:9.5pt; color:#555; }
+  .doc-photo-table { width:100%; table-layout:fixed; }
+  .doc-photo-cell { border:1pt solid #ddd; padding:6pt; width:50%; vertical-align:top; text-align:center; }
+  .photo-head { font-size:9pt; color:#555; margin-bottom:4pt; text-align:left; }
+  .gps { font-family:Consolas, monospace; font-size:8.5pt; color:#666; }
+  .doc-photo { display:block; margin:0 auto; width:72mm; height:63mm; }
+  .caption { font-size:10pt; font-style:italic; margin-top:4pt; text-align:center; }
+  .photo-missing { height:63mm; background:#f4f4f4; color:#777; text-align:center; }
+</style>
+</head>
+<body>
+<table class="kop"><tr>
+  <td class="kop-logo">${logoLoc ? `<img src="${logoLoc}" alt="">` : ''}</td>
+  <td class="kop-text">
+    <div class="kop-main">BADAN PUSAT STATISTIK</div>
+    <div class="kop-main">KABUPATEN LEMBATA</div>
+    <div class="kop-addr">Jl. Trans Lembata, Kel. Lewoleba Timur, Kec. Nubatukan, Kab. Lembata, NTT<br>Telepon - · E-mail: bps5308@bps.go.id · Homepage: https://lembatakab.bps.go.id</div>
+  </td>
+</tr></table>
+
+<div class="doc-title">
+  <div class="doc-title-main">LAPORAN PERJALANAN DINAS</div>
+  <div class="doc-title-sub">MAK <strong>${escHtml(jd.kode)}</strong> — ${escHtml(jenisTitle)}</div>
+  ${r.judul_kegiatan ? `<div class="doc-title-activity">${escHtml(r.judul_kegiatan)}</div>` : ''}
+</div>
+
+<table class="tbl-id">
+  <tr><td class="lbl">1. Nama</td><td class="sep">:</td><td>${escHtml(peg.nama || '—')}</td></tr>
+  <tr><td class="lbl">2. NIP</td><td class="sep">:</td><td>${escHtml(peg.nip || '—')}</td></tr>
+  <tr><td class="lbl">3. Jabatan</td><td class="sep">:</td><td>${escHtml(peg.jabatan || '—')}</td></tr>
+  <tr><td class="lbl">4. Golongan / Ruang</td><td class="sep">:</td><td>${escHtml(peg.gol || '—')}</td></tr>
+  <tr><td class="lbl">5. Tempat asal</td><td class="sep">:</td><td>${escHtml(r.dari || '—')}</td></tr>
+  <tr><td class="lbl">6. Tempat tujuan</td><td class="sep">:</td><td>${escHtml(r.tujuan || '—')}</td></tr>
+  <tr><td class="lbl">7. Moda transportasi</td><td class="sep">:</td><td>${escHtml(r.moda || '—')}</td></tr>
+  <tr><td class="lbl">8. Tanggal berangkat</td><td class="sep">:</td><td>${escHtml(fmtTgl(r.tgl_berangkat))}</td></tr>
+  <tr><td class="lbl">9. Tanggal kembali</td><td class="sep">:</td><td>${escHtml(fmtTgl(r.tgl_kembali))}</td></tr>
+</table>
+
+<div class="sect">A. Rincian Kegiatan</div>
+${kegTableHtml}
+
+<div class="sect">B. Hasil / Capaian</div>
+<p class="para">${escHtml(r.hasil) || '—'}</p>
+
+<div class="sect">C. Saran / Rekomendasi</div>
+<p class="para">${escHtml(r.saran) || '—'}</p>
+
+<p class="para" style="margin-top:10pt">Demikian laporan ini dibuat dengan sebenar-benarnya, untuk dipergunakan sebagaimana mestinya.</p>
+
+<table class="ttd-table"><tr>
+  <td style="width:50%">&nbsp;</td>
+  <td class="ttd-cell">Lewoleba, ${escHtml(ttdDate)}<br>Yang membuat laporan,${ttdHtml}<div class="ttd-name">${escHtml(peg.nama || '—')}</div><div>NIP. ${escHtml(peg.nip || '—')}</div></td>
+</tr></table>
+
+${dokHtml}
+</body>
+</html>`;
+
+  const boundary = '----=_NextPart_Perjadin_' + Date.now();
+  const htmlPart = [
+    '--' + boundary,
+    'Content-Type: text/html; charset="utf-8"',
+    'Content-Transfer-Encoding: base64',
+    'Content-Location: laporan.htm',
+    '',
+    splitBase64(utf8Base64(html))
+  ].join('\r\n');
+  const imgParts = imageParts.map(p => [
+    '--' + boundary,
+    'Content-Location: ' + p.loc,
+    'Content-Type: ' + p.mime,
+    'Content-Transfer-Encoding: base64',
+    '',
+    p.base64
+  ].join('\r\n'));
+  const mhtml = [
+    'MIME-Version: 1.0',
+    'Content-Type: multipart/related; boundary="' + boundary + '"; type="text/html"',
+    'X-MimeOLE: Produced By Sistem Laporan Perjadin',
+    '',
+    htmlPart,
+    ...imgParts,
+    '--' + boundary + '--',
+    ''
+  ].join('\r\n');
+
+  const base = ('Laporan_Perjadin_' + (peg.nama||'Pegawai').replace(/\s+/g,'_') + '_' + (r.tgl_berangkat||'tanpa_tgl')).replace(/[^a-zA-Z0-9_\-]/g,'');
+  const blob = new Blob([mhtml], { type: 'application/msword' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = base + '.doc';
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 3000);
+  toast('File Word berhasil diunduh: ' + base + '.doc');
+}
+
+// ===== Ekspor Word — versi RTF (aktif) =====
 async function exportWord() {
   const r = currentReport();
   if (!r) { toast('Tidak ada laporan aktif', 'error'); return; }
@@ -2765,19 +3276,19 @@ ${cAll(bNone())}\\clbrdrb${bDouble(2)}\\cellx${UW}
 
   if (r.jenis === 'c') {
     const c1 = tw(10), c2 = UW - c1;
-    rtf += `{\\trowd\\trgaph57\\trleft0${cAll(bSingle())}\\cellx${c1}${cAll(bSingle())}\\cellx${UW}
+    rtf += `{\\trowd\\trgaph35\\trleft0${cAll(bSingle())}\\cellx${c1}${cAll(bSingle())}\\cellx${UW}
 {\\pard\\intbl\\qc\\b\\fs20 No\\b0\\cell}{\\pard\\intbl\\b\\fs20 Rincian Kegiatan\\b0\\cell}\\row}\n`;
     kList.forEach((k, i) => {
-      rtf += `{\\trowd\\trgaph57\\trleft0${cAll(bSingle(3))}\\cellx${c1}${cAll(bSingle(3))}\\cellx${UW}
+      rtf += `{\\trowd\\trgaph35\\trleft0${cAll(bSingle(3))}\\cellx${c1}${cAll(bSingle(3))}\\cellx${UW}
 {\\pard\\intbl\\qc\\fs20 ${i+1}\\cell}
 {\\pard\\intbl\\fs20 {\\b Tanggal:} ${esc(k.tgl ? fmtTgl(k.tgl) : '—')}\\line{\\b Uraian kegiatan / masalah yang ditemukan:}\\line ${esc(k.mas||'—')}\\line{\\b Solusi / tindak lanjut:}\\line ${esc(k.sol||'—')}\\cell}\\row}\n`;
     });
   } else {
     const c1 = tw(10), c2 = tw(22), c3 = Math.round((UW-c1-c2)/2), c4 = UW-c1-c2-c3;
-    rtf += `{\\trowd\\trgaph57\\trleft0${cAll(bSingle())}\\cellx${c1}${cAll(bSingle())}\\cellx${c1+c2}${cAll(bSingle())}\\cellx${c1+c2+c3}${cAll(bSingle())}\\cellx${UW}
+    rtf += `{\\trowd\\trgaph35\\trleft0${cAll(bSingle())}\\cellx${c1}${cAll(bSingle())}\\cellx${c1+c2}${cAll(bSingle())}\\cellx${c1+c2+c3}${cAll(bSingle())}\\cellx${UW}
 {\\pard\\intbl\\qc\\b\\fs20 No\\b0\\cell}{\\pard\\intbl\\b\\fs20 Waktu\\b0\\cell}{\\pard\\intbl\\b\\fs20 Uraian kegiatan / masalah yang ditemukan\\b0\\cell}{\\pard\\intbl\\b\\fs20 Solusi / tindak lanjut\\b0\\cell}\\row}\n`;
     kList.forEach((k, i) => {
-      rtf += `{\\trowd\\trgaph57\\trleft0${cAll(bSingle(3))}\\cellx${c1}${cAll(bSingle(3))}\\cellx${c1+c2}${cAll(bSingle(3))}\\cellx${c1+c2+c3}${cAll(bSingle(3))}\\cellx${UW}
+      rtf += `{\\trowd\\trgaph35\\trleft0${cAll(bSingle(3))}\\cellx${c1}${cAll(bSingle(3))}\\cellx${c1+c2}${cAll(bSingle(3))}\\cellx${c1+c2+c3}${cAll(bSingle(3))}\\cellx${UW}
 {\\pard\\intbl\\qc\\fs20 ${i+1}\\cell}{\\pard\\intbl\\fs20 ${esc((k.w1||'')+'–'+(k.w2||''))}\\cell}{\\pard\\intbl\\fs20 ${esc(k.mas||'—')}\\cell}{\\pard\\intbl\\fs20 ${esc(k.sol||'—')}\\cell}\\row}\n`;
     });
   }
@@ -2887,10 +3398,10 @@ function buildPv() {
   if (r.jenis === 'c') {
     const rows = (r.kegiatan && r.kegiatan.length)
       ? r.kegiatan.map((k, i) => `<tr>
-          <td style="text-align:center;vertical-align:top;padding-top:8px">${i+1}</td>
-          <td style="padding:8px 10px">
-            <div style="margin-bottom:6px"><strong>Tanggal:</strong> ${k.tgl ? fmtTgl(k.tgl) : '—'}</div>
-            <div style="margin-bottom:6px"><strong>Uraian kegiatan / masalah yang ditemukan:</strong><br>${escHtml(k.mas) || '—'}</div>
+          <td style="text-align:center;vertical-align:top;padding-top:5px">${i+1}</td>
+          <td style="padding:5px 8px">
+            <div style="margin-bottom:3px"><strong>Tanggal:</strong> ${k.tgl ? fmtTgl(k.tgl) : '—'}</div>
+            <div style="margin-bottom:3px"><strong>Uraian kegiatan / masalah yang ditemukan:</strong><br>${escHtml(k.mas) || '—'}</div>
             <div><strong>Solusi / tindak lanjut:</strong><br>${escHtml(k.sol) || '—'}</div>
           </td>
         </tr>`).join('')
@@ -3143,9 +3654,9 @@ function toggleTtd(on) {
 function updateTtdHint() {
   const r = currentReport(); if (!r) return;
   const peg = getPeg(r.pegawai_idx);
-  const hint = document.getElementById('ttd-hint'); if (!hint) return;
   const cb = document.getElementById('f-ttd-enable');
   if (cb) cb.checked = !!r.ttd_enabled;
+  const hint = document.getElementById('ttd-hint'); if (!hint) return;
   hint.classList.remove('warn','ok');
   if (!r.ttd_enabled) {
     hint.textContent = 'Toggle OFF — kolom tanda tangan akan dikosongkan untuk ditandatangani manual.';
@@ -3163,6 +3674,128 @@ function updateTtdHint() {
   }
 }
 
+function cleanHasilPhrase(value, fallback) {
+  const s = String(value || '').replace(/\s+/g, ' ').trim().replace(/[.;,\s]+$/g, '');
+  return s || fallback || '';
+}
+function inlineHasilPhrase(value) {
+  const s = cleanHasilPhrase(value, '');
+  if (!s) return '';
+  return /^[A-Z][a-z]/.test(s) ? s.charAt(0).toLowerCase() + s.slice(1) : s;
+}
+function joinHasilItems(items) {
+  const seen = new Set();
+  const list = (items || [])
+    .map(inlineHasilPhrase)
+    .filter(Boolean)
+    .filter(item => {
+      const key = item.toLowerCase();
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    })
+    .slice(0, 2);
+  if (list.length === 0) return '';
+  if (list.length === 1) return list[0];
+  return list[0] + ' dan ' + list[1];
+}
+function normalizeHasilSentence(value) {
+  const s = String(value || '').replace(/\s+/g, ' ').trim();
+  if (!s) return '';
+  return /[.!?]$/.test(s) ? s : s + '.';
+}
+function formatHasilDateRange(start, end) {
+  if (start && end && start !== end) return fmtTgl(start) + ' sampai dengan ' + fmtTgl(end);
+  return fmtTgl(start || end);
+}
+function pickHasilOpening(seed) {
+  const options = ['Terlaksananya', 'Terselesaikannya', 'Terpenuhinya'];
+  let score = 0;
+  for (let i = 0; i < seed.length; i++) score += seed.charCodeAt(i);
+  return options[score % options.length];
+}
+function summarizeHasil() {
+  const r = currentReport();
+  if (!r) return;
+
+  const judul = cleanHasilPhrase(document.getElementById('f-judul').value || r.judul_kegiatan, '');
+  const tujuan = cleanHasilPhrase(document.getElementById('f-tujuan').value || r.tujuan, '');
+  const tglBerangkat = document.getElementById('f-tgl-brg').value || r.tgl_berangkat;
+  const tglKembali = document.getElementById('f-tgl-kmb').value || r.tgl_kembali || tglBerangkat;
+  const missing = [];
+  if (!judul) missing.push('judul kegiatan');
+  if (!tujuan) missing.push('tempat tujuan');
+  if (!tglBerangkat) missing.push('tanggal perjadin');
+  if (missing.length) {
+    toast('Lengkapi ' + missing.join(', ') + ' terlebih dahulu', 'error');
+    return;
+  }
+
+  const tanggal = formatHasilDateRange(tglBerangkat, tglKembali);
+  const sentences = [];
+  sentences.push(pickHasilOpening(judul + tujuan + tanggal) + ' ' + judul + ' di ' + tujuan + ' pada ' + tanggal + '.');
+
+  const kegiatan = Array.isArray(r.kegiatan) ? r.kegiatan : [];
+  const ringkasKegiatan = joinHasilItems(kegiatan.map(k => k && (k.sol || k.mas)));
+  const ringkasSolusi = joinHasilItems(kegiatan.map(k => k && k.sol));
+
+  if (ringkasKegiatan) {
+    sentences.push('Rangkaian kegiatan mencakup ' + ringkasKegiatan + '.');
+  } else {
+    sentences.push('Kegiatan berjalan sesuai rencana dan mendukung kelancaran pelaksanaan tugas perjalanan dinas.');
+  }
+  if (ringkasSolusi && ringkasSolusi !== ringkasKegiatan) {
+    sentences.push('Tindak lanjut yang diperlukan telah dilakukan melalui ' + ringkasSolusi + '.');
+  }
+  sentences.push('Data, informasi, dan hasil koordinasi yang diperoleh telah dihimpun sebagai bahan pelaporan dan tindak lanjut unit kerja.');
+
+  const hasil = sentences.map(normalizeHasilSentence).filter(Boolean).slice(0, 4).join(' ');
+  const el = document.getElementById('f-hasil');
+  if (!el) return;
+  el.value = hasil;
+  onForm();
+  el.focus();
+  toast('Rangkuman hasil dibuat \u2713');
+}
+function summarizeSaran() {
+  const r = currentReport();
+  if (!r) return;
+
+  const judul = cleanHasilPhrase(document.getElementById('f-judul').value || r.judul_kegiatan, '');
+  const tujuan = cleanHasilPhrase(document.getElementById('f-tujuan').value || r.tujuan, '');
+  const tglBerangkat = document.getElementById('f-tgl-brg').value || r.tgl_berangkat;
+  const tglKembali = document.getElementById('f-tgl-kmb').value || r.tgl_kembali || tglBerangkat;
+  const missing = [];
+  if (!judul) missing.push('judul kegiatan');
+  if (!tujuan) missing.push('tempat tujuan');
+  if (!tglBerangkat) missing.push('tanggal perjadin');
+  if (missing.length) {
+    toast('Lengkapi ' + missing.join(', ') + ' terlebih dahulu', 'error');
+    return;
+  }
+
+  const tanggal = formatHasilDateRange(tglBerangkat, tglKembali);
+  const kegiatan = Array.isArray(r.kegiatan) ? r.kegiatan : [];
+  const ringkasSolusi = joinHasilItems(kegiatan.map(k => k && k.sol));
+  const sentences = [];
+
+  sentences.push('Disarankan agar hasil ' + inlineHasilPhrase(judul) + ' di ' + tujuan + ' pada ' + tanggal + ' ditindaklanjuti melalui penyempurnaan data, dokumentasi, dan pelaporan sesuai pedoman BPS.');
+  if (ringkasSolusi) {
+    sentences.push('Tindak lanjut yang sudah dirumuskan, seperti ' + ringkasSolusi + ', perlu dipantau agar berjalan efektif dan terdokumentasi dengan baik.');
+  } else {
+    sentences.push('Koordinasi dengan pihak terkait perlu dilanjutkan agar hasil kegiatan dapat dimanfaatkan secara optimal oleh unit kerja.');
+  }
+  sentences.push('Apabila masih terdapat data yang belum lengkap, perlu dilakukan klarifikasi lanjutan kepada sumber data agar kualitas hasil tetap terjaga.');
+  sentences.push('Hasil kegiatan agar digunakan sebagai bahan evaluasi dan perbaikan pelaksanaan kegiatan statistik berikutnya.');
+
+  const saran = sentences.map(normalizeHasilSentence).filter(Boolean).slice(0, 4).join(' ');
+  const el = document.getElementById('f-saran');
+  if (!el) return;
+  el.value = saran;
+  onForm();
+  el.focus();
+  toast('Rangkuman saran dibuat \u2713');
+}
 async function improveText(id) {
   const el = document.getElementById(id);
   if (!el) return;
