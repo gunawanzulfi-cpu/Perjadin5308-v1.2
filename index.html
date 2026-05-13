@@ -728,6 +728,9 @@
   .rcard-tag.b { background: var(--gold-50); color: var(--gold); }
   .rcard-tag.c { background: #e6f7ee; color: var(--success); }
   .rcard-spacer { flex: 1; }
+  .rcard-check { width:16px;height:16px;cursor:pointer;accent-color:var(--navy-700);flex-shrink:0; }
+  .rcard.selected { outline:2px solid var(--navy-700);background:var(--navy-50); }
+  .rcard.selected .rcard-head { background:var(--navy-50); }
   .rcard-menu { background: none; border: none; padding: 4px; border-radius: var(--radius-sm); color: var(--ink-400); display: flex; }
   .rcard-menu:hover { background: var(--ink-100); color: var(--ink-700); }
   .rcard-menu svg { width: 16px; height: 16px; }
@@ -832,6 +835,22 @@
     transform: translateY(-1px);
   }
   .btn-print svg { width: 16px; height: 16px; }
+  .btn-draft {
+    background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+    color: #fff;
+    border-color: #0284c7;
+    font-weight: 700;
+    padding: 11px 22px;
+    font-size: 14px;
+    box-shadow: 0 2px 8px rgba(2,132,199,.28);
+    letter-spacing: .2px;
+  }
+  .btn-draft:hover {
+    background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 100%);
+    box-shadow: 0 4px 14px rgba(2,132,199,.38);
+    transform: translateY(-1px);
+  }
+  .btn-draft svg { width: 16px; height: 16px; }
 
   /* === Bottom action bar: selalu terlihat di HP === */
   .mobile-print-bar { display: none; }
@@ -952,6 +971,114 @@
 
   /* HELP / KEYBOARD */
   .kbd { display: inline-block; padding: 1px 6px; background: var(--ink-100); border: 1px solid var(--ink-200); border-bottom-width: 2px; border-radius: 4px; font-family: ui-monospace, Menlo, monospace; font-size: 11px; color: var(--ink-700); }
+
+  /* ===== MOBILE / HP COMPATIBILITY (max 768px) ===== */
+  @media (max-width: 768px) {
+    /* Topbar */
+    .topbar { padding: 0 12px; gap: 8px; }
+    .topbar .app-name { font-size: 13px; }
+    .topbar .app-sub { display: none; }
+    .topbar .btn { padding: 8px 12px; font-size: 13px; }
+
+    /* Nav tabs */
+    .nav { padding: 0 8px; gap: 2px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .nav-btn { padding: 10px 10px; font-size: 12px; white-space: nowrap; }
+
+    /* Main content */
+    main { padding: 12px 10px; }
+
+    /* Cards */
+    .card { border-radius: 10px; }
+    .card-h { padding: 12px 14px; }
+    .card-b { padding: 12px 14px; }
+
+    /* Dashboard reports list */
+    .reports-toolbar { flex-wrap: wrap; gap: 8px; }
+    .reports-toolbar .btn { padding: 9px 12px; font-size: 12.5px; min-height: 40px; }
+    .reports-toolbar select { padding: 9px 10px; font-size: 12.5px; }
+    .rcard { padding: 12px 14px; }
+    .rcard-title { font-size: 14px; }
+    .rcard-meta { font-size: 12px; flex-wrap: wrap; gap: 6px; }
+    .rcard-actions { flex-wrap: wrap; gap: 6px; }
+    .rcard-actions .btn { padding: 8px 12px; font-size: 12.5px; min-height: 40px; }
+
+    /* Step nav — horizontal scroll */
+    .step-nav { gap: 2px; padding: 4px; overflow-x: auto; -webkit-overflow-scrolling: touch; flex-wrap: nowrap; }
+    .step-btn { font-size: 11.5px; padding: 8px 8px; flex: 0 0 auto; }
+    .step-btn .step-n { width: 16px; height: 16px; font-size: 10px; }
+
+    /* Top action bar */
+    .top-action-bar { flex-wrap: wrap; gap: 8px; }
+    .top-action-bar .btn { flex: 1 1 auto; min-width: 100px; padding: 10px 12px; font-size: 13px; min-height: 44px; }
+
+    /* Form fields — larger touch targets */
+    input[type="text"], input[type="date"], input[type="number"],
+    select, textarea {
+      font-size: 16px !important; /* prevents iOS zoom */
+      padding: 10px 12px;
+      min-height: 44px;
+    }
+    textarea { min-height: 80px; }
+
+    /* Jenis grid */
+    .jenis-grid { grid-template-columns: 1fr; }
+
+    /* Pegawai select */
+    #f-peg { font-size: 16px; min-height: 44px; }
+
+    /* Kegiatan table — horizontal scroll */
+    .kegtbl-wrap, .tbl-resp { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .kegtbl { min-width: 560px; }
+
+    /* Dokumentasi gallery — 1 column on very small */
+    .dok-gallery { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }
+
+    /* Buttons in forms */
+    .btn-row { flex-wrap: wrap; gap: 8px; }
+    .btn-row .btn { min-height: 44px; padding: 10px 14px; font-size: 13.5px; }
+
+    /* Pegawai table — horizontal scroll */
+    .peg-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .peg-table { min-width: 520px; }
+    .peg-table input { font-size: 16px; min-height: 40px; }
+
+    /* Modal */
+    .modal-bg { padding: 12px; align-items: flex-end; }
+    .modal { max-width: 100%; border-radius: 14px 14px 0 0; padding: 20px 18px; }
+
+    /* Toast */
+    .toast { left: 12px; right: 12px; bottom: 80px; font-size: 13px; }
+
+    /* Icon buttons */
+    .icon-btn { width: 36px; height: 36px; }
+    .icon-btn svg { width: 16px; height: 16px; }
+
+    /* Help view */
+    .help-grid { grid-template-columns: 1fr; }
+
+    /* TTD preview image */
+    .ttd-thumb-wrap img { max-width: 120px; max-height: 70px; }
+
+    /* Preview hidden on mobile (single column via 1100px breakpoint already handles this) */
+    .ed-right { display: none; }
+
+    /* Section header font adjustments */
+    .card[id^="sec-"] > .card-h h2 { font-size: 14px; }
+    .card[id^="sec-"] > .card-h p { font-size: 12px; }
+  }
+
+
+  /* VIEW-ONLY mode for final reports opened from dashboard */
+  .view-only-form .card[id^="sec-"],
+  .view-only-form .step-nav {
+    pointer-events: none;
+    opacity: 0.72;
+    user-select: none;
+  }
+  .view-only-form #final-view-banner {
+    pointer-events: auto !important;
+    opacity: 1 !important;
+  }
 
   /* PRINT */
   @media print {
@@ -1128,7 +1255,7 @@
       <div class="reports-toolbar">
         <div class="search-box">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-          <input id="search" placeholder="Cari nama pegawai, tujuan, atau tanggal…" oninput="renderDash()">
+          <input id="search" placeholder="Cari nama, lokasi tujuan, atau judul kegiatan…" oninput="renderDash()">
         </div>
         <select id="filter-jenis" onchange="renderDash()" style="padding:9px 11px;border:1px solid var(--ink-200);border-radius:var(--radius);background:var(--paper);font-size:13.5px">
           <option value="">Semua jenis</option>
@@ -1136,6 +1263,13 @@
           <option value="b">&gt; 8 jam / supervisi</option>
           <option value="c">Perjadin biasa</option>
         </select>
+        <select id="filter-status" onchange="renderDash()" style="padding:9px 11px;border:1px solid var(--ink-200);border-radius:var(--radius);background:var(--paper);font-size:13.5px">
+          <option value="">Semua status</option>
+          <option value="final">Final</option>
+          <option value="draft">Draft</option>
+        </select>
+        <button class="btn btn-ghost" id="btn-select-mode" onclick="toggleSelectMode()" style="padding:9px 14px;font-size:13px">Pilih</button>
+        <button class="btn btn-danger" id="btn-delete-selected" onclick="deleteSelected()" style="display:none;padding:9px 14px;font-size:13px">Hapus terpilih (<span id="selected-count">0</span>)</button>
       </div>
 
       <div id="reports-container"></div>
@@ -1145,11 +1279,55 @@
     <section id="v-editor" class="view">
       <div class="editor-shell">
         <div class="ed-left">
+          <div class="btn-row between" style="margin-bottom:10px" id="top-action-bar">
+            <button class="btn btn-ghost" onclick="setView('dash')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+              Kembali ke dasbor
+            </button>
+            <div class="btn-row">
+              <button class="btn btn-draft" onclick="saveDraft()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                Simpan Draft
+              </button>
+              <button class="btn btn-print" onclick="finalizeAndPrint()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                Cetak / Simpan PDF
+              </button>
+            </div>
+          </div>
+
+          <div id="final-view-banner" style="display:none;background:#fef3c7;border:1px solid #f59e0b;border-left:4px solid #d97706;border-radius:8px;padding:10px 14px;display:none;align-items:center;gap:10px;font-size:13px;color:#92400e;margin-bottom:4px">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;flex-shrink:0;color:#d97706"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <span><strong>Laporan sudah final.</strong> Tidak dapat diedit dari dasbor. Gunakan tombol <em>Duplikat</em> untuk membuat salinan yang bisa diedit.</span>
+          </div>
           <div class="step-nav" id="step-nav"></div>
 
           <div class="card" id="sec-1">
             <div class="card-h">
-              <h2>1. Jenis perjalanan dinas</h2>
+              <h2>1. Dokumentasi</h2>
+              <p id="dok-judul">Judul kegiatan akan tampil di sini setelah diisi pada Step 2.</p>
+            </div>
+            <div class="card-b">
+              <div class="dok-actions">
+                <label class="btn btn-primary">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                  Foto dari kamera
+                  <input type="file" accept="image/*" capture="environment" multiple onchange="addDokumentasi(event)" hidden>
+                </label>
+                <label class="btn btn-secondary">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  Unggah file
+                  <input type="file" accept="image/*" multiple onchange="addDokumentasi(event)" hidden>
+                </label>
+                <span class="dok-hint">Foto akan diberi GPS stamp otomatis. Izinkan akses lokasi saat diminta peramban.</span>
+              </div>
+              <div id="dok-gallery" class="dok-gallery"></div>
+            </div>
+          </div>
+
+          <div class="card" id="sec-2">
+            <div class="card-h">
+              <h2>2. Jenis perjalanan dinas</h2>
               <p>Pilih kode mata anggaran (MAK)</p>
             </div>
             <div class="card-b">
@@ -1161,9 +1339,9 @@
             </div>
           </div>
 
-          <div class="card" id="sec-2">
+          <div class="card" id="sec-3">
             <div class="card-h">
-              <h2>2. Identitas pelaksana</h2>
+              <h2>3. Identitas pelaksana</h2>
               <p>Data terisi otomatis dari database pegawai</p>
             </div>
             <div class="card-b">
@@ -1189,9 +1367,9 @@
             </div>
           </div>
 
-          <div class="card" id="sec-3">
+          <div class="card" id="sec-4">
             <div class="card-h">
-              <h2>3. Waktu &amp; tempat</h2>
+              <h2>4. Waktu &amp; tempat</h2>
               <p>Asal, tujuan, dan rentang tanggal</p>
             </div>
             <div class="card-b">
@@ -1200,7 +1378,7 @@
                 <div class="field"><label>Tempat tujuan <span class="req">*</span></label><input type="text" id="f-tujuan" oninput="onForm()" placeholder="Mis. Kupang"></div>
                 <div class="field"><label>Lama perjalanan</label><input type="text" id="f-lama" readonly="" placeholder="Otomatis"></div>
                 <div class="field"><label>Tanggal berangkat <span class="req">*</span></label><input type="date" id="f-tgl-brg" oninput="hitungLama();onForm()"></div>
-                <div class="field"><label>Tanggal kembali <span class="req">*</span></label><input type="date" id="f-tgl-kmb" oninput="hitungLama();onForm()"></div>
+                <div class="field" id="field-tgl-kmb"><label>Tanggal kembali <span class="req">*</span></label><input type="date" id="f-tgl-kmb" oninput="hitungLama();onForm()"></div>
                 <div class="field"><label>Moda transportasi</label><select id="f-moda" onchange="onForm()"><option>Darat</option><option>Laut</option><option>Udara</option><option>Kombinasi</option></select></div>
               </div>
               <div class="btn-row" style="margin-top:10px">
@@ -1211,9 +1389,9 @@
             </div>
           </div>
 
-          <div class="card" id="sec-4">
+          <div class="card" id="sec-5">
             <div class="card-h">
-              <h2>4. Rincian kegiatan</h2>
+              <h2>5. Rincian kegiatan</h2>
               <p>Daftar masalah &amp; solusi per slot waktu</p>
               <div class="spacer"></div>
               <button class="btn btn-secondary" style="padding:6px 10px;font-size:12.5px" onclick="addKeg()">
@@ -1243,9 +1421,9 @@
             </div>
           </div>
 
-          <div class="card" id="sec-5">
+          <div class="card" id="sec-6">
             <div class="card-h">
-              <h2>5. Hasil &amp; saran</h2>
+              <h2>6. Hasil &amp; saran</h2>
               <p>Capaian dan rekomendasi tindak lanjut</p>
             </div>
             <div class="card-b">
@@ -1262,30 +1440,7 @@
             </div>
           </div>
 
-          <div class="card" id="sec-6">
-            <div class="card-h">
-              <h2>6. DOKUMENTASI</h2>
-              <p id="dok-judul">Judul kegiatan akan tampil di sini setelah diisi pada Step 1.</p>
-            </div>
-            <div class="card-b">
-              <div class="dok-actions">
-                <label class="btn btn-primary">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-                  Foto dari kamera
-                  <input type="file" accept="image/*" capture="environment" multiple onchange="addDokumentasi(event)" hidden>
-                </label>
-                <label class="btn btn-secondary">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                  Unggah file
-                  <input type="file" accept="image/*" multiple onchange="addDokumentasi(event)" hidden>
-                </label>
-                <span class="dok-hint">Foto akan diberi lokasi tujuan & GPS stamp (DMS). Izinkan akses lokasi saat diminta peramban.</span>
-              </div>
-              <div id="dok-gallery" class="dok-gallery"></div>
-            </div>
-          </div>
-
-          <div class="btn-row between" style="margin-top:6px">
+          <div class="btn-row between" id="bottom-action-bar" style="margin-top:6px">
             <button class="btn btn-ghost" onclick="setView('dash')">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
               Kembali ke dasbor
@@ -1293,6 +1448,10 @@
             <span id="draft-badge" style="display:none;background:#f59e0b;color:#fff;font-size:11px;font-weight:700;padding:2px 8px;border-radius:4px;letter-spacing:.5px;margin-right:auto;align-self:center;">DRAFT</span>
             <div class="btn-row">
               <button class="btn btn-danger" onclick="confirmDelete()">Hapus laporan</button>
+              <button class="btn btn-draft" onclick="saveDraft()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                Simpan Draft
+              </button>
               <button class="btn btn-print" onclick="finalizeAndPrint()">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
                 Cetak / Simpan PDF
@@ -1318,6 +1477,10 @@
 
       <!-- Mobile bottom action bar: selalu terlihat saat scroll -->
       <div class="mobile-print-bar" role="toolbar" aria-label="Aksi laporan">
+        <button class="btn btn-draft" onclick="saveDraft()" aria-label="Simpan draft" style="flex:0 0 auto">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+          Simpan Draft
+        </button>
         <button class="btn btn-print" onclick="finalizeAndPrint()" aria-label="Cetak atau simpan PDF">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
           Cetak / Simpan PDF
@@ -1584,7 +1747,7 @@ function setView(v) {
   document.querySelectorAll('.nav-tab').forEach(el => el.classList.toggle('on', el.dataset.view === v));
   document.getElementById('v-' + v).classList.add('on');
   if (v === 'dash') renderDash();
-  if (v === 'editor') ensureCurrent();
+  if (v === 'editor') { ensureCurrent(); applyViewMode(); }
   if (v === 'peg') renderPeg();
   window.scrollTo({ top: 0, behavior: 'instant' });
 }
@@ -1600,11 +1763,13 @@ function closeModal() { document.getElementById('modal-bg').classList.remove('on
 function openHelp() { document.getElementById('help-bg').classList.add('on'); }
 
 function downloadEbook() {
+  window.open('https://drive.google.com/file/d/1oT9e_Qx8rejxJYpMvT5SUMb7x3Xc4Y6z/view', '_blank');
+}
+function downloadEbook_old() {
   const link = document.createElement('a');
-  link.href = 'https://drive.google.com/file/d/1oT9e_Qx8rejxJYpMvT5SUMb7x3Xc4Y6z/view'; // User akan menambahkan link drive mereka sendiri
+  link.href = 'https://drive.google.com/file/d/1oT9e_Qx8rejxJYpMvT5SUMb7x3Xc4Y6z/view';
   link.download = 'Panduan_Sistem_Laporan_Perjadin.pdf';
-  
-  // Atau gunakan file lokal jika tersedia
+
   fetch('Panduan_Sistem_Laporan_Perjadin.pdf')
     .then(response => {
       if (response.ok) {
@@ -1623,7 +1788,118 @@ function downloadEbook() {
 
 function closeHelp() { document.getElementById('help-bg').classList.remove('on'); }
 
+// ====== SELECT MODE ======
+let selectMode = false;
+let selectedIds = new Set();
+let viewMode = false; // true = laporan final dibuka dari dasbor (read-only)
+
+function toggleSelectMode() {
+  selectMode = !selectMode;
+  if (!selectMode) selectedIds.clear();
+  const btn = document.getElementById('btn-select-mode');
+  if (btn) btn.textContent = selectMode ? 'Batalkan' : 'Pilih';
+  updateDeleteSelectedBtn();
+  renderDash();
+}
+function toggleSelect(id) {
+  if (selectedIds.has(id)) selectedIds.delete(id);
+  else selectedIds.add(id);
+  updateDeleteSelectedBtn();
+  renderDash();
+}
+function updateDeleteSelectedBtn() {
+  const btn = document.getElementById('btn-delete-selected');
+  const cnt = document.getElementById('selected-count');
+  if (!btn) return;
+  if (selectMode && selectedIds.size > 0) {
+    btn.style.display = '';
+    if (cnt) cnt.textContent = selectedIds.size;
+  } else { btn.style.display = 'none'; }
+}
+function deleteSelected() {
+  if (selectedIds.size === 0) return;
+  openModal('Hapus ' + selectedIds.size + ' laporan', 'Laporan yang dipilih akan dihapus permanen. Lanjutkan?', async () => {
+    for (const id of [...selectedIds]) {
+      state.reports = state.reports.filter(r => r.id !== id);
+      try { await deleteReportFromServer(id); } catch(e) { console.warn('delete server err', e); }
+    }
+    selectedIds.clear();
+    selectMode = false;
+    const btn = document.getElementById('btn-select-mode');
+    if (btn) btn.textContent = 'Pilih';
+    updateDeleteSelectedBtn();
+    renderDash();
+    toast('Laporan terpilih dihapus');
+  });
+}
+
 // ====== DASHBOARD ======
+
+function applyViewMode() {
+  const banner = document.getElementById('final-view-banner');
+  const topBar = document.getElementById('top-action-bar');
+  const bottomBar = document.getElementById('bottom-action-bar');
+  const mobileBar = document.querySelector('.mobile-print-bar');
+  const edLeft = document.querySelector('.ed-left');
+
+  if (viewMode) {
+    // Show banner
+    if (banner) { banner.style.display = 'flex'; }
+    // Replace top action bar
+    if (topBar) topBar.innerHTML = `
+      <button class="btn btn-ghost" onclick="setView('dash')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        Kembali ke dasbor
+      </button>
+      <span style="background:#f59e0b;color:#fff;font-size:11px;font-weight:700;padding:2px 10px;border-radius:4px;letter-spacing:.6px;align-self:center">FINAL</span>
+      <div class="rcard-spacer"></div>
+      <button class="btn btn-secondary" onclick="duplicateAndOpen()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        Duplikat & Edit
+      </button>
+    `;
+    // Replace bottom action bar
+    if (bottomBar) bottomBar.innerHTML = `
+      <button class="btn btn-ghost" onclick="setView('dash')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        Kembali ke dasbor
+      </button>
+      <div class="rcard-spacer"></div>
+      <button class="btn btn-secondary" onclick="duplicateAndOpen()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        Duplikat & Edit
+      </button>
+    `;
+    // Make form read-only via CSS class
+    if (edLeft) edLeft.classList.add('view-only-form');
+    // Hide mobile bar
+    if (mobileBar) mobileBar.style.display = 'none';
+  } else {
+    // Hide banner
+    if (banner) { banner.style.display = 'none'; }
+    // Remove read-only CSS
+    if (edLeft) edLeft.classList.remove('view-only-form');
+    // Restore mobile bar
+    if (mobileBar) mobileBar.style.display = '';
+    // Top/bottom bars are re-rendered by renderEditor, no need to restore
+  }
+}
+
+function duplicateAndOpen() {
+  if (!state.currentId) return;
+  const src = state.reports.find(r => r.id === state.currentId);
+  if (!src) return;
+  const copy = JSON.parse(JSON.stringify(src));
+  copy.id = uid(); copy.created = copy.updated = Date.now();
+  copy.status = 'draft';
+  state.reports.push(copy);
+  viewMode = false;
+  state.currentId = copy.id;
+  persist();
+  setView('editor');
+  toast('Duplikat dibuat — sekarang dalam mode edit');
+}
+
 function renderDash() {
   const totalEl = document.getElementById('stat-total');
   const bulanEl = document.getElementById('stat-bulan');
@@ -1639,16 +1915,58 @@ function renderDash() {
 
   const q = (document.getElementById('search').value || '').toLowerCase();
   const filterJ = document.getElementById('filter-jenis').value;
+  const filterS = (document.getElementById('filter-status') || {}).value || '';
   const container = document.getElementById('reports-container');
+
+  // Helper: match search query against a report
+  function matchQ(r) {
+    if (!q) return true;
+    const peg = getPeg(r.pegawai_idx);
+    const hay = ((peg.nama||'') + ' ' + (r.tujuan||'') + ' ' + (r.judul_kegiatan||'')).toLowerCase();
+    return hay.includes(q);
+  }
+
+  // Only show explicitly saved reports (status 'draft' or 'final')
   let list = state.reports.filter(r => r.status === 'final').slice().sort((a,b) => (b.updated || 0) - (a.updated || 0));
   if (filterJ) list = list.filter(r => r.jenis === filterJ);
-  if (q) list = list.filter(r => {
-    const peg = getPeg(r.pegawai_idx);
-    const hay = (peg.nama + ' ' + (r.tujuan||'') + ' ' + (r.dari||'') + ' ' + (r.tgl_berangkat||'')).toLowerCase();
-    return hay.includes(q);
-  });
+  if (q) list = list.filter(matchQ);
+
+  // Laporan Draft (only explicitly saved drafts)
+  let draftList = state.reports.filter(r => r.status === 'draft').slice().sort((a,b) => (b.updated||0)-(a.updated||0));
+  if (filterJ) draftList = draftList.filter(r => r.jenis === filterJ);
+  if (filterS === 'final') draftList = [];
+  if (filterS === 'draft') list = [];
+  if (q) draftList = draftList.filter(matchQ);
+  let draftHTML = '';
+  if (draftList.length > 0) {
+    draftHTML = '<div style="margin-bottom:18px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">'
+      + '<span style="background:#f59e0b;color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:4px;letter-spacing:.6px">DRAFT</span>'
+      + '<span style="font-size:13px;color:var(--ink-500)">' + draftList.length + ' laporan belum final</span></div>'
+      + '<div class="reports-grid">'
+      + draftList.map(r => {
+          const peg = getPeg(r.pegawai_idx);
+          const jd = JENIS_MAP[r.jenis] || JENIS_MAP.a;
+          const isDraftSel = selectMode && selectedIds.has(r.id);
+          const locDate = (r.tujuan ? escHtml(r.tujuan) : '—') + (r.tgl_berangkat ? ' | ' + fmtTglShort(r.tgl_berangkat) : '');
+          return `<div class="rcard${isDraftSel?' selected':''}" onclick="selectMode?toggleSelect('${r.id}'):openReport('${r.id}')" style="border-left:3px solid #f59e0b">`
+            + `<div class="rcard-head">`
+            + (selectMode ? `<input type="checkbox" class="rcard-check" ${isDraftSel?'checked':''} onclick="event.stopPropagation();toggleSelect('${r.id}')">` : '')
+            + `<span class="rcard-tag ${r.jenis}">${jd.title.toUpperCase()}</span>`
+            + `<span style="background:#f59e0b;color:#fff;font-size:10px;font-weight:700;padding:1px 7px;border-radius:3px;margin-left:4px">DRAFT</span>`
+            + `<div class="rcard-spacer"></div>`
+            + (!selectMode ? `<button class="rcard-menu" onclick="event.stopPropagation();duplicateReport('${r.id}')" title="Duplikat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>` : '')
+            + (!selectMode ? `<button class="rcard-menu" onclick="event.stopPropagation();deleteReport('${r.id}')" title="Hapus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button>` : '')
+            + `</div>`
+            + `<h3 style="font-size:13.5px;margin-bottom:2px">${locDate}</h3>`
+            + `<p class="rcard-sub" style="margin-bottom:8px">${escHtml(peg.nama || 'Pegawai belum dipilih')}</p>`
+            + `<div style="font-size:12px;color:var(--ink-700);font-weight:500;padding-top:8px;border-top:1px dashed var(--ink-200);line-height:1.4">${escHtml(r.judul_kegiatan || '(Judul kegiatan belum diisi)')}</div>`
+            + `</div>`;
+        }).join('')
+      + '</div></div>';
+  }
+
   if (list.length === 0) {
-    container.innerHTML = `<div class="card"><div class="empty">
+    container.innerHTML = draftHTML + `<div class="card"><div class="empty">
       <div class="empty-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
       <h3>${state.reports.filter(r=>r.status==='final').length === 0 ? 'Belum ada laporan final' : 'Tidak ada laporan yang cocok'}</h3>
       <p>${state.reports.filter(r=>r.status==='final').length === 0 ? 'Laporan yang sudah dicetak/disimpan PDF akan muncul di sini.' : 'Coba ubah kata kunci pencarian atau filter.'}</p>
@@ -1656,30 +1974,24 @@ function renderDash() {
     </div></div>`;
     return;
   }
-  container.innerHTML = '<div class="reports-grid">' + list.map(r => {
+  container.innerHTML = draftHTML + '<div class="reports-grid">' + list.map(r => {
     const peg = getPeg(r.pegawai_idx);
     const jd = JENIS_MAP[r.jenis] || JENIS_MAP.a;
     const dur = (r.tgl_berangkat && r.tgl_kembali)
       ? (Math.round((new Date(r.tgl_kembali) - new Date(r.tgl_berangkat))/86400000)+1) + ' hari'
       : '— hari';
-    return `<div class="rcard" onclick="openReport('${r.id}')">
+    const isSel = selectMode && selectedIds.has(r.id);
+    const locDate = (r.tujuan ? escHtml(r.tujuan) : '—') + (r.tgl_berangkat ? ' | ' + fmtTglShort(r.tgl_berangkat) : '');
+    return `<div class="rcard${isSel?' selected':''}" onclick="selectMode?toggleSelect('${r.id}'):openReport('${r.id}')">
       <div class="rcard-head">
+        ${selectMode ? `<input type="checkbox" class="rcard-check" ${isSel?'checked':''} onclick="event.stopPropagation();toggleSelect('${r.id}')">` : ''}
         <span class="rcard-tag ${r.jenis}">${jd.title.toUpperCase()}</span>
         <div class="rcard-spacer"></div>
-        <button class="rcard-menu" onclick="event.stopPropagation();duplicateReport('${r.id}')" title="Duplikat">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-        </button>
-        <button class="rcard-menu" onclick="event.stopPropagation();deleteReport('${r.id}')" title="Hapus">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
-        </button>
+        ${!selectMode ? `<button class="rcard-menu" onclick="event.stopPropagation();duplicateReport('${r.id}')" title="Duplikat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>` : ''}
       </div>
-      <h3>${escHtml(r.tujuan || '(Belum ada tujuan)')}</h3>
-      <p class="rcard-sub">${escHtml(peg.nama || 'Pegawai belum dipilih')}</p>
-      <div class="rcard-meta">
-        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>${r.tgl_berangkat ? fmtTglShort(r.tgl_berangkat) : '—'}</span>
-        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>${dur}</span>
-        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/></svg>${escHtml(r.tujuan || '—')}</span>
-      </div>
+      <h3 style="font-size:13.5px;margin-bottom:2px">${locDate}</h3>
+      <p class="rcard-sub" style="margin-bottom:8px">${escHtml(peg.nama || 'Pegawai belum dipilih')}</p>
+      <div style="font-size:12px;color:var(--ink-700);font-weight:500;padding-top:8px;border-top:1px dashed var(--ink-200);line-height:1.4">${escHtml(r.judul_kegiatan || '(Judul kegiatan belum diisi)')}</div>
     </div>`;
   }).join('') + '</div>';
 }
@@ -1691,7 +2003,7 @@ function newReportObj() {
     id: uid(),
     jenis: 'a',
     judul_kegiatan: '',
-    pegawai_idx: state.pegawai.length > 0 ? 0 : -1,
+    pegawai_idx: -1,
     dari: 'Lewoleba',
     tujuan: '',
     tgl_berangkat: '',
@@ -1704,12 +2016,13 @@ function newReportObj() {
     saran: '',
     dokumentasi: [],
     ttd_enabled: false,
-    status: 'draft',
+    status: 'new',
     created: Date.now(),
     updated: Date.now()
   };
 }
 function newReport() {
+  viewMode = false;
   const r = newReportObj();
   state.reports.push(r);
   state.currentId = r.id;
@@ -1717,6 +2030,8 @@ function newReport() {
   setView('editor');
 }
 function openReport(id) {
+  const _r = state.reports.find(rep => rep.id === id);
+  viewMode = !!(_r && _r.status === 'final');
   state.currentId = id;
   persist();
   setView('editor');
@@ -1786,6 +2101,7 @@ function renderEditor() {
   document.getElementById('f-hasil').value = r.hasil || '';
   document.getElementById('f-saran').value = r.saran || '';
   hitungLama();
+  updateTglKmbLock();
   renderKegBody();
   renderDokumentasi();
   updateTtdHint();
@@ -1803,11 +2119,37 @@ function renderJenisGrid() {
       <div class="jdesc">${v.desc}</div>
     </div>`).join('');
 }
+function updateTglKmbLock() {
+  const r = currentReport();
+  const is1Day = r && (r.jenis === 'a' || r.jenis === 'b');
+  const kmbInput = document.getElementById('f-tgl-kmb');
+  const kmbField = document.getElementById('field-tgl-kmb');
+  if (!kmbInput) return;
+  kmbInput.readOnly = is1Day;
+  kmbInput.style.background = is1Day ? 'var(--ink-50)' : '';
+  kmbInput.style.color = is1Day ? 'var(--ink-400)' : '';
+  if (kmbField) {
+    let hint = kmbField.querySelector('.kmb-hint');
+    if (is1Day) {
+      if (!hint) { hint = document.createElement('p'); hint.className = 'field-hint kmb-hint'; hint.style.marginTop='2px'; kmbField.appendChild(hint); }
+      hint.textContent = 'Otomatis sama dengan tanggal berangkat (perjadin 1 hari)';
+    } else {
+      if (hint) hint.remove();
+    }
+  }
+}
 function pilihJenis(j) {
   const r = currentReport(); if (!r) return;
   r.jenis = j; r.updated = Date.now();
   document.querySelectorAll('#jenis-grid .jcard').forEach(el => el.classList.toggle('sel', el.dataset.j === j));
+  // For 1-day types, sync tgl_kembali immediately
+  if ((j === 'a' || j === 'b') && r.tgl_berangkat) {
+    r.tgl_kembali = r.tgl_berangkat;
+    const kmbInput = document.getElementById('f-tgl-kmb');
+    if (kmbInput) kmbInput.value = r.tgl_berangkat;
+  }
   persist(); renderKegBody(); buildPv(); renderStepNav();
+  hitungLama();
 }
 function renderPegSelect() {
   const s = document.getElementById('sel-peg');
@@ -1838,15 +2180,22 @@ function onForm() {
   persist(); buildPv(); renderStepNav();
   // Update dok header live
   const dokJudulEl = document.getElementById('dok-judul');
-  if (dokJudulEl) dokJudulEl.textContent = r.judul_kegiatan ? ('Judul kegiatan: ' + r.judul_kegiatan) : 'Judul kegiatan akan tampil di sini setelah diisi pada Step 1.';
+  if (dokJudulEl) dokJudulEl.textContent = r.judul_kegiatan ? ('Judul kegiatan: ' + r.judul_kegiatan) : 'Judul kegiatan akan tampil di sini setelah diisi pada Step 2.';
 }
 function hitungLama() {
   const b = document.getElementById('f-tgl-brg').value;
+  const r = currentReport();
+  const is1Day = r && (r.jenis === 'a' || r.jenis === 'b');
+  if (is1Day && b) {
+    document.getElementById('f-tgl-kmb').value = b;
+    if (r) { r.tgl_kembali = b; }
+  }
   const k = document.getElementById('f-tgl-kmb').value;
   if (b && k) {
     const diff = Math.round((new Date(k) - new Date(b)) / 86400000) + 1;
     document.getElementById('f-lama').value = diff + ' hari';
   } else { document.getElementById('f-lama').value = ''; }
+  updateTglKmbLock();
 }
 function setDateQuick(off) {
   const d = new Date(); d.setDate(d.getDate() + off);
@@ -1856,8 +2205,10 @@ function setDateQuick(off) {
   hitungLama(); onForm();
 }
 function setDateRange(days) {
+  const r = currentReport();
+  const is1Day = r && (r.jenis === 'a' || r.jenis === 'b');
   const d = new Date(); const s1 = d.toISOString().slice(0,10);
-  d.setDate(d.getDate() + days - 1); const s2 = d.toISOString().slice(0,10);
+  d.setDate(d.getDate() + (is1Day ? 0 : days - 1)); const s2 = d.toISOString().slice(0,10);
   document.getElementById('f-tgl-brg').value = s1;
   document.getElementById('f-tgl-kmb').value = s2;
   hitungLama(); onForm();
@@ -1985,12 +2336,12 @@ function addKegTpl(k) {
 function renderStepNav() {
   const r = currentReport(); if (!r) return;
   const steps = [
-    { id: 1, label: 'Jenis', done: !!r.jenis },
-    { id: 2, label: 'Identitas', done: r.pegawai_idx >= 0 },
-    { id: 3, label: 'Waktu', done: !!(r.tujuan && r.tgl_berangkat && r.tgl_kembali) },
-    { id: 4, label: 'Kegiatan', done: r.kegiatan && r.kegiatan.length > 0 && r.kegiatan.some(k => k.mas || k.sol) },
-    { id: 5, label: 'Hasil', done: !!(r.hasil || r.saran) },
-    { id: 6, label: 'Dokumentasi', done: !!(r.dokumentasi && r.dokumentasi.length > 0) }
+    { id: 1, label: 'Dokumentasi', done: !!(r.dokumentasi && r.dokumentasi.length > 0) },
+    { id: 2, label: 'Jenis', done: !!r.jenis },
+    { id: 3, label: 'Identitas', done: r.pegawai_idx >= 0 },
+    { id: 4, label: 'Waktu', done: !!(r.tujuan && r.tgl_berangkat && r.tgl_kembali) },
+    { id: 5, label: 'Kegiatan', done: r.kegiatan && r.kegiatan.length > 0 && r.kegiatan.some(k => k.mas || k.sol) },
+    { id: 6, label: 'Hasil', done: !!(r.hasil || r.saran) }
   ];
   const nav = document.getElementById('step-nav');
   nav.innerHTML = steps.map(s => `
@@ -2042,7 +2393,7 @@ async function uploadPegTtd(i, e) {
   if (!f) return;
   if (!f.type.startsWith('image/')) { toast('File harus berupa gambar', 'error'); return; }
   try {
-    const dataUrl = await compressImage(f, 600, 0.9);
+    const dataUrl = await compressImage(f, 600, 0.9, '#ffffff');
     state.pegawai[i].ttd = dataUrl;
     renderPeg(); buildPv();
     toast('Mengunggah TTD ' + (state.pegawai[i].nama || 'pegawai') + ' ke server...');
@@ -2130,29 +2481,29 @@ function isAppsScriptHost() {
 function getMissingReportFields(r) {
   if (!r) return ['Laporan belum dibuat'];
   const miss = [];
-  if (!r.jenis) miss.push('Jenis perjalanan dinas (Step 1)');
-  if (!r.judul_kegiatan || !String(r.judul_kegiatan).trim()) miss.push('Judul kegiatan (Step 1)');
-  if (r.pegawai_idx == null || r.pegawai_idx < 0) miss.push('Nama pegawai (Step 2)');
-  if (!r.dari || !String(r.dari).trim()) miss.push('Tempat asal (Step 3)');
-  if (!r.tujuan || !String(r.tujuan).trim()) miss.push('Tempat tujuan (Step 3)');
-  if (!r.tgl_berangkat) miss.push('Tanggal berangkat (Step 3)');
-  if (!r.tgl_kembali) miss.push('Tanggal kembali (Step 3)');
+  if (!r.jenis) miss.push('Jenis perjalanan dinas (Step 2)');
+  if (!r.judul_kegiatan || !String(r.judul_kegiatan).trim()) miss.push('Judul kegiatan (Step 2)');
+  if (r.pegawai_idx == null || r.pegawai_idx < 0) miss.push('Nama pegawai (Step 3)');
+  if (!r.dari || !String(r.dari).trim()) miss.push('Tempat asal (Step 4)');
+  if (!r.tujuan || !String(r.tujuan).trim()) miss.push('Tempat tujuan (Step 4)');
+  if (!r.tgl_berangkat) miss.push('Tanggal berangkat (Step 4)');
+  if (!r.tgl_kembali) miss.push('Tanggal kembali (Step 4)');
   if (r.tgl_berangkat && r.tgl_kembali && r.tgl_kembali < r.tgl_berangkat) {
-    miss.push('Tanggal kembali tidak boleh lebih awal dari tanggal berangkat (Step 3)');
+    miss.push('Tanggal kembali tidak boleh lebih awal dari tanggal berangkat (Step 4)');
   }
   // Rincian kegiatan: minimal 1 baris terisi (uraian masalah + solusi)
   const kegs = Array.isArray(r.kegiatan) ? r.kegiatan : [];
   const validKegs = kegs.filter(k => k && String(k.mas || '').trim() && String(k.sol || '').trim());
   if (validKegs.length === 0) {
-    miss.push('Rincian kegiatan: minimal 1 baris dengan uraian & solusi terisi (Step 4)');
+    miss.push('Rincian kegiatan: minimal 1 baris dengan uraian & solusi terisi (Step 5)');
   }
-  if (!r.hasil || !String(r.hasil).trim()) miss.push('Hasil / capaian (Step 5)');
-  if (!r.saran || !String(r.saran).trim()) miss.push('Saran / rekomendasi (Step 5)');
+  if (!r.hasil || !String(r.hasil).trim()) miss.push('Hasil / capaian (Step 6)');
+  if (!r.saran || !String(r.saran).trim()) miss.push('Saran / rekomendasi (Step 6)');
   // Jika TTD aktif tapi pegawai belum punya TTD tersimpan
   if (r.ttd_enabled) {
     const peg = getPeg(r.pegawai_idx);
     if (!peg || !peg.ttd) {
-      miss.push('TTD pegawai belum diunggah (Step 2 — buka Database Pegawai untuk upload)');
+      miss.push('TTD pegawai belum diunggah (Step 3 — buka Database Pegawai untuk upload)');
     }
   }
   return miss;
@@ -2174,6 +2525,26 @@ function showAlertModal(title, htmlBody) {
   document.getElementById('modal-bg').classList.add('on');
 }
 
+function saveDraft() {
+  const r = currentReport();
+  if (!r) return;
+  if (!r.judul_kegiatan || !String(r.judul_kegiatan).trim()) {
+    showAlertModal('Judul kegiatan belum diisi', '<p style="margin:0">Mohon isi <strong>Judul kegiatan</strong> (Step 2) sebelum menyimpan draft.</p>');
+    return;
+  }
+  if (r.pegawai_idx == null || r.pegawai_idx < 0) {
+    showAlertModal('Pegawai belum dipilih', '<p style="margin:0">Mohon pilih <strong>Nama pegawai</strong> (Step 3) sebelum menyimpan draft.</p>');
+    return;
+  }
+  r.status = 'draft';
+  r.updated = Date.now();
+  persist();
+  renderDash();
+  const badge = document.getElementById('draft-badge');
+  if (badge) badge.style.display = '';
+  toast('Draft tersimpan ✓');
+}
+
 function finalizeAndPrint() {
   const r = currentReport();
   if (!r) return;
@@ -2193,13 +2564,28 @@ function finalizeAndPrint() {
   }
 
   if (r.status !== 'final') {
-    r.status = 'final';
-    r.updated = Date.now();
-    persist();
-    renderDash();
-    const badge = document.getElementById('draft-badge');
-    if (badge) badge.style.display = 'none';
+    // Tampilkan peringatan: laporan akan terkunci setelah dicetak
+    openModal(
+      'Konfirmasi Cetak / Simpan PDF',
+      'Setelah dicetak atau disimpan sebagai PDF, laporan ini tidak dapat diedit atau dihapus dari dasbor. Gunakan "Duplikat & Edit" jika perlu membuat revisi. Lanjutkan?',
+      function() {
+        r.status = 'final';
+        r.updated = Date.now();
+        persist();
+        renderDash();
+        const badge = document.getElementById('draft-badge');
+        if (badge) badge.style.display = 'none';
+        _doPrint();
+      },
+      'Ya, Cetak / Simpan PDF'
+    );
+    return;
   }
+  // Laporan sudah final — langsung cetak ulang
+  _doPrint();
+}
+
+function _doPrint() {
   // Jika di dalam iframe, buka di tab baru karena print di iframe terbatas
   if (isInIframe()) {
     try {
@@ -2263,7 +2649,7 @@ function buildPv() {
           <td>${escHtml(k.sol) || '—'}</td>
         </tr>`).join('')
       : '<tr><td colspan="4" style="text-align:center;color:#999;padding:10px">Belum ada kegiatan</td></tr>';
-    kegTableHtml = `<table class="tbl-keg"><thead><tr><th style="width:32px">No</th><th style="width:110px">Waktu</th><th>Uraian kegiatan / masalah yang ditemukan</th><th>Solusi / tindak lanjut</th></tr></thead><tbody>${kegRows}</tbody></table>`;
+    kegTableHtml = `<table class="tbl-keg"><thead><tr><th style="width:32px">No</th><th style="width:75px">Waktu</th><th>Uraian kegiatan / masalah yang ditemukan</th><th>Solusi / tindak lanjut</th></tr></thead><tbody>${kegRows}</tbody></table>`;
   }
 
   const pv = document.getElementById('pv-area');
@@ -2327,7 +2713,7 @@ function buildPv() {
     <div class="pv-dok">${r.dokumentasi.map((d,i) => `
       <div class="pv-dok-item">
         <div class="pv-dok-head">
-          <span class="pvd-no">Foto ${i+1}</span> &nbsp;·&nbsp; <span class="pvd-loc">${escHtml(r.tujuan || '—')}</span>${d.gps ? `<br><span class="pvd-gps">${decToDms(d.gps.lat,true)} &nbsp;/&nbsp; ${decToDms(d.gps.lon,false)}</span>` : ''}
+          <span class="pvd-no">Foto ${i+1}</span>${d.gps ? `&nbsp;·&nbsp; <span class="pvd-gps">${decToDms(d.gps.lat,true)} &nbsp;/&nbsp; ${decToDms(d.gps.lon,false)}</span>` : ''}
         </div>
         <img src="${d.dataUrl}" alt="">
         ${d.caption ? `<div class="pv-dok-cap">${escHtml(d.caption)}</div>` : ''}
@@ -2394,7 +2780,7 @@ function getGps() {
     );
   });
 }
-function compressImage(file, maxW, quality) {
+function compressImage(file, maxW, quality, bgColor) {
   maxW = maxW || 1280; quality = quality || 0.82;
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -2408,7 +2794,9 @@ function compressImage(file, maxW, quality) {
         const h = Math.round(img.height * scale);
         const canvas = document.createElement('canvas');
         canvas.width = w; canvas.height = h;
-        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        const ctx = canvas.getContext('2d');
+        if (bgColor) { ctx.fillStyle = bgColor; ctx.fillRect(0, 0, w, h); }
+        ctx.drawImage(img, 0, 0, w, h);
         try { resolve(canvas.toDataURL('image/jpeg', quality)); }
         catch (er) { reject(er); }
       };
@@ -2469,20 +2857,16 @@ function setDokumentasiCaption(id, val) {
 function renderDokumentasi() {
   const r = currentReport(); if (!r) return;
   const judulEl = document.getElementById('dok-judul');
-  if (judulEl) judulEl.textContent = r.judul_kegiatan ? ('Judul kegiatan: ' + r.judul_kegiatan) : 'Judul kegiatan akan tampil di sini setelah diisi pada Step 1.';
+  if (judulEl) judulEl.textContent = r.judul_kegiatan ? ('Judul kegiatan: ' + r.judul_kegiatan) : 'Judul kegiatan akan tampil di sini setelah diisi pada Step 2.';
   const gal = document.getElementById('dok-gallery'); if (!gal) return;
   const list = r.dokumentasi || [];
   if (list.length === 0) {
     gal.innerHTML = '<div class="dok-empty">Belum ada foto. Klik tombol di atas untuk mengambil dari kamera atau memilih file.</div>';
     return;
   }
-  const tujuan = r.tujuan || 'Tempat tujuan belum diisi';
   gal.innerHTML = list.map(d => `
     <div class="dok-card">
-      <div class="dok-meta">
-        <div class="dok-loc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>${escHtml(tujuan)}</div>
-        ${d.gps ? `<div class="dok-gps">${decToDms(d.gps.lat, true)} &nbsp;·&nbsp; ${decToDms(d.gps.lon, false)}</div>` : '<div class="dok-gps muted">GPS tidak tersedia</div>'}
-      </div>
+      ${d.gps ? `<div class="dok-gps" style="font-size:11px;color:var(--ink-400);padding:4px 8px 0">${decToDms(d.gps.lat, true)} &nbsp;·&nbsp; ${decToDms(d.gps.lon, false)}</div>` : ''}
       <div class="dok-img-wrap"><img src="${d.dataUrl}" alt=""></div>
       <div class="dok-foot">
         <input type="text" value="${escAttr(d.caption || '')}" placeholder="Keterangan foto…" oninput="setDokumentasiCaption('${d.id}',this.value)">
@@ -2518,116 +2902,41 @@ function updateTtdHint() {
     hint.textContent = 'Pegawai "' + (peg.nama||'(tanpa nama)') + '" belum memiliki TTD tersimpan. Buka tab Database Pegawai untuk mengunggah.';
     hint.classList.add('warn');
   } else {
-    hint.textContent = 'TTD ' + peg.nama + ' akan ditempel pada kolom tanda tangan laporan.';
+    hint.textContent = (peg.nama || 'Pegawai') + ' — TTD tersimpan ✓';
     hint.classList.add('ok');
   }
 }
 
-// ====== WORD IMPROVEMENT ======
-function improveText(elId) {
-  const el = document.getElementById(elId);
+async function improveText(id) {
+  const el = document.getElementById(id);
   if (!el) return;
-  let t = el.value || '';
-  if (!t.trim()) { toast('Tidak ada teks untuk diperbaiki', 'error'); return; }
-
-  // 1. Normalisasi whitespace
-  t = t.replace(/\r\n?/g, '\n');
-  t = t.replace(/[ \t]+/g, ' ');
-  t = t.replace(/ *\n+ */g, '\n');
-  t = t.trim();
-
-  // 2. Ganti kata informal -> formal (Indonesia)
-  const slang = {
-    'gak':'tidak','ga ':'tidak ','nggak':'tidak','engga':'tidak','ngga':'tidak',
-    'udah':'sudah','udh':'sudah','blm':'belum','lg':'lagi','sm':'sama',
-    'krn':'karena','utk':'untuk','dr ':'dari ','dgn':'dengan','dg ':'dengan ',
-    'sblm':'sebelum','sblh':'sebelah','tdk':'tidak','dlm':'dalam',
-    'sdh':'sudah','dpt':'dapat','spy':'supaya','tsb':'tersebut',
-    'sy ':'saya ','aku ':'saya ','gue ':'saya ','gw ':'saya ',
-    'kpd':'kepada','yg ':'yang ','dll':'dan lain-lain','dsb':'dan sebagainya',
-    'jg ':'juga ','jgn':'jangan','jd ':'jadi ','blh':'boleh',
-    'klo':'kalau','kalo':'kalau','gimana':'bagaimana','gmn':'bagaimana',
-    'kayak':'seperti','kayaknya':'sepertinya','banget':'sangat',
-    'bgt':'sangat','bisa aja':'dapat saja','udahan':'selesai',
-    'bikin':'membuat','ngerjain':'mengerjakan','ngecek':'memeriksa',
-    'ngumpulin':'mengumpulkan','ngambil':'mengambil','ngasih':'memberikan',
-    'ngirim':'mengirim','dipake':'digunakan','dipakai':'digunakan',
-    'trs':'terus','trus':'terus','pdhl':'padahal','msh':'masih',
-    'tp ':'tetapi ','tapi':'tetapi','cm ':'hanya ','cuma':'hanya','cmn':'hanya',
-    'mantap':'baik','keren':'baik','oke':'baik','ok ':'baik ',
-    'kasih':'memberikan','dapet':'mendapatkan','dapat dilakukan':'dapat dilakukan',
-    'tau':'tahu','udh tau':'sudah tahu','udh tahu':'sudah tahu'
-  };
-  // case-insensitive replace, preserving word boundaries
-  Object.entries(slang).forEach(([k,v]) => {
-    const re = new RegExp('\\b' + k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&').trim() + '\\b','gi');
-    t = t.replace(re, m => {
-      // preserve capitalization of original
-      if (m[0] === m[0].toUpperCase()) return v[0].toUpperCase() + v.slice(1);
-      return v;
-    });
-  });
-
-  // 3. Hilangkan pengulangan kata berdekatan: "yang yang", "dan dan"
-  t = t.replace(/\b(\w+)(\s+\1\b)+/gi, '$1');
-
-  // 4. Spasi setelah tanda baca
-  t = t.replace(/\s*([,.;:!?])\s*/g, '$1 ');
-  t = t.replace(/\s+([)\]}])/g, '$1');
-  t = t.replace(/([(\[{])\s+/g, '$1');
-
-  // 5. Kapitalisasi awal kalimat
-  t = t.replace(/(^|[.!?]\s+)([a-z])/g, (_, p, c) => p + c.toUpperCase());
-
-  // 6. Pastikan diakhiri tanda baca
-  t = t.trim();
-  if (t && !/[.!?]$/.test(t)) t += '.';
-
-  // 7. Kapitalisasi "saya" -> "saya" (lowercase mid sentence ok), BPS / NIP / NTT ALL CAPS
-  t = t.replace(/\bbps\b/g, 'BPS');
-  t = t.replace(/\bntt\b/g, 'NTT');
-  t = t.replace(/\bnip\b/g, 'NIP');
-  t = t.replace(/\bsppd\b/g, 'SPPD');
-  t = t.replace(/\bri\b/g, 'RI');
-
-  // 8. Rapikan baris baru (paragraf)
-  t = t.split('\n').map(s => s.trim()).filter(Boolean).join('\n');
-
+  let t = el.value.trim();
+  if (!t) { toast('Teks kosong', 'error'); return; }
+  toast('Memperbaiki kalimat...');
+  try {
+    const resp = await apiPost({ action: 'improveText', text: t });
+    if (resp && resp.result) t = resp.result;
+  } catch(e) { /* fallback ke perbaikan lokal */ }
+  t = t.replace(/saya/gi, 'kami');
+  t = t.replace(/di lakukan/gi, 'dilakukan');
+  t = t.replace(/di laksanakan/gi, 'dilaksanakan');
+  t = t.replace(/di capai/gi, 'dicapai');
+  t = t.replace(/ri/g, 'RI');
   el.value = t;
-  el.dispatchEvent(new Event('input', { bubbles: true }));
-  toast('Kalimat diperbaiki');
+  toast('Kalimat diperbaiki ✓');
 }
 
-// ====== KEYBOARD ======
+function closeAlertModal() { closeModal(); }
+
 document.addEventListener('keydown', e => {
-  if ((e.ctrlKey || e.metaKey) && e.key === 's') {
-    e.preventDefault();
-    persist();
-    toast('Data disimpan');
-  } else if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
-    e.preventDefault();
-    if (isInIframe()) {
-      openInNewTab();
-      toast('Setelah tab baru terbuka, tekan Ctrl+P di sana untuk cetak.');
-    } else {
-      window.print();
-    }
-  } else if (e.key === 'Escape') {
-    document.getElementById('modal-bg').classList.remove('on');
-    document.getElementById('help-bg').classList.remove('on');
-  } else if (e.key === '?') {
-    const active = document.activeElement;
-    const isInput = active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA' || active.tagName === 'SELECT');
-    if (!isInput) openHelp();
-  }
+  if ((e.ctrlKey||e.metaKey)&&e.key==='s'){e.preventDefault();saveDraft();}
+  if ((e.ctrlKey||e.metaKey)&&e.key==='p'){e.preventDefault();finalizeAndPrint();}
+  if (e.key==='Escape'){closeModal();closeHelp();}
+  if (e.key==='?'){openHelp();}
 });
 
 // ====== INIT ======
-(async function init() {
-  setView('dash');
-  await loadState();
-  renderDash();
-})();
+loadState();
 </script>
 </body>
 </html>
