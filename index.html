@@ -1779,7 +1779,7 @@
 // ====== STATE ======
 
 // ─── GANTI URL INI dengan Web App URL dari Google Apps Script ───
-const API_URL = 'https://script.google.com/macros/s/AKfycbw2t3Ou5eGoStDLy92rpJWtt0-lSdLEqOvZNqYV3iA34_dzA5DoN_0cxqkKBHZdlTLM/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbwfyTGUqeklHA6IHZNxbGkDSFlq3LBjHFizasipLpm93dewD4UaHlIVtkCjCn2HfUXk/exec';
 // ────────────────────────────────────────────────────────────────
 
 const JENIS_MAP = {
@@ -1798,16 +1798,18 @@ const TEMPLATES = {
   diskusi:     { mas: 'Dilakukan diskusi hasil sementara bersama pihak terkait untuk membahas capaian, kendala, dan kebutuhan tindak lanjut kegiatan.', sol: 'Hasil diskusi dirangkum sebagai bahan penyempurnaan data, penyusunan laporan, dan pelaksanaan tindak lanjut berikutnya.', dur: 2 }
 };
 
-let state = { pegawai: [], reports: [], currentId: null };
+let state = { pegawai: [], reports: [], users: [], currentId: null };
 
 // ====== GLOBALS (dideklarasikan di sini agar tidak kena TDZ) ======
 const BULAN = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
-const USERS_KEY = 'perjadin_users_v1';
+const USERS_KEY = 'perjadin_users_v1';     // cache lokal saja (offline fallback)
 const SESSION_KEY = 'perjadin_session_v1';
 let currentUser = null; // { username, role:'admin'|'pegawai', nip, displayName }
 let saveTimer = null;
 let _selfEditPegIdx = -1;
 let _selfEditUserIdx = -1;
+let usersLoaded = false;        // true bila state.users sudah ter-load dari server
+let _usersLoadPromise = null;   // promise singleton agar tidak fetch dobel
 
 // ── API helpers ───────────────────────────────────────────────
 // CATATAN PENTING: Google Apps Script TIDAK mendukung CORS preflight.
@@ -1859,17 +1861,29 @@ async function apiPost(payload, retries) {
 async function loadState() {
   setSaveStatus('saving');
   try {
-    console.log('Fetching all data from server...');
     const data = await apiGet('getAll');
-    console.log('Data received from server:', data);
     state.pegawai = data.pegawai || [];
     state.reports = data.reports || [];
-    if (data.users && data.users.length > 0) {
-      console.log('Updating local users from server data:', data.users);
-      saveUsersData(data.users, false);
-    } else {
-      console.warn('No users data received from server or users list is empty');
+    state.users   = Array.isArray(data.users) ? data.users : [];
+    usersLoaded   = true;
+
+    // === MIGRASI satu kali: kalau server belum punya akun tapi cache lokal
+    // admin masih menyimpan akun-akun lama (sebelum sistem ini pindah ke
+    // server), push ke server sekarang supaya tidak hilang. ===
+    if (currentUser && currentUser.role === 'admin' && state.users.length === 0) {
+      try {
+        const cached = JSON.parse(localStorage.getItem(USERS_KEY) || '[]');
+        if (Array.isArray(cached) && cached.length > 0) {
+          state.users = cached;
+          // Fire-and-forget — kalau gagal masih ada di localStorage
+          apiPost({ action: 'saveUsers', users: cached })
+            .then(() => toast('Akun pegawai berhasil dipindahkan ke server ✓'))
+            .catch(err => console.warn('Migrasi users ke server gagal:', err));
+        }
+      } catch(_) {}
     }
+
+    try { localStorage.setItem(USERS_KEY, JSON.stringify(state.users)); } catch(_) {}
     // Filter laporan berdasarkan role login
     if (currentUser && currentUser.role === 'pegawai' && currentUser.nip) {
       const myNip = currentUser.nip;
@@ -4256,18 +4270,18 @@ function closeSelfEdit() {
   document.getElementById('self-edit-bg').classList.remove('on');
 }
 
-function saveSelfEdit() {
+async function saveSelfEdit() {
   const username = (document.getElementById('se-username').value || '').trim();
   const pw1 = document.getElementById('se-password').value;
   const pw2 = document.getElementById('se-password2').value;
   if (!username) { toast('Username tidak boleh kosong', 'error'); return; }
   if (pw1 && pw1 !== pw2) { toast('Konfirmasi password tidak cocok', 'error'); return; }
   if (pw1 && pw1.length < 4) { toast('Password minimal 4 karakter', 'error'); return; }
-  const users = getUsers();
-  if (_selfEditUserIdx >= 0) {
+  const users = (getUsers() || []).slice();
+  if (_selfEditUserIdx >= 0 && users[_selfEditUserIdx]) {
     users[_selfEditUserIdx].username = username;
     if (pw1) users[_selfEditUserIdx].password = pw1;
-    saveUsersData(users, true);
+    await saveUsersData(users);
     currentUser.username = username;
     localStorage.setItem(SESSION_KEY, JSON.stringify(currentUser));
     const nameEl = document.getElementById('topbar-user-name');
@@ -4346,32 +4360,57 @@ function selfEditDelTtd() {
 
 // ====== LOGIN SYSTEM ======
 
+// Akun user disimpan di server (Google Sheets) supaya bisa login dari
+// perangkat manapun. localStorage dipakai sebagai cache offline saja.
 function getUsers() {
+  if (usersLoaded) return state.users || [];
+  // Fallback: pakai cache lokal kalau belum sempat load dari server
   try { return JSON.parse(localStorage.getItem(USERS_KEY) || '[]'); } catch(e) { return []; }
 }
-function saveUsersData(arr, syncWithServer = false) {
-  console.log('Saving users to localStorage:', arr);
-  localStorage.setItem(USERS_KEY, JSON.stringify(arr));
-  if (syncWithServer) {
-    console.log('Syncing users to server...');
-    apiPost({ action: 'saveUsers', users: arr })
-      .then(res => console.log('Sync users success:', res))
-      .catch(e => {
-        console.error('Gagal sync users ke server:', e);
-        toast('Gagal sinkronisasi akun ke server: ' + e.message, 'error');
-      });
+
+// Muat daftar user dari server (singleton promise — aman dipanggil berkali-kali)
+function loadUsersFromServer() {
+  if (_usersLoadPromise) return _usersLoadPromise;
+  _usersLoadPromise = (async () => {
+    try {
+      const data = await apiGet('getAll');
+      state.users = (data && Array.isArray(data.users)) ? data.users : [];
+      try { localStorage.setItem(USERS_KEY, JSON.stringify(state.users)); } catch(_) {}
+      usersLoaded = true;
+    } catch(e) {
+      console.warn('loadUsersFromServer gagal:', e);
+      // Fallback ke cache lokal supaya admin/nimda + akun lama masih bisa coba
+      try { state.users = JSON.parse(localStorage.getItem(USERS_KEY) || '[]'); }
+      catch(_) { state.users = []; }
+      // jangan set usersLoaded=true supaya nanti masih bisa retry
+      _usersLoadPromise = null;
+      throw e;
+    }
+  })();
+  return _usersLoadPromise;
+}
+
+// Simpan ke server + cache lokal. Async — caller boleh await.
+async function saveUsersData(arr) {
+  state.users = Array.isArray(arr) ? arr : [];
+  usersLoaded = true;
+  try { localStorage.setItem(USERS_KEY, JSON.stringify(state.users)); } catch(_) {}
+  try {
+    setSaveStatus('saving');
+    await apiPost({ action: 'saveUsers', users: state.users });
+    setSaveStatus('saved');
+  } catch(e) {
+    setSaveStatus('saved');
+    toast('Gagal menyimpan akun ke server: ' + e.message, 'error');
   }
 }
 
-async function initLogin() {
-  // Selalu coba ambil data user terbaru dari server di awal (untuk login di perangkat baru)
-  fetchUsersOnly();
-
+function initLogin() {
   try {
     const sess = JSON.parse(localStorage.getItem(SESSION_KEY) || 'null');
     if (sess && sess.username) {
       currentUser = sess;
-      showApp();
+      showApp(); // loadState() akan memuat users juga
       return;
     }
   } catch(e) {
@@ -4379,19 +4418,10 @@ async function initLogin() {
     localStorage.removeItem(SESSION_KEY);
   }
   showLoginOverlay();
-}
-
-async function fetchUsersOnly() {
-  try {
-    console.log('Pre-fetching users for login...');
-    const data = await apiGet('getAll');
-    if (data && data.users) {
-      console.log('Users pre-fetched:', data.users.length);
-      saveUsersData(data.users, false);
-    }
-  } catch (e) {
-    console.warn('Pre-fetch users failed:', e);
-  }
+  // Pre-fetch users di background supaya saat user klik "Masuk", validasi
+  // bisa langsung jalan tanpa perlu menunggu. Kalau gagal, doLogin akan
+  // mencoba lagi.
+  loadUsersFromServer().catch(() => { /* silent: doLogin akan retry */ });
 }
 
 function showLoginOverlay() {
@@ -4417,40 +4447,71 @@ function showApp() {
   loadState();
 }
 
-function doLogin() {
-  try {
-  const username = (document.getElementById('login-username').value || '').trim();
-  const password = document.getElementById('login-password').value || '';
+async function doLogin() {
   const errEl = document.getElementById('login-error');
-  errEl.style.display = 'none';
+  const loginBtn = document.querySelector('.login-btn');
+  const setBusy = (busy) => {
+    if (!loginBtn) return;
+    loginBtn.disabled = busy;
+    loginBtn.textContent = busy ? 'Memuat data…' : 'Masuk';
+  };
+  try {
+    const username = (document.getElementById('login-username').value || '').trim();
+    const password = document.getElementById('login-password').value || '';
+    if (errEl) errEl.style.display = 'none';
 
-  if (!username || !password) {
-    errEl.textContent = 'Username dan password wajib diisi.';
-    errEl.style.display = 'block'; return;
-  }
-  // Admin check
-  if (username === 'admin' && password === 'nimda') {
-    currentUser = { username: 'admin', role: 'admin', displayName: 'Administrator' };
-    localStorage.setItem(SESSION_KEY, JSON.stringify(currentUser));
-    showApp();
-    return;
-  }
-  // Pegawai check
-  const users = getUsers();
-  const found = users.find(u => u.username === username && u.password === password);
-  if (found) {
-    currentUser = { username: found.username, role: 'pegawai', nip: found.nip, displayName: found.displayName || found.username };
-    localStorage.setItem(SESSION_KEY, JSON.stringify(currentUser));
-    showApp();
-    return;
-  }
-  errEl.textContent = 'Username atau password salah.';
-  errEl.style.display = 'block';
-  document.getElementById('login-password').value = '';
-  document.getElementById('login-password').focus();
+    if (!username || !password) {
+      if (errEl) { errEl.textContent = 'Username dan password wajib diisi.'; errEl.style.display = 'block'; }
+      return;
+    }
+
+    // Admin tetap hardcoded, jadi bisa login walau server down
+    if (username === 'admin' && password === 'nimda') {
+      currentUser = { username: 'admin', role: 'admin', displayName: 'Administrator' };
+      localStorage.setItem(SESSION_KEY, JSON.stringify(currentUser));
+      showApp();
+      return;
+    }
+
+    // Pastikan daftar user sudah ter-load dari server sebelum validasi.
+    // Ini yang membuat akun pegawai bisa login dari perangkat manapun.
+    if (!usersLoaded) {
+      setBusy(true);
+      try {
+        await loadUsersFromServer();
+      } catch(loadErr) {
+        // Server tidak bisa dihubungi — coba pakai cache lokal sebagai fallback
+        try { state.users = JSON.parse(localStorage.getItem(USERS_KEY) || '[]'); } catch(_) { state.users = []; }
+        if (!state.users || state.users.length === 0) {
+          setBusy(false);
+          if (errEl) {
+            errEl.textContent = 'Gagal memuat daftar akun dari server. Cek koneksi internet lalu coba lagi.';
+            errEl.style.display = 'block';
+          }
+          return;
+        }
+        // Ada cache lokal — lanjutkan validasi dengan data cache
+      }
+      setBusy(false);
+    }
+
+    const users = getUsers();
+    const found = users.find(u => u && u.username === username && u.password === password);
+    if (found) {
+      currentUser = { username: found.username, role: 'pegawai', nip: found.nip, displayName: found.displayName || found.username };
+      localStorage.setItem(SESSION_KEY, JSON.stringify(currentUser));
+      showApp();
+      return;
+    }
+    if (errEl) {
+      errEl.textContent = 'Username atau password salah.';
+      errEl.style.display = 'block';
+    }
+    document.getElementById('login-password').value = '';
+    document.getElementById('login-password').focus();
   } catch(e) {
-    const errEl2 = document.getElementById('login-error');
-    if (errEl2) { errEl2.textContent = 'Error: ' + e.message; errEl2.style.display = 'block'; }
+    setBusy(false);
+    if (errEl) { errEl.textContent = 'Error: ' + e.message; errEl.style.display = 'block'; }
     console.error('doLogin error:', e);
   }
 }
@@ -4458,13 +4519,19 @@ function doLogin() {
 function doLogout() {
   currentUser = null;
   localStorage.removeItem(SESSION_KEY);
-  // Reset state
+  // Reset state (tapi simpan users sebagai cache untuk login berikutnya)
   state.reports = [];
   state.pegawai = [];
   state.currentId = null;
+  // Paksa fetch ulang users dari server pada login berikutnya
+  // (kalau ada akun baru yang ditambah dari perangkat lain, kita harus lihat)
+  usersLoaded = false;
+  _usersLoadPromise = null;
   showLoginOverlay();
   document.getElementById('login-username').value = '';
   document.getElementById('login-password').value = '';
+  // Pre-fetch lagi agar saat user klik Masuk, langsung siap
+  loadUsersFromServer().catch(() => {});
 }
 
 // ====== USER MANAGEMENT (Admin only) ======
@@ -4495,10 +4562,7 @@ function renderUsersPanel() {
   panel.innerHTML = `
     <div class="users-panel-title">
       <span>Manajemen Akun Pegawai</span>
-      <div style="display:flex;gap:8px">
-        <button class="btn-secondary" style="font-size:12px;padding:5px 12px" onclick="loadState()">↻ Refresh Data</button>
-        <button class="btn-primary" style="font-size:12px;padding:5px 12px" onclick="addUser()">+ Tambah Akun</button>
-      </div>
+      <button class="btn-primary" style="font-size:12px;padding:5px 12px" onclick="addUser()">+ Tambah Akun</button>
     </div>
     <table class="user-table">
       <thead><tr><th>Username</th><th>Password</th><th>Nama Tampil</th><th>Pegawai</th><th></th></tr></thead>
@@ -4506,24 +4570,24 @@ function renderUsersPanel() {
     </table>`;
 }
 
-function addUser() {
-  const users = getUsers();
+async function addUser() {
+  const users = (getUsers() || []).slice();
   users.push({ username: '', password: '', displayName: '', nip: '' });
-  saveUsersData(users, true);
+  await saveUsersData(users);
   renderUsersPanel();
 }
 
-function updateUser(i, field, val) {
-  const users = getUsers();
+async function updateUser(i, field, val) {
+  const users = (getUsers() || []).slice();
   if (!users[i]) return;
   users[i][field] = val;
-  saveUsersData(users, true);
+  await saveUsersData(users);
 }
 
-function deleteUser(i) {
-  const users = getUsers();
+async function deleteUser(i) {
+  const users = (getUsers() || []).slice();
   users.splice(i, 1);
-  saveUsersData(users, true);
+  await saveUsersData(users);
   renderUsersPanel();
   toast('Akun dihapus');
 }
