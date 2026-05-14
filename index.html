@@ -989,15 +989,84 @@
 
   /* ===== MOBILE / HP COMPATIBILITY (max 768px) ===== */
   @media (max-width: 768px) {
-    /* Topbar */
-    .topbar { padding: 0 12px; gap: 8px; }
-    .topbar .app-name { font-size: 13px; }
-    .topbar .app-sub { display: none; }
-    .topbar .btn { padding: 8px 12px; font-size: 13px; }
+    /* ===== Topbar — mobile layout fix ===== */
+    .topbar {
+      padding: 10px 12px;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .topbar-logo { width: 38px; height: 38px; }
+    .topbar-title { flex: 1 1 auto; min-width: 0; margin-right: 0; }
+    .topbar-title h1 {
+      font-size: 13px;
+      line-height: 1.2;
+      letter-spacing: .2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .topbar-title h1 br { display: none; }  /* satu baris saja di HP */
+    .topbar-title p { display: none; }      /* alamat disembunyikan di HP */
+    .topbar-actions {
+      flex: 0 0 auto;
+      gap: 4px;
+      flex-wrap: nowrap;
+      justify-content: flex-end;
+    }
+    /* Tombol Bantuan & Unduh E-Book jadi icon-only di HP biar tidak menabrak */
+    .tb-btn {
+      padding: 6px 8px;
+      font-size: 0;            /* sembunyikan teks tombol */
+      gap: 0;
+      border-radius: 8px;
+    }
+    .tb-btn svg { width: 16px; height: 16px; }
+    /* User badge: tampilkan role + tombol keluar saja */
+    .user-badge { gap: 6px; flex-wrap: nowrap; }
+    .user-badge .user-role { font-size: 9px; padding: 2px 6px; }
+    .user-badge .user-name { display: none; }
+    .logout-btn { padding: 4px 10px; font-size: 11.5px; }
 
-    /* Nav tabs */
-    .nav { padding: 0 8px; gap: 2px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    /* ===== Nav tabs — hilangkan tabrakan dengan status simpan ===== */
+    .nav {
+      padding: 0 8px;
+      gap: 2px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      justify-content: flex-start;
+    }
+    .nav-tab {
+      padding: 8px 10px;
+      font-size: 12.5px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    /* Indikator "Tersimpan otomatis" disembunyikan di HP — tidak esensial */
+    .nav-status { display: none; }
+    /* (kompatibilitas lama) */
     .nav-btn { padding: 10px 10px; font-size: 12px; white-space: nowrap; }
+
+    /* ===== Dashboard hero — stack vertikal, kartu profil di bawah ===== */
+    .dash-hero {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 14px;
+      padding: 18px 18px;
+    }
+    .dash-hero h2 { font-size: 20px; }
+    .dash-hero p { font-size: 13px; line-height: 1.5; }
+    .dash-hero .row { flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .hero-profile {
+      width: 100%;
+      padding: 12px 14px;
+      gap: 12px;
+      box-sizing: border-box;
+    }
+    .profile-photo { width: 56px; height: 56px; border-width: 2px; }
+    .profile-photo-icon { width: 28px; height: 28px; }
+    .profile-name { font-size: 14px; }
+    .profile-detail { font-size: 11.5px; line-height: 1.5; }
 
     /* Main content */
     main { padding: 12px 10px; }
@@ -1291,6 +1360,28 @@
   .upload-sm-btn:hover { background: var(--ink-200); }
   .del-sm-btn { padding: 5px 10px; font-size: 12px; background: #fee2e2; border: 1px solid #fca5a5; border-radius: var(--radius-sm); cursor: pointer; font-family: inherit; color: var(--danger); }
   .del-sm-btn:hover { background: #fecaca; }
+
+  /* ===== MOBILE OVERRIDES (di paling akhir agar menang cascade) ===== */
+  @media (max-width: 768px) {
+    .dash-hero {
+      flex-direction: column !important;
+      align-items: stretch !important;
+      gap: 14px !important;
+      padding: 16px 18px !important;
+    }
+    .hero-profile {
+      width: 100%;
+      padding: 12px 14px;
+      gap: 12px;
+      box-sizing: border-box;
+    }
+    .profile-photo { width: 56px; height: 56px; border-width: 2px; }
+    .profile-photo-icon { width: 28px; height: 28px; }
+    .profile-name { font-size: 14px; }
+    .profile-detail { font-size: 11.5px; line-height: 1.5; }
+    /* User badge cascade fix */
+    .user-badge .user-name { display: none !important; }
+  }
 
 </style>
 </head>
@@ -2029,11 +2120,11 @@ function closeModal() { document.getElementById('modal-bg').classList.remove('on
 function openHelp() { document.getElementById('help-bg').classList.add('on'); }
 
 function downloadEbook() {
-  window.open('https://drive.google.com/file/d/1oT9e_Qx8rejxJYpMvT5SUMb7x3Xc4Y6z/view', '_blank');
+  window.open('https://drive.google.com/file/d/1lVyBmVG0d37T54bWdQHLyWMSt3DYFcUr/view', '_blank');
 }
 function downloadEbook_old() {
   const link = document.createElement('a');
-  link.href = 'https://drive.google.com/file/d/1oT9e_Qx8rejxJYpMvT5SUMb7x3Xc4Y6z/view';
+  link.href = 'https://drive.google.com/file/d/1lVyBmVG0d37T54bWdQHLyWMSt3DYFcUr/view';
   link.download = 'Panduan_Sistem_Laporan_Perjadin.pdf';
 
   fetch('Panduan_Sistem_Laporan_Perjadin.pdf')
