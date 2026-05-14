@@ -987,6 +987,11 @@
   /* HELP / KEYBOARD */
   .kbd { display: inline-block; padding: 1px 6px; background: var(--ink-100); border: 1px solid var(--ink-200); border-bottom-width: 2px; border-radius: 4px; font-family: ui-monospace, Menlo, monospace; font-size: 11px; color: var(--ink-700); }
 
+  /* ===== Label tombol pendek/panjang — default: tampilkan panjang, sembunyikan pendek.
+     Di mobile (di @media block) akan dibalik. ===== */
+  .lbl-lg { display: inline; }
+  .lbl-sm { display: none; }
+
   /* ===== MOBILE / HP COMPATIBILITY (max 768px) ===== */
   @media (max-width: 768px) {
     /* ===== Topbar — mobile layout fix ===== */
@@ -999,14 +1004,11 @@
     .topbar-logo { width: 38px; height: 38px; }
     .topbar-title { flex: 1 1 auto; min-width: 0; margin-right: 0; }
     .topbar-title h1 {
-      font-size: 13px;
-      line-height: 1.2;
+      font-size: 12.5px;
+      line-height: 1.25;
       letter-spacing: .2px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      /* biarkan wrap natural pakai <br> bawaan — hasil 2 baris yang rapi */
     }
-    .topbar-title h1 br { display: none; }  /* satu baris saja di HP */
     .topbar-title p { display: none; }      /* alamat disembunyikan di HP */
     .topbar-actions {
       flex: 0 0 auto;
@@ -1107,6 +1109,99 @@
 
     /* Jenis grid */
     .jenis-grid { grid-template-columns: 1fr; }
+
+    /* ===== Grid yang sebelumnya bikin overflow di HP ===== */
+    /* Kartu statistik (4 kolom → 2 kolom di HP) */
+    .stats { grid-template-columns: repeat(2, 1fr) !important; gap: 10px; }
+    .stat { padding: 12px 14px; gap: 10px; }
+    .stat-ic { width: 34px; height: 34px; }
+    .stat-v { font-size: 18px; }
+    .stat-l { font-size: 11px; }
+
+    /* Form 2-kolom dan 3-kolom → stack jadi 1 kolom di HP */
+    .g2 { grid-template-columns: 1fr !important; gap: 8px; }
+    .g3 { grid-template-columns: 1fr !important; gap: 8px; }
+
+    /* Cegah ada elemen yang melampaui lebar viewport */
+    html, body { overflow-x: hidden; max-width: 100vw; }
+    .app { width: 100%; max-width: 100vw; overflow-x: hidden; }
+    main { max-width: 100%; box-sizing: border-box; padding: 10px 8px; }
+    .topbar { width: 100%; box-sizing: border-box; }
+    .nav { width: 100%; box-sizing: border-box; }
+
+    /* ===== Editor laporan — fix lebar di HP ===== */
+    /* Pastikan semua container editor tidak melebihi viewport */
+    .view, .editor-shell, .ed-left, .card, .card-h, .card-b, .field {
+      max-width: 100%;
+      box-sizing: border-box;
+      min-width: 0;
+    }
+    /* Card padding lebih kompak agar konten dapat lebih banyak ruang */
+    .card-h { padding: 11px 12px; }
+    .card-b { padding: 12px 12px; }
+    /* Semua input/select/textarea harus respect parent */
+    .field input, .field select, .field textarea,
+    input[type="text"], input[type="date"], input[type="number"],
+    select, textarea {
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+    /* Action bar tombol: kecilkan min-width supaya muat 3 di satu baris */
+    #top-action-bar .btn, #bottom-action-bar .btn {
+      min-width: 0;
+      padding: 9px 6px;
+      font-size: 12px;
+      flex: 1 1 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    #top-action-bar .btn-row, #bottom-action-bar .btn-row { gap: 6px; min-width: 0; }
+    /* Tombol "Kembali ke dasbor" di action-bar atas: pakai 1 baris penuh */
+    #top-action-bar > .btn-ghost { flex: 1 1 100%; }
+
+    /* Step nav: pastikan tidak overflow keluar viewport */
+    .step-nav {
+      max-width: 100%;
+      box-sizing: border-box;
+      flex-wrap: nowrap;
+    }
+    /* Dokumentasi gallery */
+    .dok-gallery {
+      grid-template-columns: repeat(2, 1fr) !important;
+      gap: 8px;
+    }
+    .dok-gallery > * { min-width: 0; max-width: 100%; }
+    .dok-gallery img { max-width: 100%; height: auto; }
+    /* Kartu jenis perjadin */
+    .jenis-card { max-width: 100%; min-width: 0; box-sizing: border-box; }
+    /* TTD toggle text yang panjang */
+    .ttd-toggle-txt { font-size: 12.5px; }
+
+    /* ===== Sembunyikan keterangan kecil di header tiap step (versi HP) ===== */
+    /* Hanya p deskripsi (di samping h2) yang disembunyikan.
+       Tag h2 + badge + tombol di card-h tetap tampil. */
+    .card[id^="sec-"] > .card-h p,
+    #v-editor .card-h > p { display: none; }
+
+    /* ===== Span swap label tombol — versi mobile pakai .lbl-sm ===== */
+    .lbl-lg { display: none !important; }
+    .lbl-sm { display: inline !important; }
+
+    /* Tombol Foto kamera + Unggah file: share row 50/50 */
+    .dok-actions { display: flex; gap: 8px; flex-wrap: nowrap; }
+    .dok-actions .btn {
+      flex: 1 1 0;
+      min-width: 0;
+      padding: 10px 8px;
+      font-size: 12.5px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      justify-content: center;
+    }
+    .dok-actions .btn svg { flex-shrink: 0; }
 
     /* Pegawai select */
     #f-peg { font-size: 16px; min-height: 44px; }
@@ -1550,15 +1645,15 @@
             <div class="btn-row">
               <button class="btn btn-draft" onclick="saveDraft()">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
-                Simpan Draft
+                <span class="lbl-lg">Simpan Draft</span><span class="lbl-sm">Draft</span>
               </button>
               <button class="btn btn-secondary" onclick="exportWord()" title="Ekspor ke Microsoft Word">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-                Ekspor Word
+                <span class="lbl-lg">Ekspor Word</span><span class="lbl-sm">Word</span>
               </button>
               <button class="btn btn-print" onclick="finalizeAndPrint()">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
-                Cetak / Simpan PDF
+                <span class="lbl-lg">Cetak / Simpan PDF</span><span class="lbl-sm">Simpan PDF</span>
               </button>
             </div>
           </div>
@@ -1578,12 +1673,12 @@
               <div class="dok-actions">
                 <label class="btn btn-primary">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-                  Foto dari kamera
+                  <span class="lbl-lg">Foto dari kamera</span><span class="lbl-sm">Kamera</span>
                   <input type="file" accept="image/*" capture="environment" multiple onchange="addDokumentasi(event)" hidden>
                 </label>
                 <label class="btn btn-secondary">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                  Unggah file
+                  <span class="lbl-lg">Unggah file</span><span class="lbl-sm">Unggah</span>
                   <input type="file" accept="image/*" multiple onchange="addDokumentasi(event)" hidden>
                 </label>
                 <span class="dok-hint">Foto akan diberi GPS stamp otomatis. Izinkan akses lokasi saat diminta peramban.</span>
@@ -1706,18 +1801,20 @@
             </button>
             <span id="draft-badge" style="display:none;background:#f59e0b;color:#fff;font-size:11px;font-weight:700;padding:2px 8px;border-radius:4px;letter-spacing:.5px;margin-right:auto;align-self:center;">DRAFT</span>
             <div class="btn-row">
-              <button class="btn btn-danger" onclick="confirmDelete()">Hapus laporan</button>
+              <button class="btn btn-danger" onclick="confirmDelete()">
+                <span class="lbl-lg">Hapus laporan</span><span class="lbl-sm">Hapus</span>
+              </button>
               <button class="btn btn-draft" onclick="saveDraft()">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
-                Simpan Draft
+                <span class="lbl-lg">Simpan Draft</span><span class="lbl-sm">Draft</span>
               </button>
               <button class="btn btn-secondary" onclick="exportWord()" title="Ekspor ke Microsoft Word">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-                Ekspor Word
+                <span class="lbl-lg">Ekspor Word</span><span class="lbl-sm">Word</span>
               </button>
               <button class="btn btn-print" onclick="finalizeAndPrint()">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
-                Cetak / Simpan PDF
+                <span class="lbl-lg">Cetak / Simpan PDF</span><span class="lbl-sm">Simpan PDF</span>
               </button>
             </div>
           </div>
