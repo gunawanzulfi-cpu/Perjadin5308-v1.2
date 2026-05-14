@@ -1859,10 +1859,17 @@ async function apiPost(payload, retries) {
 async function loadState() {
   setSaveStatus('saving');
   try {
+    console.log('Fetching all data from server...');
     const data = await apiGet('getAll');
+    console.log('Data received from server:', data);
     state.pegawai = data.pegawai || [];
     state.reports = data.reports || [];
-    if (data.users) saveUsersData(data.users);
+    if (data.users && data.users.length > 0) {
+      console.log('Updating local users from server data:', data.users);
+      saveUsersData(data.users, false);
+    } else {
+      console.warn('No users data received from server or users list is empty');
+    }
     // Filter laporan berdasarkan role login
     if (currentUser && currentUser.role === 'pegawai' && currentUser.nip) {
       const myNip = currentUser.nip;
@@ -4343,13 +4350,23 @@ function getUsers() {
   try { return JSON.parse(localStorage.getItem(USERS_KEY) || '[]'); } catch(e) { return []; }
 }
 function saveUsersData(arr, syncWithServer = false) {
+  console.log('Saving users to localStorage:', arr);
   localStorage.setItem(USERS_KEY, JSON.stringify(arr));
   if (syncWithServer) {
-    apiPost({ action: 'saveUsers', users: arr }).catch(e => console.error('Gagal sync users ke server:', e));
+    console.log('Syncing users to server...');
+    apiPost({ action: 'saveUsers', users: arr })
+      .then(res => console.log('Sync users success:', res))
+      .catch(e => {
+        console.error('Gagal sync users ke server:', e);
+        toast('Gagal sinkronisasi akun ke server: ' + e.message, 'error');
+      });
   }
 }
 
-function initLogin() {
+async function initLogin() {
+  // Selalu coba ambil data user terbaru dari server di awal (untuk login di perangkat baru)
+  fetchUsersOnly();
+
   try {
     const sess = JSON.parse(localStorage.getItem(SESSION_KEY) || 'null');
     if (sess && sess.username) {
@@ -4362,6 +4379,19 @@ function initLogin() {
     localStorage.removeItem(SESSION_KEY);
   }
   showLoginOverlay();
+}
+
+async function fetchUsersOnly() {
+  try {
+    console.log('Pre-fetching users for login...');
+    const data = await apiGet('getAll');
+    if (data && data.users) {
+      console.log('Users pre-fetched:', data.users.length);
+      saveUsersData(data.users, false);
+    }
+  } catch (e) {
+    console.warn('Pre-fetch users failed:', e);
+  }
 }
 
 function showLoginOverlay() {
@@ -4465,7 +4495,10 @@ function renderUsersPanel() {
   panel.innerHTML = `
     <div class="users-panel-title">
       <span>Manajemen Akun Pegawai</span>
-      <button class="btn-primary" style="font-size:12px;padding:5px 12px" onclick="addUser()">+ Tambah Akun</button>
+      <div style="display:flex;gap:8px">
+        <button class="btn-secondary" style="font-size:12px;padding:5px 12px" onclick="loadState()">↻ Refresh Data</button>
+        <button class="btn-primary" style="font-size:12px;padding:5px 12px" onclick="addUser()">+ Tambah Akun</button>
+      </div>
     </div>
     <table class="user-table">
       <thead><tr><th>Username</th><th>Password</th><th>Nama Tampil</th><th>Pegawai</th><th></th></tr></thead>
