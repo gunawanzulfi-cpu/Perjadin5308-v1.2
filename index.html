@@ -1862,6 +1862,7 @@ async function loadState() {
     const data = await apiGet('getAll');
     state.pegawai = data.pegawai || [];
     state.reports = data.reports || [];
+    if (data.users) saveUsersData(data.users);
     // Filter laporan berdasarkan role login
     if (currentUser && currentUser.role === 'pegawai' && currentUser.nip) {
       const myNip = currentUser.nip;
@@ -4259,7 +4260,7 @@ function saveSelfEdit() {
   if (_selfEditUserIdx >= 0) {
     users[_selfEditUserIdx].username = username;
     if (pw1) users[_selfEditUserIdx].password = pw1;
-    saveUsersData(users);
+    saveUsersData(users, true);
     currentUser.username = username;
     localStorage.setItem(SESSION_KEY, JSON.stringify(currentUser));
     const nameEl = document.getElementById('topbar-user-name');
@@ -4341,8 +4342,11 @@ function selfEditDelTtd() {
 function getUsers() {
   try { return JSON.parse(localStorage.getItem(USERS_KEY) || '[]'); } catch(e) { return []; }
 }
-function saveUsersData(arr) {
+function saveUsersData(arr, syncWithServer = false) {
   localStorage.setItem(USERS_KEY, JSON.stringify(arr));
+  if (syncWithServer) {
+    apiPost({ action: 'saveUsers', users: arr }).catch(e => console.error('Gagal sync users ke server:', e));
+  }
 }
 
 function initLogin() {
@@ -4472,7 +4476,7 @@ function renderUsersPanel() {
 function addUser() {
   const users = getUsers();
   users.push({ username: '', password: '', displayName: '', nip: '' });
-  saveUsersData(users);
+  saveUsersData(users, true);
   renderUsersPanel();
 }
 
@@ -4480,13 +4484,13 @@ function updateUser(i, field, val) {
   const users = getUsers();
   if (!users[i]) return;
   users[i][field] = val;
-  saveUsersData(users);
+  saveUsersData(users, true);
 }
 
 function deleteUser(i) {
   const users = getUsers();
   users.splice(i, 1);
-  saveUsersData(users);
+  saveUsersData(users, true);
   renderUsersPanel();
   toast('Akun dihapus');
 }
