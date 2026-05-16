@@ -774,6 +774,8 @@
     font-size: 13.5px; padding: 9px 11px; border: 1px solid var(--ink-200); border-radius: var(--radius);
     background: var(--paper); color: var(--ink-900); transition: all .15s;
   }
+  /* Judul kegiatan — font lebih kecil agar tidak terlalu dominan */
+  #f-judul { font-size: 12px !important; }
   .field input:focus, .field select:focus, .field textarea:focus {
     outline: none; border-color: var(--navy-500); box-shadow: 0 0 0 3px var(--navy-50);
   }
@@ -801,7 +803,7 @@
     font-size: 11.75px; padding: 5px 7px; border: 1px solid var(--ink-200); border-radius: var(--radius-sm);
     background: var(--paper); width: 100%;
   }
-  .kegtbl textarea { resize: vertical; min-height: 48px; line-height: 1.35; }
+  .kegtbl textarea { resize: vertical; min-height: 72px; line-height: 1.4; }
   .kegtbl input:focus, .kegtbl select:focus, .kegtbl textarea:focus { outline: none; border-color: var(--navy-500); }
   .kegtbl .time-cell { display: flex; align-items: center; gap: 3px; }
   .kegtbl .time-cell select { padding: 5px 3px; }
@@ -994,41 +996,43 @@
 
   /* ===== MOBILE / HP COMPATIBILITY (max 768px) ===== */
   @media (max-width: 768px) {
-    /* ===== Topbar — mobile layout fix ===== */
+    /* ===== Topbar — mobile layout fix (satu baris penuh) ===== */
     .topbar {
       padding: 10px 12px;
       gap: 8px;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;        /* semua elemen dalam satu baris */
       align-items: center;
     }
-    .topbar-logo { width: 38px; height: 38px; }
-    .topbar-title { flex: 1 1 auto; min-width: 0; margin-right: 0; }
+    .topbar-logo { width: 38px; height: 38px; flex-shrink: 0; }
+    .topbar-title { flex: 1 1 auto; min-width: 0; margin-right: 0; overflow: hidden; }
     .topbar-title h1 {
-      font-size: 12.5px;
-      line-height: 1.25;
-      letter-spacing: .2px;
-      /* biarkan wrap natural pakai <br> bawaan — hasil 2 baris yang rapi */
+      font-size: 9.5px;
+      font-weight: 500;         /* lebih ringan, tidak bold penuh */
+      line-height: 1.3;
+      letter-spacing: .1px;
+      white-space: normal;
     }
-    .topbar-title p { display: none; }      /* alamat disembunyikan di HP */
+    .topbar-title p { display: none; }
     .topbar-actions {
       flex: 0 0 auto;
       gap: 4px;
       flex-wrap: nowrap;
-      justify-content: flex-end;
+      align-items: center;
     }
-    /* Tombol Bantuan & Unduh E-Book jadi icon-only di HP biar tidak menabrak */
+    /* Tombol ? dan Download: icon-only kecil */
     .tb-btn {
-      padding: 6px 8px;
-      font-size: 0;            /* sembunyikan teks tombol */
+      padding: 5px 6px;
+      font-size: 0;
       gap: 0;
-      border-radius: 8px;
+      border-radius: 7px;
+      flex-shrink: 0;
     }
-    .tb-btn svg { width: 16px; height: 16px; }
-    /* User badge: tampilkan role + tombol keluar saja */
-    .user-badge { gap: 6px; flex-wrap: nowrap; }
-    .user-badge .user-role { font-size: 9px; padding: 2px 6px; }
+    .tb-btn svg { width: 14px; height: 14px; }
+    /* Tombol Keluar */
+    .user-badge { gap: 0; flex-wrap: nowrap; flex-shrink: 0; }
+    .user-badge .user-role { display: none; }
     .user-badge .user-name { display: none; }
-    .logout-btn { padding: 4px 10px; font-size: 11.5px; }
+    .logout-btn { padding: 5px 10px; font-size: 11px; }
 
     /* ===== Nav tabs — hilangkan tabrakan dengan status simpan ===== */
     .nav {
@@ -1038,9 +1042,10 @@
       -webkit-overflow-scrolling: touch;
       justify-content: flex-start;
     }
+    .nav { height: 54px; }
     .nav-tab {
-      padding: 8px 10px;
-      font-size: 12.5px;
+      padding: 12px 14px;
+      font-size: 13.5px;
       white-space: nowrap;
       flex-shrink: 0;
     }
@@ -1079,9 +1084,18 @@
     .card-b { padding: 12px 14px; }
 
     /* Dashboard reports list */
-    .reports-toolbar { flex-wrap: wrap; gap: 8px; }
-    .reports-toolbar .btn { padding: 9px 12px; font-size: 12.5px; min-height: 40px; }
-    .reports-toolbar select { padding: 9px 10px; font-size: 12.5px; }
+    .reports-toolbar { flex-wrap: wrap; gap: 6px; }
+    .reports-toolbar .search-box { flex: 1 1 100%; }      /* baris 1: search penuh */
+    #filter-peg, #filter-jenis, #filter-status {
+      flex: 1 1 0 !important;                             /* baris 2: 3 filter sejajar */
+      min-width: 0 !important;
+      font-size: 11.5px !important;
+      padding: 8px 5px !important;
+    }
+    #btn-select-mode, #btn-delete-selected {
+      flex: 1 1 100%;                                     /* baris 3: tombol pilih */
+      font-size: 12.5px; min-height: 40px;
+    }
     .rcard { padding: 12px 14px; }
     .rcard-title { font-size: 14px; }
     .rcard-meta { font-size: 12px; flex-wrap: wrap; gap: 6px; }
@@ -1094,9 +1108,8 @@
     .step-btn .step-n { width: 16px; height: 16px; font-size: 10px; }
 
     /* Editor action bars */
-    #top-action-bar, #bottom-action-bar { flex-wrap: wrap; gap: 8px; }
-    #top-action-bar .btn, #bottom-action-bar .btn { flex: 1 1 auto; min-width: 104px; padding: 10px 12px; font-size: 13px; min-height: 44px; }
-    #top-action-bar > .btn-row, #bottom-action-bar > .btn-row { flex: 1 1 100%; }
+    #bottom-action-bar .btn-row { flex-wrap: wrap; gap: 8px; }
+    #bottom-action-bar .btn-row .btn { flex: 1 1 auto; min-width: 90px; padding: 10px 12px; font-size: 13px; min-height: 44px; }
 
     /* Form fields — larger touch targets */
     input[type="text"], input[type="date"], input[type="number"],
@@ -1107,8 +1120,24 @@
     }
     textarea { min-height: 80px; }
 
-    /* Jenis grid */
-    .jenis-grid { grid-template-columns: 1fr; }
+    /* Step 3, Step 4, dan foto keterangan — field lebih kompak */
+    #sec-3 input[type="text"], #sec-3 select,
+    #sec-4 input[type="text"], #sec-4 input[type="date"], #sec-4 select,
+    .dok-gallery input[type="text"] {
+      font-size: 13px !important;
+      padding: 7px 9px;
+      min-height: 36px;
+    }
+    #sec-3 label, #sec-4 label { font-size: 11px; }
+    #sec-3 select { font-size: 13px !important; min-height: 36px; padding: 7px 9px; }
+
+    /* Jenis grid — mobile: 3 kolom kompak, tanpa deskripsi */
+    .jenis-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 6px; }
+    .jcard { padding: 8px 7px; }
+    .jcard .jdesc { display: none; }
+    .jcard .jcode { font-size: 9.5px; }
+    .jcard .jtitle { font-size: 11.5px; margin-top: 2px; line-height: 1.3; }
+    .jcard.sel::after { width: 14px; height: 14px; font-size: 9px; top: 4px; right: 5px; }
 
     /* ===== Grid yang sebelumnya bikin overflow di HP ===== */
     /* Kartu statistik (4 kolom → 2 kolom di HP) */
@@ -1121,6 +1150,18 @@
     /* Form 2-kolom dan 3-kolom → stack jadi 1 kolom di HP */
     .g2 { grid-template-columns: 1fr !important; gap: 8px; }
     .g3 { grid-template-columns: 1fr !important; gap: 8px; }
+
+    /* Step 3: jabatan + gol/ruang tetap 2 kolom di HP */
+    .g2-jbt-gol { grid-template-columns: 1fr 1fr !important; gap: 8px; margin-top: 8px !important; }
+
+    /* Step 4: waktu & tempat — susun ulang jadi 2 kolom dengan urutan logis */
+    #waktu-tempat-grid { grid-template-columns: 1fr 1fr !important; gap: 8px; }
+    #waktu-tempat-grid .field:nth-child(1) { order: 1; } /* Tempat asal */
+    #waktu-tempat-grid .field:nth-child(2) { order: 2; } /* Tempat tujuan */
+    #waktu-tempat-grid .field:nth-child(3) { order: 5; } /* Lama perjalanan → baris 3 kiri */
+    #waktu-tempat-grid .field:nth-child(4) { order: 3; } /* Tanggal berangkat */
+    #waktu-tempat-grid .field:nth-child(5) { order: 4; } /* Tanggal kembali */
+    #waktu-tempat-grid .field:nth-child(6) { order: 6; } /* Moda transportasi → baris 3 kanan */
 
     /* Cegah ada elemen yang melampaui lebar viewport */
     html, body { overflow-x: hidden; max-width: 100vw; }
@@ -1147,19 +1188,17 @@
       max-width: 100%;
       box-sizing: border-box;
     }
-    /* Action bar tombol: kecilkan min-width supaya muat 3 di satu baris */
-    #top-action-bar .btn, #bottom-action-bar .btn {
+    /* Action bar tombol mobile — kompak */
+    #bottom-action-bar .btn-row .btn {
       min-width: 0;
-      padding: 9px 6px;
-      font-size: 12px;
+      padding: 9px 8px;
+      font-size: 12.5px;
       flex: 1 1 0;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    #top-action-bar .btn-row, #bottom-action-bar .btn-row { gap: 6px; min-width: 0; }
-    /* Tombol "Kembali ke dasbor" di action-bar atas: pakai 1 baris penuh */
-    #top-action-bar > .btn-ghost { flex: 1 1 100%; }
+    #bottom-action-bar .btn-row { gap: 6px; min-width: 0; }
 
     /* Step nav: pastikan tidak overflow keluar viewport */
     .step-nav {
@@ -1476,6 +1515,7 @@
     .profile-detail { font-size: 11.5px; line-height: 1.5; }
     /* User badge cascade fix */
     .user-badge .user-name { display: none !important; }
+    .user-badge .user-role { display: none !important; }
   }
 
 </style>
@@ -1519,7 +1559,7 @@
         Bantuan
       </button>
       <button class="tb-btn" onclick="downloadEbook()" title="Unduh E-book Panduan">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
         Unduh E-Book
       </button>
       
@@ -1615,14 +1655,17 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
           <input id="search" placeholder="Cari nama, lokasi tujuan, atau judul kegiatan…" oninput="renderDash()">
         </div>
+        <select id="filter-peg" onchange="renderDash()" style="display:none;padding:9px 11px;border:1px solid var(--ink-200);border-radius:var(--radius);background:var(--paper);font-size:13.5px;min-width:160px">
+          <option value="">Pegawai</option>
+        </select>
         <select id="filter-jenis" onchange="renderDash()" style="padding:9px 11px;border:1px solid var(--ink-200);border-radius:var(--radius);background:var(--paper);font-size:13.5px">
-          <option value="">Semua jenis</option>
+          <option value="">Jenis</option>
           <option value="a">Dalam kota</option>
           <option value="b">&gt; 8 jam / supervisi</option>
           <option value="c">Perjadin biasa</option>
         </select>
         <select id="filter-status" onchange="renderDash()" style="padding:9px 11px;border:1px solid var(--ink-200);border-radius:var(--radius);background:var(--paper);font-size:13.5px">
-          <option value="">Semua status</option>
+          <option value="">Status</option>
           <option value="final">Final</option>
           <option value="draft">Draft</option>
         </select>
@@ -1637,26 +1680,7 @@
     <section id="v-editor" class="view">
       <div class="editor-shell">
         <div class="ed-left">
-          <div class="btn-row between action-bar" style="margin-bottom:10px" id="top-action-bar">
-            <button class="btn btn-ghost" onclick="setView('dash')">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-              Kembali ke dasbor
-            </button>
-            <div class="btn-row">
-              <button class="btn btn-draft" onclick="saveDraft()">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
-                <span class="lbl-lg">Simpan Draft</span><span class="lbl-sm">Draft</span>
-              </button>
-              <button class="btn btn-secondary" onclick="exportWord()" title="Ekspor ke Microsoft Word">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-                <span class="lbl-lg">Ekspor Word</span><span class="lbl-sm">Word</span>
-              </button>
-              <button class="btn btn-print" onclick="finalizeAndPrint()">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
-                <span class="lbl-lg">Cetak / Simpan PDF</span><span class="lbl-sm">Simpan PDF</span>
-              </button>
-            </div>
-          </div>
+
 
           <div id="final-view-banner" style="display:none;background:#fef3c7;border:1px solid #f59e0b;border-left:4px solid #d97706;border-radius:8px;padding:10px 14px;display:none;align-items:center;gap:10px;font-size:13px;color:#92400e;margin-bottom:4px">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;flex-shrink:0;color:#d97706"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
@@ -1695,7 +1719,7 @@
             <div class="card-b">
               <div class="jenis-grid" id="jenis-grid"></div>
               <div class="field" style="margin-top:16px">
-                <label>Judul kegiatan</label>
+                <label>Judul kegiatan <span class="req">*</span></label>
                 <input type="text" id="f-judul" oninput="onForm()" placeholder="Mis. Supervisi Sensus Penduduk 2026 — Wilayah Lewoleba">
               </div>
             </div>
@@ -1713,6 +1737,8 @@
                   <select id="sel-peg" onchange="autofill()"></select>
                 </div>
                 <div class="field"><label>NIP</label><input type="text" id="af-nip" readonly="" placeholder="Otomatis terisi"></div>
+              </div>
+              <div class="g2 g2-jbt-gol" style="margin-top:12px">
                 <div class="field"><label>Jabatan</label><input type="text" id="af-jbt" readonly="" placeholder="Otomatis terisi"></div>
                 <div class="field"><label>Golongan / Ruang</label><input type="text" id="af-gol" readonly="" placeholder="Otomatis terisi"></div>
               </div>
@@ -1733,7 +1759,7 @@
               <p>Asal, tujuan, dan rentang tanggal</p>
             </div>
             <div class="card-b">
-              <div class="g3">
+              <div class="g3" id="waktu-tempat-grid">
                 <div class="field"><label>Tempat asal <span class="req">*</span></label><input type="text" id="f-dari" oninput="onForm()" placeholder="Lewoleba"></div>
                 <div class="field"><label>Tempat tujuan <span class="req">*</span></label><input type="text" id="f-tujuan" oninput="onForm()" placeholder="Mis. Kupang"></div>
                 <div class="field"><label>Lama perjalanan</label><input type="text" id="f-lama" readonly="" placeholder="Otomatis"></div>
@@ -1767,10 +1793,10 @@
               </div>
               <div class="templ-chips">
                 <span style="font-size:11.5px;color:var(--ink-500);align-self:center;margin-right:4px">Tambah cepat:</span>
-                <button class="templ-chip" onclick="addKegTpl('koord')">+ Koordinasi awal</button>
-                <button class="templ-chip" onclick="addKegTpl('pengumpulan')">+ Pengumpulan/pemeriksaan data</button>
-                <button class="templ-chip" onclick="addKegTpl('verifikasi')">+ Verifikasi data</button>
-                <button class="templ-chip" onclick="addKegTpl('diskusi')">+ Diskusi hasil</button>
+                <button class="templ-chip" onclick="addKegTpl('koord')"><span class="lbl-lg">+ Koordinasi awal</span><span class="lbl-sm">Koordinasi</span></button>
+                <button class="templ-chip" onclick="addKegTpl('pengumpulan')"><span class="lbl-lg">+ Pengumpulan/pemeriksaan data</span><span class="lbl-sm">Pemeriksaan</span></button>
+                <button class="templ-chip" onclick="addKegTpl('verifikasi')"><span class="lbl-lg">+ Verifikasi data</span><span class="lbl-sm">Verifikasi</span></button>
+                <button class="templ-chip" onclick="addKegTpl('diskusi')"><span class="lbl-lg">+ Diskusi hasil</span><span class="lbl-sm">Diskusi</span></button>
               </div>
             </div>
           </div>
@@ -1794,16 +1820,9 @@
             </div>
           </div>
 
-          <div class="btn-row between action-bar" id="bottom-action-bar" style="margin-top:6px">
-            <button class="btn btn-ghost" onclick="setView('dash')">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-              Kembali ke dasbor
-            </button>
-            <span id="draft-badge" style="display:none;background:#f59e0b;color:#fff;font-size:11px;font-weight:700;padding:2px 8px;border-radius:4px;letter-spacing:.5px;margin-right:auto;align-self:center;">DRAFT</span>
-            <div class="btn-row">
-              <button class="btn btn-danger" onclick="confirmDelete()">
-                <span class="lbl-lg">Hapus laporan</span><span class="lbl-sm">Hapus</span>
-              </button>
+          <div class="action-bar" id="bottom-action-bar" style="margin-top:6px;display:flex;flex-direction:column;gap:8px;">
+            <!-- Baris 1: Draft · Word · Simpan PDF -->
+            <div class="btn-row" style="justify-content:flex-end;">
               <button class="btn btn-draft" onclick="saveDraft()">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                 <span class="lbl-lg">Simpan Draft</span><span class="lbl-sm">Draft</span>
@@ -1815,6 +1834,17 @@
               <button class="btn btn-print" onclick="finalizeAndPrint()">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
                 <span class="lbl-lg">Cetak / Simpan PDF</span><span class="lbl-sm">Simpan PDF</span>
+              </button>
+            </div>
+            <!-- Baris 2: Kembali · DRAFT badge · Hapus -->
+            <div class="btn-row between" style="align-items:center;">
+              <button class="btn btn-ghost" onclick="setView('dash')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                Kembali
+              </button>
+              <span id="draft-badge" style="display:none;background:#f59e0b;color:#fff;font-size:11px;font-weight:700;padding:2px 8px;border-radius:4px;letter-spacing:.5px;align-self:center;">DRAFT</span>
+              <button class="btn btn-danger" onclick="confirmDelete()">
+                <span class="lbl-lg">Hapus laporan</span><span class="lbl-sm">Hapus</span>
               </button>
             </div>
           </div>
@@ -2303,7 +2333,7 @@ function applyViewMode() {
     if (topBar) topBar.innerHTML = `
       <button class="btn btn-ghost" onclick="setView('dash')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-        Kembali ke dasbor
+        Kembali
       </button>
       <span style="background:#f59e0b;color:#fff;font-size:11px;font-weight:700;padding:2px 10px;border-radius:4px;letter-spacing:.6px;align-self:center">FINAL</span>
       <div class="rcard-spacer"></div>
@@ -2316,7 +2346,7 @@ function applyViewMode() {
     if (bottomBar) bottomBar.innerHTML = `
       <button class="btn btn-ghost" onclick="setView('dash')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-        Kembali ke dasbor
+        Kembali
       </button>
       <div class="rcard-spacer"></div>
       <button class="btn btn-secondary" onclick="duplicateAndOpen()">
@@ -2373,6 +2403,19 @@ function renderDash() {
   const filterS = (document.getElementById('filter-status') || {}).value || '';
   const container = document.getElementById('reports-container');
 
+  // Filter pegawai (admin only) — populate & show/hide
+  const isAdmin = currentUser && currentUser.role === 'admin';
+  const filterPegEl = document.getElementById('filter-peg');
+  if (filterPegEl) {
+    filterPegEl.style.display = isAdmin ? '' : 'none';
+    if (isAdmin) {
+      const currentVal = filterPegEl.value;
+      filterPegEl.innerHTML = '<option value="">Pegawai</option>'
+        + state.pegawai.map((p, i) => `<option value="${i}"${String(i) === currentVal ? ' selected' : ''}>${escHtml(p.nama || '(Pegawai ' + (i+1) + ')')}</option>`).join('');
+    }
+  }
+  const filterPeg = isAdmin && filterPegEl ? filterPegEl.value : '';
+
   // Helper: match search query against a report
   function matchQ(r) {
     if (!q) return true;
@@ -2384,11 +2427,13 @@ function renderDash() {
   // Only show explicitly saved reports (status 'draft' or 'final')
   let list = state.reports.filter(r => r.status === 'final').slice().sort((a,b) => (b.updated || 0) - (a.updated || 0));
   if (filterJ) list = list.filter(r => r.jenis === filterJ);
+  if (filterPeg !== '') list = list.filter(r => String(r.pegawai_idx) === filterPeg);
   if (q) list = list.filter(matchQ);
 
   // Laporan Draft (only explicitly saved drafts)
   let draftList = state.reports.filter(r => r.status === 'draft').slice().sort((a,b) => (b.updated||0)-(a.updated||0));
   if (filterJ) draftList = draftList.filter(r => r.jenis === filterJ);
+  if (filterPeg !== '') draftList = draftList.filter(r => String(r.pegawai_idx) === filterPeg);
   if (filterS === 'final') draftList = [];
   if (filterS === 'draft') list = [];
   if (q) draftList = draftList.filter(matchQ);
@@ -3245,7 +3290,7 @@ async function _exportWordHtmlAttempt_DISABLED() {
   .tbl-id td.sep { width: 5mm; }
   .sect { font-size: 11pt; font-weight: bold; margin: 10pt 0 5pt; }
   .tbl-keg { width: 100%; font-size: 10.5pt; table-layout: auto; word-wrap: break-word; }
-  .tbl-keg th { border: 1pt solid #000; padding: 5pt; background: #f0f0f0; font-weight: bold; text-align: center; font-size: 12pt; }
+  .tbl-keg th { border: 1pt solid #000; padding: 5pt; background: #f0f0f0; color: #000; font-weight: bold; text-align: center; font-size: 12pt; }
   .tbl-keg td { border: 1pt solid #999; padding: 6pt 7pt; vertical-align: top; word-wrap: break-word; overflow-wrap: break-word; }
   .para { text-align: justify; margin: 4pt 0; }
 </style>
@@ -3499,7 +3544,7 @@ async function exportWordMhtml() {
   .tbl-id .sep { width:5mm; }
   .sect { font-weight:bold; margin:10pt 0 5pt; }
   .tbl-keg { width:100%; font-size:10.5pt; table-layout:auto; word-wrap:break-word; }
-  .tbl-keg th { border:1pt solid #000; padding:4pt 5pt; background:#f0f0f0; font-weight:bold; text-align:center; font-size:12pt; }
+  .tbl-keg th { border:1pt solid #000; padding:4pt 5pt; background:#f0f0f0; color:#000; font-weight:bold; text-align:center; font-size:12pt; }
   .tbl-keg td { border:1pt solid #999; padding:6pt 7pt; vertical-align:top; line-height:1.4; word-wrap:break-word; overflow-wrap:break-word; }
   .tbl-keg .num { text-align:center; }
   .tbl-keg .nowrap { white-space:nowrap; }
@@ -3718,7 +3763,7 @@ async function exportWord() {
 
   // ── RTF header ─────────────────────────────────────────────────────────
   let rtf = `{\\rtf1\\ansi\\ansicpg1252\\deff0\\deflang1057
-{\\fonttbl{\\f0\\froman\\fcharset0 Times New Roman;}}
+{\\fonttbl{\\f0\\fswiss\\fcharset0 Arial;}}
 {\\colortbl;\\red0\\green0\\blue0;\\red30\\green58\\blue95;\\red153\\green153\\blue153;}
 {\\info{\\title Laporan Perjalanan Dinas BPS Lembata}}
 \\paperw${PW}\\paperh${PH}\\margl${ML}\\margr${MR}\\margt${MT}\\margb${MB}
@@ -3734,7 +3779,7 @@ async function exportWord() {
 ${cNone()}\\cellx${kW}
 ${cAll(bNone())}\\clbrdrb${bDouble(2)}\\cellx${UW}
 {\\pard\\intbl\\qc\\f0 ${logoPic}\\cell}
-{\\pard\\intbl\\f0\\fs28\\b\\cf2 BADAN PUSAT STATISTIK\\line KABUPATEN LEMBATA\\b0\\cf0\\fs18\\line Jl. Trans Lembata, Kel. Lewoleba Timur, Kec. Nubatukan, Kab. Lembata, NTT\\line Telepon - \\bullet  E-mail: bps5308@bps.go.id \\bullet  https://lembatakab.bps.go.id\\cell}
+{\\pard\\intbl\\f0\\fs28\\b\\i\\cf2 BADAN PUSAT STATISTIK\\line KABUPATEN LEMBATA\\b0\\cf0\\fs18\\line Jl. Trans Lembata, Kel. Lewoleba Timur, Kec. Nubatukan, Kab. Lembata, NTT\\line Telepon - \\bullet  E-mail: bps5308@bps.go.id \\bullet  https://lembatakab.bps.go.id\\cell}
 \\row}\n`;
 
   // ── JUDUL ──────────────────────────────────────────────────────────────
@@ -3743,7 +3788,7 @@ ${cAll(bNone())}\\clbrdrb${bDouble(2)}\\cellx${UW}
     : 'Perjalanan Dinas Biasa';
 
   rtf += `\\pard\\sa120\\par
-\\pard\\qc\\f0\\fs26\\b LAPORAN PERJALANAN DINAS\\b0\\par
+\\pard\\qc\\f0\\fs26\\b\\ul LAPORAN PERJALANAN DINAS\\ulnone\\b0\\par
 \\pard\\qc\\fs22 MAK {\\b ${esc(jd.kode)}} \\emdash  ${esc(jenisTitle)}\\par\n`;
   if (r.judul_kegiatan) rtf += `\\pard\\qc\\b\\fs22 ${esc(r.judul_kegiatan)}\\b0\\par\n`;
   rtf += `\\pard\\sa120\\par\n`;
@@ -3763,7 +3808,7 @@ ${cAll(bNone())}\\clbrdrb${bDouble(2)}\\cellx${UW}
   ];
   for (const [lbl, val] of idRows) {
     rtf += `{\\trowd\\trgaph0\\trleft0${cNone()}\\cellx${cA}${cNone()}\\cellx${cA+cB}${cNone()}\\cellx${UW}
-{\\pard\\intbl\\f0\\fs22\\sa40 ${esc(lbl)}\\cell}{\\pard\\intbl\\fs22\\sa40 :\\cell}{\\pard\\intbl\\fs22\\sa40 ${esc(val)}\\cell}\\row}\n`;
+{\\pard\\intbl\\f0\\fs22\\sa60 ${esc(lbl)}\\cell}{\\pard\\intbl\\fs22\\sa60 :\\cell}{\\pard\\intbl\\fs22\\sa60 ${esc(val)}\\cell}\\row}\n`;
   }
   rtf += `\\pard\\sa100\\par\n`;
 
@@ -3808,7 +3853,7 @@ ${cAll(bNone())}\\clbrdrb${bDouble(2)}\\cellx${UW}
 ${ttdPic
   ? `\\pard\\intbl\\qc\\sa40 ${ttdPic}\\par`
   : `\\pard\\intbl\\sa640\\par`}
-\\pard\\intbl\\qc\\b\\fs22 ${esc(peg.nama||'—')}\\b0\\par\\pard\\intbl\\qc\\fs22 NIP. ${esc(peg.nip||'—')}\\cell}
+\\pard\\intbl\\qc\\brdrt\\brdrs\\brdrw15\\brdrsp20\\b\\fs22 ${esc(peg.nama||'—')}\\b0\\par\\pard\\intbl\\qc\\fs22 NIP. ${esc(peg.nip||'—')}\\cell}
 \\row}\n`;
 
   // ── LAMPIRAN FOTO ──────────────────────────────────────────────────────
@@ -4206,7 +4251,10 @@ function formatHasilDateRange(start, end) {
   return fmtTgl(start || end);
 }
 function pickHasilOpening(seed) {
-  const options = ['Terlaksananya', 'Terselesaikannya', 'Terpenuhinya'];
+  const options = [
+    'Terlaksananya', 'Terselesaikannya', 'Terpenuhinya', 'Tercapainya',
+    'Berhasilnya', 'Dilaksanakannya', 'Terselenggaranya', 'Terwujudnya'
+  ];
   let score = 0;
   for (let i = 0; i < seed.length; i++) score += seed.charCodeAt(i);
   return options[score % options.length];
@@ -4236,15 +4284,27 @@ function summarizeHasil() {
   const ringkasKegiatan = joinHasilItems(kegiatan.map(k => k && (k.sol || k.mas)));
   const ringkasSolusi = joinHasilItems(kegiatan.map(k => k && k.sol));
 
-  if (ringkasKegiatan) {
-    sentences.push('Rangkaian kegiatan mencakup ' + ringkasKegiatan + '.');
-  } else {
-    sentences.push('Kegiatan berjalan sesuai rencana dan mendukung kelancaran pelaksanaan tugas perjalanan dinas.');
-  }
+  const hasilMid = [
+    'Rangkaian kegiatan mencakup ' + (ringkasKegiatan || 'berbagai tahapan pelaksanaan tugas yang telah direncanakan') + '.',
+    'Seluruh tahapan kegiatan telah dilaksanakan sesuai rencana dan berjalan dengan lancar.',
+    'Pelaksanaan kegiatan berlangsung sesuai jadwal dan prosedur yang telah ditetapkan.',
+    'Rangkaian tugas pokok berhasil diselesaikan dengan hasil yang sesuai target yang ditetapkan.',
+  ];
+  sentences.push(hasilMid[Math.floor(Math.random() * hasilMid.length)]);
   if (ringkasSolusi && ringkasSolusi !== ringkasKegiatan) {
-    sentences.push('Tindak lanjut yang diperlukan telah dilakukan melalui ' + ringkasSolusi + '.');
+    const tindakLanjut = [
+      'Tindak lanjut yang diperlukan telah dilakukan melalui ' + ringkasSolusi + '.',
+      'Hasil koordinasi mencakup ' + ringkasSolusi + ' yang telah didokumentasikan dengan baik.',
+    ];
+    sentences.push(tindakLanjut[Math.floor(Math.random() * tindakLanjut.length)]);
   }
-  sentences.push('Data, informasi, dan hasil koordinasi yang diperoleh telah dihimpun sebagai bahan pelaporan dan tindak lanjut unit kerja.');
+  const hasilClose = [
+    'Data, informasi, dan hasil koordinasi yang diperoleh telah dihimpun sebagai bahan pelaporan dan tindak lanjut unit kerja.',
+    'Seluruh data dan dokumen hasil kegiatan telah dikompilasi untuk keperluan pelaporan dan evaluasi lebih lanjut.',
+    'Hasil kegiatan telah terdokumentasi dengan baik dan siap digunakan sebagai bahan pelaporan kepada pimpinan.',
+    'Informasi yang diperoleh selama kegiatan menjadi dasar penyusunan laporan dan rekomendasi tindak lanjut.',
+  ];
+  sentences.push(hasilClose[Math.floor(Math.random() * hasilClose.length)]);
 
   const hasil = sentences.map(normalizeHasilSentence).filter(Boolean).slice(0, 4).join(' ');
   const el = document.getElementById('f-hasil');
@@ -4276,14 +4336,38 @@ function summarizeSaran() {
   const ringkasSolusi = joinHasilItems(kegiatan.map(k => k && k.sol));
   const sentences = [];
 
-  sentences.push('Disarankan agar hasil ' + inlineHasilPhrase(judul) + ' di ' + tujuan + ' pada ' + tanggal + ' ditindaklanjuti melalui penyempurnaan data, dokumentasi, dan pelaporan sesuai pedoman BPS.');
+  const saranOpen = [
+    'Disarankan agar hasil ' + inlineHasilPhrase(judul) + ' di ' + tujuan + ' pada ' + tanggal + ' ditindaklanjuti melalui penyempurnaan data, dokumentasi, dan pelaporan sesuai pedoman BPS.',
+    'Hasil pelaksanaan ' + inlineHasilPhrase(judul) + ' di ' + tujuan + ' pada ' + tanggal + ' perlu segera ditindaklanjuti melalui koordinasi lintas unit dan penyusunan dokumen pelaporan yang komprehensif.',
+    'Disarankan agar seluruh output ' + inlineHasilPhrase(judul) + ' di ' + tujuan + ' pada ' + tanggal + ' didokumentasikan secara sistematis sebagai referensi kegiatan sejenis di masa mendatang.',
+    'Perlu dilakukan tindak lanjut terhadap hasil ' + inlineHasilPhrase(judul) + ' di ' + tujuan + ' pada ' + tanggal + ' agar setiap rekomendasi yang dihasilkan dapat diimplementasikan secara efektif.',
+  ];
+  sentences.push(saranOpen[Math.floor(Math.random() * saranOpen.length)]);
   if (ringkasSolusi) {
-    sentences.push('Tindak lanjut yang sudah dirumuskan, seperti ' + ringkasSolusi + ', perlu dipantau agar berjalan efektif dan terdokumentasi dengan baik.');
+    const saranMid = [
+      'Tindak lanjut yang sudah dirumuskan, seperti ' + ringkasSolusi + ', perlu dipantau agar berjalan efektif dan terdokumentasi dengan baik.',
+      'Rekomendasi yang telah disepakati, termasuk ' + ringkasSolusi + ', harus segera diimplementasikan dan dilaporkan perkembangannya kepada pimpinan.',
+    ];
+    sentences.push(saranMid[Math.floor(Math.random() * saranMid.length)]);
   } else {
-    sentences.push('Koordinasi dengan pihak terkait perlu dilanjutkan agar hasil kegiatan dapat dimanfaatkan secara optimal oleh unit kerja.');
+    const saranMidAlt = [
+      'Koordinasi dengan pihak terkait perlu dilanjutkan agar hasil kegiatan dapat dimanfaatkan secara optimal oleh unit kerja.',
+      'Perlu dijadwalkan pertemuan tindak lanjut dengan pihak-pihak terkait guna memastikan implementasi rekomendasi berjalan sesuai rencana.',
+    ];
+    sentences.push(saranMidAlt[Math.floor(Math.random() * saranMidAlt.length)]);
   }
-  sentences.push('Apabila masih terdapat data yang belum lengkap, perlu dilakukan klarifikasi lanjutan kepada sumber data agar kualitas hasil tetap terjaga.');
-  sentences.push('Hasil kegiatan agar digunakan sebagai bahan evaluasi dan perbaikan pelaksanaan kegiatan statistik berikutnya.');
+  const saranExtra = [
+    'Apabila masih terdapat data yang belum lengkap, perlu dilakukan klarifikasi lanjutan kepada sumber data agar kualitas hasil tetap terjaga.',
+    'Pemantauan berkala terhadap pelaksanaan tindak lanjut perlu dilakukan untuk memastikan hasil kegiatan memberikan dampak yang optimal.',
+    'Perlu disiapkan mekanisme evaluasi berkala untuk mengukur efektivitas tindak lanjut yang telah dilaksanakan.',
+  ];
+  sentences.push(saranExtra[Math.floor(Math.random() * saranExtra.length)]);
+  const saranClose = [
+    'Hasil kegiatan agar digunakan sebagai bahan evaluasi dan perbaikan pelaksanaan kegiatan statistik berikutnya.',
+    'Dokumentasi hasil kegiatan ini dapat menjadi acuan dan referensi dalam perencanaan kegiatan serupa pada periode mendatang.',
+    'Laporan kegiatan perlu segera diselesaikan dan disampaikan kepada pimpinan sebagai pertanggungjawaban pelaksanaan tugas.',
+  ];
+  sentences.push(saranClose[Math.floor(Math.random() * saranClose.length)]);
 
   const saran = sentences.map(normalizeHasilSentence).filter(Boolean).slice(0, 4).join(' ');
   const el = document.getElementById('f-saran');
@@ -4779,6 +4863,8 @@ async function deleteUser(i) {
   renderUsersPanel();
   toast('Akun dihapus');
 }
+
+
 
 // ====== INIT ======
 initLogin();
