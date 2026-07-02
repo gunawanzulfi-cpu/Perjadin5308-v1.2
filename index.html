@@ -4596,10 +4596,10 @@ function _fotoRows(list, perRow) {
     var cols = slice.map(function (d, idx) {
       var head = 'Foto ' + (i + idx + 1);
       var stack = [{ text: head, fontSize: 8, color: '#555', margin: [0, 0, 0, 3] }];
-      if (d._dataUrl) stack.push({ image: d._dataUrl, fit: [232, 175], margin: [0, 0, 0, 3] });
+      if (d._dataUrl) stack.push({ image: d._dataUrl, fit: [238, 238], margin: [0, 0, 0, 3] });
       else stack.push({ text: '[foto tidak dapat dimuat]', fontSize: 8, italics: true, color: '#b91c1c', margin: [0, 0, 0, 3] });
       if (d.caption) stack.push({ text: d.caption, fontSize: 9, italics: true, color: '#333', alignment: 'center' });
-      return { width: '*', stack: stack, margin: [0, 0, 8, 12] };
+      return { width: '*', stack: stack, margin: [0, 0, 0, 12] };
     });
     // genapkan agar kolom tunggal tidak melebar penuh
     if (cols.length < perRow) cols.push({ width: '*', text: '' });
@@ -4715,7 +4715,7 @@ async function buildPerjadinDocDef(r) {
     { text: 'Lewoleba, ' + fmtTgl(r.tgl_kembali || today), alignment: 'center', margin: [0, 22, 0, 0] },
     { text: 'Yang membuat laporan,', alignment: 'center', margin: [0, 0, 0, 2] }
   ];
-  if (ttdData) ttdStack.push({ image: ttdData, width: 120, alignment: 'center', margin: [0, 2, 0, 2] });
+  if (ttdData) ttdStack.push({ image: ttdData, width: 80, alignment: 'center', margin: [0, 2, 0, 2] });
   else ttdStack.push({ text: '\n\n\n' });
   ttdStack.push({ text: peg.nama || '—', bold: true, alignment: 'center', decoration: 'underline' });
   ttdStack.push({ text: 'NIP. ' + (peg.nip || '—'), alignment: 'center' });
