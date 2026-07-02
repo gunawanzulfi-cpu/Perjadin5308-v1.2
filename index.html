@@ -633,6 +633,7 @@
     font-size: 14px;
     color: var(--ink-900);
     background: var(--bg);
+    overscroll-behavior-y: contain; /* cegah pull-to-refresh Android me-reload halaman */
     -webkit-font-smoothing: antialiased;
     line-height: 1.5;
   }
@@ -787,7 +788,7 @@
   .rtable-count { font-size:12px; color:var(--ink-500); padding:8px 2px 0; }
 
   /* Modal view-only */
-  .view-modal { max-width:720px; width:calc(100% - 32px); max-height:92vh; display:flex; flex-direction:column; padding:0; overflow:hidden; }
+  .modal.view-modal { max-width:720px; width:calc(100% - 32px); max-height:92vh; display:flex; flex-direction:column; padding:0; overflow:hidden; }
   .view-modal-head { display:flex; align-items:center; justify-content:space-between; padding:14px 18px; border-bottom:1px solid var(--ink-200); flex:0 0 auto; }
   .view-modal-head h3 { font-size:16px; font-weight:700; color:var(--navy-800); }
   .view-modal-body { overflow-y:auto; padding:18px; background:var(--ink-50); flex:1 1 auto; }
@@ -1165,8 +1166,22 @@
 
   /* Modal rincian */
   body.modal-open { overflow: hidden !important; }
-  .keg-modal { max-width: 620px; width: calc(100% - 32px); text-align: left; max-height: 90vh; overflow-y: auto; }
-  .keg-modal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  /* .modal.keg-modal (2 kelas): harus menang atas aturan .modal (max-width 460px)
+     yang ditulis lebih bawah di CSS — penyebab modal tampak sempit/rusak. */
+  .modal.keg-modal { max-width: 1040px; width: calc(100% - 32px); text-align: left; max-height: 90vh; max-height: 90dvh;
+    display: flex; flex-direction: column; padding: 0; overflow: hidden; }
+  /* Desktop lebar: uraian & solusi berdampingan 2 kolom, waktu di atas penuh */
+  @media (min-width: 900px) {
+    .keg-modal-body { display: grid; grid-template-columns: 1fr 1fr; column-gap: 28px; align-items: start; }
+    .keg-modal-body > #keg-time-wrap { grid-column: 1 / -1; }
+    /* Box uraian & solusi: lebar (kolom grid) dan tinggi sama */
+    .keg-modal-body .keg-field textarea { min-height: 180px; }
+  }
+  .keg-modal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0;
+    padding: 16px 22px 12px; border-bottom: 1px solid var(--ink-200); flex: 0 0 auto; }
+  .keg-modal-body { flex: 1 1 auto; overflow-y: auto; padding: 16px 22px; -webkit-overflow-scrolling: touch; }
+  .keg-modal-foot { flex: 0 0 auto; padding: 12px 22px calc(12px + env(safe-area-inset-bottom, 0px));
+    border-top: 1px solid var(--ink-200); background: var(--paper); }
   .keg-modal-head h3 { font-size: 16px; font-weight: 700; color: var(--navy-800); }
   .keg-modal-x { background: var(--ink-50); border: 1px solid var(--ink-200); color: var(--ink-500); width: 30px; height: 30px;
     border-radius: 7px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; }
@@ -1195,7 +1210,18 @@
   .keg-hint { font-size: 11px; color: var(--ink-400); margin-top: 8px; line-height: 1.4; }
 
   @media (max-width: 600px) {
-    .keg-modal { width: calc(100% - 20px); padding: 16px; }
+    /* Full-screen sheet di HP: header & tombol simpan selalu terlihat, isi discroll */
+    .modal-bg:has(.keg-modal) { padding: 0; align-items: stretch; }
+    .modal.keg-modal { width: 100%; max-width: 100%; height: 100vh; height: 100dvh; max-height: 100dvh;
+      border-radius: 0 !important; padding: 0 !important; }
+    .keg-modal-head { padding: 14px 16px 10px; }
+    .keg-modal-body { padding: 14px 16px; }
+    .keg-modal-foot { padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px)); }
+    /* 16px mencegah auto-zoom iOS Safari saat input difokus */
+    .keg-field textarea, .keg-tgl-input, .keg-time-jam select { font-size: 16px; }
+    /* Box uraian & solusi tinggi dan SAMA di HP — uraian mengisi layar,
+       solusi ditemukan dengan scroll ke bawah (45dvh ≈ hampir separuh layar) */
+    .keg-field textarea { min-height: 320px; min-height: 45dvh; height: 45dvh; }
     .keg-time-jam select { flex: 1; min-width: 0; }
     .keg-add-lbl { display: inline; }
   }
@@ -1236,7 +1262,22 @@
   .toast.show { opacity: 1; transform: none; }
   .toast.success { background: var(--success); }
   .toast.error { background: var(--danger); }
+  .toast.warn { background: #b45309; }
   .toast svg { width: 16px; height: 16px; }
+
+  /* ===== BANNER OFFLINE (pasangan markup #offline-banner) ===== */
+  .offline-banner { position: fixed; left: 0; right: 0; bottom: 0; z-index: 3500;
+    display: none; align-items: center; justify-content: center; gap: 12px;
+    padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
+    background: #7c2d12; color: #fff; font-size: 13px; font-weight: 600;
+    box-shadow: 0 -6px 20px rgba(15,23,42,.25); }
+  .offline-banner.syncing { background: #92600a; }
+  .offline-banner.online-ok { background: var(--success, #15803d); }
+  .offline-sync-btn { background: #fff; color: #7c2d12; border: none; border-radius: 8px;
+    padding: 6px 14px; font: inherit; font-size: 12.5px; font-weight: 700; cursor: pointer; }
+  .offline-banner.syncing .offline-sync-btn { color: #92600a; }
+  #offline-queue-badge { background: #b45309; color: #fff; font-size: 10.5px; font-weight: 700;
+    border-radius: 999px; padding: 1px 7px; margin-left: 6px; }
 
   /* MODAL */
   /* Overlay loading sinkronisasi */
@@ -1900,6 +1941,7 @@
     <div class="nav-status" id="save-status">
       <span class="dot"></span>
       <span class="txt">Tersimpan otomatis</span>
+      <span id="offline-queue-badge" title="Operasi menunggu sinkronisasi" style="display:none"></span>
     </div>
   </nav>
 
@@ -2240,6 +2282,12 @@
 <!-- TOAST -->
 <div class="toast" id="toast"><span id="toast-txt">Tersimpan</span></div>
 
+<!-- BANNER OFFLINE (JS mode offline sudah lama merujuk elemen ini) -->
+<div class="offline-banner" id="offline-banner" style="display:none" role="status" aria-live="polite">
+  <span class="offline-banner-msg">Anda sedang offline — perubahan disimpan lokal</span>
+  <button type="button" class="offline-sync-btn" id="offline-sync-btn" onclick="processOfflineQueue()">Sinkronkan</button>
+</div>
+
 <!-- OVERLAY LOADING SINKRONISASI (memblokir interaksi sampai selesai) -->
 <div class="sync-overlay" id="sync-overlay" aria-live="polite" aria-busy="true">
   <div class="sync-box">
@@ -2279,13 +2327,14 @@
 </div>
 
 <div class="modal-bg" id="keg-modal-bg">
-  <div class="modal keg-modal">
+  <div class="modal keg-modal" role="dialog" aria-modal="true" aria-labelledby="keg-modal-title">
     <div class="keg-modal-head">
       <h3 id="keg-modal-title">Tambah rincian kegiatan</h3>
       <button class="keg-modal-x" onclick="closeKegModal()" title="Tutup" aria-label="Tutup">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>
+    <div class="keg-modal-body">
 
     <!-- Waktu / Tanggal (adaptif) -->
     <div class="keg-field" id="keg-time-wrap">
@@ -2326,10 +2375,13 @@
       </div>
       <p class="keg-hint">Klik chip untuk menambahkan kalimat (bisa menumpuk). Anda tetap bisa mengedit teksnya.</p>
     </div>
+    </div><!-- /keg-modal-body -->
 
-    <div class="btn-row" style="justify-content:flex-end;margin-top:6px">
-      <button class="btn btn-secondary" onclick="closeKegModal()">Batal</button>
-      <button class="btn btn-primary" id="keg-modal-save" onclick="saveKegModal()">Simpan baris</button>
+    <div class="keg-modal-foot">
+      <div class="btn-row" style="justify-content:flex-end">
+        <button class="btn btn-secondary" onclick="closeKegModal()">Batal</button>
+        <button class="btn btn-primary" id="keg-modal-save" onclick="saveKegModal()">Simpan baris</button>
+      </div>
     </div>
   </div>
 </div>
@@ -2402,7 +2454,7 @@
 // ====== STATE ======
 
 // ─── GANTI URL INI dengan Web App URL dari Google Apps Script ───
-const API_URL = 'https://script.google.com/macros/s/AKfycby3MsHIFDVZMoFUG45TdG2RwPuxGv4GvPWqcNF02zDQSqTJ8C6D2v_8kzhN05dTwlCJ/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbwfyTGUqeklHA6IHZNxbGkDSFlq3LBjHFizasipLpm93dewD4UaHlIVtkCjCn2HfUXk/exec';
 // ────────────────────────────────────────────────────────────────
 
 const JENIS_MAP = {
@@ -2427,7 +2479,7 @@ const TEMPLATES = {
 // 'grup': 'keg' = kegiatan rutin, 'kendala' = masalah/kendala lapangan.
 const KEG_CATS = {
   koord_desa: {
-    grup: 'keg', label: 'Koordinasi aparat desa', dur: 1,
+    grup: 'keg', label: 'Koordinasi aparat desa', short: 'Koordinasi', dur: 1,
     uraian: [
       'Dilakukan koordinasi dengan aparat desa/kelurahan terkait jadwal, cakupan wilayah, dan dukungan pelaksanaan kegiatan pendataan.',
       'Dilaksanakan audiensi bersama perangkat desa untuk menyamakan pemahaman mengenai mekanisme dan sasaran kegiatan di lapangan.',
@@ -2440,7 +2492,7 @@ const KEG_CATS = {
     ]
   },
   awasi_petugas: {
-    grup: 'keg', label: 'Pengawasan petugas lapangan', dur: 2,
+    grup: 'keg', label: 'Pengawasan petugas lapangan', short: 'Pengawasan', dur: 2,
     uraian: [
       'Dilakukan pengawasan terhadap kinerja petugas lapangan untuk memastikan pelaksanaan tugas sesuai prosedur dan jadwal yang ditetapkan.',
       'Dilaksanakan pemantauan langsung atas aktivitas petugas di lapangan guna menjaga kualitas dan ketepatan pelaksanaan kegiatan.',
@@ -2453,7 +2505,7 @@ const KEG_CATS = {
     ]
   },
   supervisi: {
-    grup: 'keg', label: 'Supervisi pencacahan', dur: 2,
+    grup: 'keg', label: 'Supervisi pencacahan', short: 'Supervisi', dur: 2,
     uraian: [
       'Dilakukan supervisi pelaksanaan pencacahan oleh petugas untuk memastikan kesesuaian dengan konsep, definisi, dan SOP BPS.',
       'Dilaksanakan pengawasan langsung atas kegiatan pencacahan guna menjaga kelengkapan dan kualitas data yang dikumpulkan.',
@@ -2466,7 +2518,7 @@ const KEG_CATS = {
     ]
   },
   periksa_dok: {
-    grup: 'keg', label: 'Pemeriksaan dokumen/kuesioner', dur: 2,
+    grup: 'keg', label: 'Pemeriksaan dokumen/kuesioner', short: 'Pemeriksaan', dur: 2,
     uraian: [
       'Dilakukan pemeriksaan kelengkapan dan kewajaran isian dokumen/kuesioner hasil pendataan sesuai pedoman teknis BPS.',
       'Dilaksanakan pengecekan dokumen dan kuesioner untuk memastikan seluruh rincian terisi lengkap dan konsisten.',
@@ -2479,7 +2531,7 @@ const KEG_CATS = {
     ]
   },
   qc: {
-    grup: 'keg', label: 'Penjaminan kualitas (QC)', dur: 2,
+    grup: 'keg', label: 'Penjaminan kualitas (QC)', short: 'Kualitas', dur: 2,
     uraian: [
       'Dilakukan penjaminan kualitas melalui pemeriksaan ulang sebagian sampel untuk memastikan mutu dan keandalan data.',
       'Dilaksanakan quality control terhadap hasil pendataan guna memastikan data memenuhi standar kualitas BPS.',
@@ -2492,7 +2544,7 @@ const KEG_CATS = {
     ]
   },
   evaluasi: {
-    grup: 'keg', label: 'Evaluasi & rekap lapangan', dur: 1,
+    grup: 'keg', label: 'Evaluasi & rekap lapangan', short: 'Evaluasi', dur: 1,
     uraian: [
       'Dilakukan evaluasi dan rekapitulasi hasil kegiatan lapangan untuk menilai capaian dan mengidentifikasi kendala yang dihadapi.',
       'Dilaksanakan perekapan capaian harian serta pembahasan kendala sebagai bahan tindak lanjut kegiatan berikutnya.',
@@ -2595,10 +2647,12 @@ async function apiGet(action) {
   }
 }
 
-async function apiPostNet(payload, retries) {
+async function apiPostNet(payload, retries, silent) {
   retries = (retries == null) ? 2 : retries;
   let lastErr;
-  netBegin('Menyinkronkan data…');
+  // silent = autosave latar belakang: cukup status "Menyimpan…" di pojok,
+  // JANGAN tampilkan overlay full-screen yang menutupi editor.
+  if (!silent) netBegin('Menyinkronkan data…');
   try {
   for (let attempt = 0; attempt <= retries; attempt++) {
     try {
@@ -2627,7 +2681,7 @@ async function apiPostNet(payload, retries) {
   }
   throw lastErr || new Error('Gagal menghubungi server');
   } finally {
-    netEnd();
+    if (!silent) netEnd();
   }
 }
 
@@ -2719,7 +2773,7 @@ function persist() {
       if (sz <= 40000 && r._sizeWarned) r._sizeWarned = false;
     } catch(_) {}
     try {
-      const resp = await apiPost({ action: 'saveReport', report: r });
+      const resp = await apiPost({ action: 'saveReport', report: r }, null, true);  // silent: autosave
       // Sinkronisasi URL Drive yang dikembalikan server
       if (resp && resp.report) {
         syncReportPhotoUrls(r, resp.report);
@@ -2738,7 +2792,7 @@ function persist() {
 async function persistPegawai() {
   setSaveStatus('saving');
   try {
-    const resp = await apiPost({ action: 'savePegawai', pegawai: state.pegawai });
+    const resp = await apiPost({ action: 'savePegawai', pegawai: state.pegawai }, null, true);  // silent: autosave
     if (resp && Array.isArray(resp.pegawai)) {
       resp.pegawai.forEach((p, i) => {
         if (!state.pegawai[i] || !p) return;
@@ -2814,6 +2868,7 @@ function netReset() {
 
 // Status teks pojok kanan saja (tidak lagi mengontrol overlay).
 function setSaveStatus(s) {
+  window._pjSaving = (s === 'saving');   // #5: dipakai beforeunload kondisional
   const el = document.getElementById('save-status');
   if (!el) return;
   if (s === 'saving') { el.classList.add('saving'); const t = el.querySelector('.txt'); if (t) t.textContent = 'Menyimpan…'; }
@@ -2831,9 +2886,28 @@ function toast(msg, kind) {
 // Penanda bahwa pembukaan editor memang lewat jalur sah (klik kartu / buat laporan),
 // bukan lewat klik tab menu. #4: editor tidak boleh dibuka langsung dari menu nav.
 let _allowEditorOpen = false;
-function openEditorView() { _allowEditorOpen = true; setView('editor'); _allowEditorOpen = false; }
+// Overlay singkat (mis. "Memuat data…") sebagai umpan balik visual saat membuka
+// editor. Tidak terkait jaringan — autosave tetap silent di latar belakang.
+function flashOverlay(msg, ms) {
+  const ov = document.getElementById('sync-overlay');
+  const txt = document.getElementById('sync-text');
+  if (txt) txt.textContent = msg || 'Memuat data…';
+  if (ov) ov.classList.add('on');
+  setTimeout(function () {
+    // Jangan tutup bila ada request jaringan blocking yang sedang berjalan
+    if (typeof _netActiveCount === 'undefined' || _netActiveCount === 0) {
+      if (ov) ov.classList.remove('on');
+    }
+  }, ms || 600);
+}
+
+function openEditorView() {
+  flashOverlay('Memuat data…', 600);
+  _allowEditorOpen = true; setView('editor'); _allowEditorOpen = false;
+}
 
 function setView(v) {
+  if (typeof histInit === 'function') histInit();   // #1: aktifkan penjaga tombol back
   // Blokir tab pegawai untuk non-admin
   if (v === 'peg' && currentUser && currentUser.role !== 'admin') {
     toast('Akses database pegawai hanya untuk Admin', 'error'); return;
@@ -3690,9 +3764,13 @@ function delKeg(i) {
 let _kegEditIdx = -1;   // -1 = tambah baru; >=0 = edit baris ke-idx
 
 function _buildKegChips() {
+  // Label panjang di desktop (.lbl-lg), label pendek di mobile (.lbl-sm)
+  const chipLbl = (c) => c.short
+    ? `<span class="lbl-lg">${c.label}</span><span class="lbl-sm">${c.short}</span>`
+    : c.label;
   const mkChip = (key, target) => {
     const c = KEG_CATS[key];
-    return `<button type="button" class="keg-chip${c.grup==='kendala'?' keg-chip-warn':''}" onclick="kegQuick('${key}','${target}')">+ ${c.label}</button>`;
+    return `<button type="button" class="keg-chip${c.grup==='kendala'?' keg-chip-warn':''}" onclick="kegQuick('${key}','${target}')">+ ${chipLbl(c)}</button>`;
   };
   const kegEl = document.getElementById('keg-chips-keg');
   const kenEl = document.getElementById('keg-chips-kendala');
@@ -3704,7 +3782,7 @@ function _buildKegChips() {
     const all = KEG_CAT_ORDER_KEG.concat(KEG_CAT_ORDER_KENDALA);
     solEl.innerHTML = all.map(k => {
       const c = KEG_CATS[k];
-      return `<button type="button" class="keg-chip${c.grup==='kendala'?' keg-chip-warn':''}" onclick="kegQuick('${k}','sol')">+ ${c.label}</button>`;
+      return `<button type="button" class="keg-chip${c.grup==='kendala'?' keg-chip-warn':''}" onclick="kegQuick('${k}','sol')">+ ${chipLbl(c)}</button>`;
     }).join('');
   }
 }
@@ -3796,6 +3874,7 @@ function openKegModal(idx) {
     document.getElementById('keg-modal-title').textContent = 'Tambah rincian kegiatan';
     document.getElementById('keg-modal-save').textContent = 'Simpan baris';
   }
+  window._kegLastFocus = document.activeElement;   // #5: simpan pemicu untuk restore fokus
   document.getElementById('keg-modal-bg').classList.add('on');
   document.body.classList.add('modal-open');   // #2: kunci scroll background
   if (mas) setTimeout(() => mas.focus(), 50);
@@ -3805,6 +3884,11 @@ function closeKegModal() {
   document.getElementById('keg-modal-bg').classList.remove('on');
   document.body.classList.remove('modal-open');   // #2: buka kembali scroll
   _kegEditIdx = -1;
+  // #5: kembalikan fokus ke elemen pemicu (aksesibilitas keyboard/screen-reader)
+  if (window._kegLastFocus && document.contains(window._kegLastFocus)) {
+    try { window._kegLastFocus.focus(); } catch (_) {}
+  }
+  window._kegLastFocus = null;
 }
 
 function saveKegModal() {
@@ -3903,8 +3987,7 @@ function renderPeg() {
     </tr>`).join('');
 }
 
-async 
-function uploadPegFoto(i, event) {
+async function uploadPegFoto(i, event) {
   if (!currentUser || currentUser.role !== 'admin') { toast('Hanya Admin yang bisa mengunggah foto pegawai', 'error'); return; }
   const file = event.target.files[0];
   if (!file) return;
@@ -4758,11 +4841,30 @@ function updateFinalUI() {
 }
 
 // 1) PRATINJAU → buka PDF di TAB BARU
+// Halaman loading sementara di tab baru, tampil sampai PDF selesai dibuat.
+function _pdfLoadingHtml() {
+  return '<!DOCTYPE html><html lang="id"><head><meta charset="utf-8">' +
+    '<meta name="viewport" content="width=device-width, initial-scale=1">' +
+    '<title>Menyiapkan pratinjau PDF…</title><style>' +
+    'html,body{height:100%;margin:0}body{display:flex;align-items:center;justify-content:center;' +
+    'background:#f1f5f9;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif}' +
+    '.box{background:#fff;border-radius:14px;padding:32px 40px;box-shadow:0 18px 48px rgba(15,23,42,.18);' +
+    'display:flex;flex-direction:column;align-items:center;gap:16px}' +
+    '.sp{width:44px;height:44px;border-radius:50%;border:4px solid #dbe4f0;border-top-color:#1e4ed8;' +
+    'animation:s .8s linear infinite}@keyframes s{to{transform:rotate(360deg)}}' +
+    'p{margin:0;font-size:14px;font-weight:600;color:#334155}small{color:#94a3b8;font-size:12px}' +
+    '</style></head><body><div class="box"><div class="sp"></div>' +
+    '<p>Menyiapkan pratinjau PDF…</p><small>Tab ini akan otomatis menampilkan PDF setelah selesai.</small>' +
+    '</div></body></html>';
+}
+
 async function previewPdf() {
   var r = _prepareReportForExport(); if (!r) return;
   if (!_pdfLibReady()) { toast('Pustaka PDF tidak tersedia — memakai mode cetak', 'error'); finalizeAndPrintFallback(); return; }
   // buka tab dulu di dalam gesture klik agar tidak diblokir popup-blocker
   var win = window.open('', '_blank');
+  // Tampilkan spinner di tab baru selama PDF dibuat (foto/laporan besar bisa lama)
+  if (win) { try { win.document.write(_pdfLoadingHtml()); win.document.close(); } catch (_) {} }
   toast('Menyiapkan pratinjau PDF…');
   try {
     var dd = await buildPerjadinDocDef(r);
@@ -5309,21 +5411,106 @@ async function improveText(id) {
 
 function closeAlertModal() { closeModal(); }
 
+// ====== MODAL TERATAS (dipakai Escape, tombol back, dan focus trap) ======
+// Urutan = prioritas: modal yang terakhir/paling atas ditutup lebih dulu.
+// Catatan: daftar dibangun DI DALAM fungsi (bukan const top-level) agar tidak
+// bergantung pada eksekusi top-level script (tahan terhadap error init dini).
+function _modalStack() {
+  return [
+    { id: 'modal-bg',      close: () => closeModal() },
+    { id: 'keg-modal-bg',  close: () => closeKegModal() },
+    { id: 'view-modal-bg', close: () => closeReportView() },
+    { id: 'self-edit-bg',  close: () => closeSelfEdit() },
+    { id: 'help-bg',       close: () => closeHelp() }
+  ];
+}
+function topModal() {
+  for (const m of _modalStack()) {
+    const el = document.getElementById(m.id);
+    if (el && el.classList.contains('on')) return m;
+  }
+  return null;
+}
+// Menutup modal teratas saja. Return true bila ada yang ditutup.
+function closeTopModal() {
+  const m = topModal();
+  if (m) { m.close(); return true; }
+  return false;
+}
+
 document.addEventListener('keydown', e => {
   if ((e.ctrlKey||e.metaKey)&&e.key==='s'){e.preventDefault();saveDraft();}
   if ((e.ctrlKey||e.metaKey)&&e.key==='p'){e.preventDefault();finalizeAndPrint();}
-  if (e.key==='Escape'){closeModal();closeHelp();closeSelfEdit();closeKegModal();closeReportView();}
-  if (e.key==='?'){openHelp();}
+  if (e.key==='Escape'){closeTopModal();}   // #5: hanya modal teratas, bukan semuanya
+  // Guard: jangan buka Help saat user sedang mengetik tanda '?' di form
+  if (e.key==='?' && !(e.target && e.target.closest('input, textarea, select, [contenteditable]'))){openHelp();}
 });
 
-// #2: Peringatan popup bawaan browser sebelum refresh / menutup tab.
-// Hanya aktif saat sudah login (app terbuka), agar tidak mengganggu di layar login.
+// #5: Focus trap sederhana — Tab tidak boleh keluar dari modal yang terbuka.
+document.addEventListener('keydown', function (e) {
+  if (e.key !== 'Tab') return;
+  const m = topModal();
+  if (!m) return;
+  const box = document.getElementById(m.id);
+  const els = box.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+  const vis = Array.prototype.filter.call(els, el => el.offsetParent !== null && !el.disabled);
+  if (!vis.length) return;
+  const first = vis[0], last = vis[vis.length - 1];
+  if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+  else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+});
+
+// #5: Peringatan sebelum refresh/tutup tab — hanya bila BENAR-BENAR ada data
+// yang belum aman: sedang menyimpan, atau antrian offline belum terkirim.
 window.addEventListener('beforeunload', function (e) {
-  if (currentUser) {
+  const pending = (typeof getOfflineQueue === 'function') ? getOfflineQueue().length : 0;
+  if (currentUser && (window._pjSaving || pending > 0)) {
     e.preventDefault();
     e.returnValue = '';   // memicu dialog konfirmasi standar browser
     return '';
   }
+});
+
+// ====== #1: TOMBOL BACK HP (History API) ======
+// SPA ini satu halaman, jadi tanpa ini tombol back = keluar dari sistem.
+// Strategi: satu entri "penjaga" selalu ada di atas. Saat user menekan back:
+//   1) ada modal terbuka  -> tutup modal
+//   2) sedang di editor / view lain -> kembali ke dashboard
+//   3) sudah di dashboard -> tampilkan konfirmasi keluar
+// Setelah 1/2/3, entri penjaga di-push lagi agar back berikutnya tertangkap.
+// window._histReady (bukan let) agar bebas dari TDZ bila top-level init gagal
+function histInit() {
+  if (window._histReady) return;
+  window._histReady = true;
+  try {
+    history.replaceState({ pj: 'root' }, '');
+    history.pushState({ pj: 'guard' }, '');
+  } catch (_) {}
+}
+function _histRearm() { try { history.pushState({ pj: 'guard' }, ''); } catch (_) {} }
+
+window.addEventListener('popstate', function () {
+  if (!currentUser || !window._histReady) return;   // layar login: biarkan back normal
+  // 1) Tutup modal teratas
+  if (closeTopModal()) { _histRearm(); return; }
+  // 2) Bukan di dashboard -> kembali ke dashboard
+  const active = document.querySelector('.view.on');
+  if (active && active.id !== 'v-dash') {
+    const inEditor = (active.id === 'v-editor');
+    if (inEditor && !viewMode) {
+      _histRearm();
+      openModal('Keluar dari editor?',
+        'Anda akan kembali ke dasbor. Perubahan terbaru sudah tersimpan otomatis. Lanjutkan?',
+        function () { setView('dash'); }, 'Ya, kembali');
+      return;
+    }
+    setView('dash'); _histRearm(); return;
+  }
+  // 3) Di dashboard -> konfirmasi keluar dari sistem
+  _histRearm();
+  openModal('Keluar dari sistem?',
+    'Anda akan meninggalkan Sistem Laporan Perjadin. Data sudah tersimpan. Lanjutkan?',
+    function () { window._histReady = false; history.go(-2); }, 'Ya, keluar');
 });
 
 
@@ -5876,7 +6063,7 @@ function updateOfflineUI() {
  * - Offline → masukkan ke antrian, kembalikan { queued: true }
  *             sehingga caller tidak error, data lokal sudah tersimpan via setState
  */
-async function apiPost(payload, retries) {
+async function apiPost(payload, retries, silent) {
   if (!navigator.onLine) {
     // Simpan ke antrian; data lokal sudah diupdate oleh caller sebelum memanggil apiPost
     enqueueOffline(payload);
@@ -5885,7 +6072,7 @@ async function apiPost(payload, retries) {
     return { queued: true };
   }
   // Online → gunakan apiPostNet yang asli
-  return apiPostNet(payload, retries);
+  return apiPostNet(payload, retries, silent);
 }
 
 /**
